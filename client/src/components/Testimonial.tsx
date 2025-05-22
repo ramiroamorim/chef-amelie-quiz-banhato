@@ -105,26 +105,24 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
-              {current.image && (
-                <div className="mt-auto">
-                  <div className="image-container w-full flex items-center justify-center">
-                    <img 
-                      src="/testimonial-image.png" 
-                      alt={current.imageAlt || "Témoignage"} 
-                      className="rounded-xl shadow-sm mx-auto"
-                      style={{ 
-                        width: 'auto',
-                        height: 'auto',
-                        maxWidth: '100%',
-                        maxHeight: '280px',
-                        objectFit: 'contain',
-                        objectPosition: 'center center',
-                        display: 'block'
-                      }}
-                    />
-                  </div>
+              <div className="mt-auto">
+                <div className="image-container w-full flex items-center justify-center">
+                  <img 
+                    src={`/testimonials/testimonial${(currentIndex % 3) + 1}.png`}
+                    alt={current.imageAlt || "Témoignage"} 
+                    className="rounded-xl shadow-sm mx-auto"
+                    style={{ 
+                      width: 'auto',
+                      height: 'auto',
+                      maxWidth: '100%',
+                      maxHeight: '280px',
+                      objectFit: 'contain',
+                      objectPosition: 'center center',
+                      display: 'block'
+                    }}
+                  />
                 </div>
-              )}
+              </div>
               
               {current.time && (
                 <div className="text-right mt-3">
