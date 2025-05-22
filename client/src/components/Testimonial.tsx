@@ -106,12 +106,41 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               />
               
               <div className="mt-4 mb-4">
-                <div className="w-full max-w-[500px] mx-auto rounded-xl overflow-hidden">
-                  <img 
-                    src="/recipes.png"
-                    alt="Recettes Chef Amélie Dupont" 
-                    className="w-full h-auto object-contain max-h-[400px]"
-                  />
+                <div className="max-w-[500px] w-full mx-auto p-2 bg-[#fff8f5] rounded-xl border border-[#E5DDD8]">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
+                      <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
+                    </div>
+                    <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
+                      <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
+                    </div>
+                    <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
+                      <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
+                    </div>
+                    <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
+                      <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
               
