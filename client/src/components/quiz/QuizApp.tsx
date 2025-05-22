@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useQuiz } from "@/hooks/useQuiz";
-import ProgressDots from "@/components/ProgressDots";
-import QuizStep from "@/components/QuizStep";
-import ProfileResult from "@/components/ProfileResult";
-import SalesPage from "@/components/SalesPage";
+import ProgressDots from "@/components/quiz/ProgressDots";
+import QuizStep from "@/components/quiz/QuizStep";
+import ProfileResult from "@/components/quiz/ProfileResult";
+import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data/quizData";
 
 export default function QuizApp() {
