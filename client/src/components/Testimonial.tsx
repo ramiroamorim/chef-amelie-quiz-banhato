@@ -108,9 +108,9 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="w-full max-w-[500px] mx-auto rounded-xl overflow-hidden">
                   <img 
-                    src="/recipe-collection.png"
+                    src="/recipes.png"
                     alt="Recettes Chef Amélie Dupont" 
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain max-h-[400px]"
                   />
                 </div>
               </div>
