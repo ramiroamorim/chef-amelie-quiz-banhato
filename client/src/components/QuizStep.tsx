@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 import RadioOption from "@/components/RadioOption";
 import Testimonial from "@/components/Testimonial";
@@ -25,12 +24,7 @@ export default function QuizStep({
   // Special layout for landing page (step 0)
   if (step.name === 'landing') {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="quiz-step landing-page text-center"
-      >
+      <div className="quiz-step landing-page text-center">
         {/* Title */}
         {step.title && (
           <h1>{step.title}</h1>
@@ -79,19 +73,14 @@ export default function QuizStep({
         {step.footerText && (
           <div className="footer-text" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
         )}
-      </motion.div>
+      </div>
     );
   }
 
   // Special layout for testimonial step
   if (step.isTestimonialStep) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="quiz-step"
-      >
+      <div className="quiz-step">
         {/* Title */}
         {step.title && (
           <h2 
@@ -105,18 +94,13 @@ export default function QuizStep({
           testimonials={testimonials}
           onComplete={onNextStep}
         />
-      </motion.div>
+      </div>
     );
   }
 
   // Standard layout for quiz steps
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="quiz-step"
-    >
+    <div className="quiz-step">
       {/* Title */}
       {step.title && (
         <h2 
@@ -197,6 +181,6 @@ export default function QuizStep({
           <span>{step.buttonText}</span>
         </button>
       )}
-    </motion.div>
+    </div>
   );
 }

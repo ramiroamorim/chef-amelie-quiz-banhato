@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+// Removido import que estava causando problemas no build
 import React from "react";
 
 // Componente de botão coral simplificado
