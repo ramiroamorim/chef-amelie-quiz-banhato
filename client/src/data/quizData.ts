@@ -5,18 +5,18 @@ import { QuizStepType, TestimonialType } from "@/types";
 const chefAmelie = "/recipe-grid.png";
 
 // Usamos a mesma imagem para todos os testimonials por enquanto
-const testimonial1 = "/recipe-grid.png";
-const testimonial2 = "/recipe-grid.png";
-const testimonial3 = "/recipe-grid.png";
-const testimonial4 = "/recipe-grid.png";
-const testimonial5 = "/recipe-grid.png";
-const testimonial6 = "/recipe-grid.png";
-const testimonial7 = "/recipe-grid.png";
-const testimonial8 = "/recipe-grid.png";
-const testimonial9 = "/recipe-grid.png";
-const testimonial10 = "/recipe-grid.png";
-const testimonial11 = "/recipe-grid.png";
-const testimonial12 = "/recipe-grid.png";
+const testimonial1 = "/testimonials/testimonial1.png";
+const testimonial2 = "/testimonials/testimonial2.png";
+const testimonial3 = "/testimonials/testimonial3.png";
+const testimonial4 = "/testimonials/testimonial4.png";
+const testimonial5 = "/testimonials/testimonial5.png";
+const testimonial6 = "/testimonials/testimonial6.png";
+const testimonial7 = "/testimonials/testimonial7.png";
+const testimonial8 = "/testimonials/testimonial8.png";
+const testimonial9 = "/testimonials/testimonial9.png";
+const testimonial10 = "/testimonials/testimonial10.png";
+const testimonial11 = "/testimonials/testimonial11.png";
+const testimonial12 = "/testimonials/testimonial12.png";
 
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page
