@@ -1,49 +1,32 @@
 import { motion } from "framer-motion";
+import React from "react";
 import recipeImage1 from "@assets/500 Receitas Chef Amelie Dupont.png";
 import whatsappImage1 from "@assets/Imagem do WhatsApp.png";
 import whatsappImage2 from "@assets/Imagem do WhatsApp (1).png";
 import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 
 // Componente de botão pulsante verde
-const GreenPulseButton = ({ href, children }) => {
+const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
-    <a 
-      href={href}
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full mb-4 text-white overflow-hidden"
-      style={{ 
-        background: "#4CAF50",
-        boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)",
-        zIndex: 1
-      }}
-    >
-      <span className="relative z-10">{children}</span>
-      <span className="absolute inset-0 rounded-full" style={{ background: "#4CAF50", zIndex: -1 }}></span>
-      <span 
-        className="absolute inset-0 rounded-full animate-pulse-green" 
-        style={{ 
-          background: "#4CAF50", 
-          zIndex: -2,
-          animation: "pulse 2s cubic-bezier(0.66, 0, 0, 1) infinite"
+    <div className="relative inline-block w-full md:w-auto mb-4">
+      <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-75" 
+        style={{
+          animation: "ping 2s cubic-bezier(0.66, 0, 0, 1) infinite"
         }}
-      ></span>
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            transform: scale(1);
-            opacity: 0.7;
-          }
-          100% {
-            transform: scale(1.15);
-            opacity: 0;
-          }
-        }
-        .animate-pulse-green {
-          animation: pulse 2s cubic-bezier(0.66, 0, 0, 1) infinite;
-        }
-      `}</style>
-    </a>
+      ></div>
+      <a 
+        href={href}
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full text-white"
+        style={{ 
+          background: "#4CAF50",
+          boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
+        }}
+      >
+        {children}
+      </a>
+    </div>
   );
 };
 
