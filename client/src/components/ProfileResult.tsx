@@ -1,13 +1,8 @@
 import { motion } from "framer-motion";
 import React from "react";
 
-interface CoralPulseButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-}
-
 // Componente de botão pulsante coral
-const CoralPulseButton: React.FC<CoralPulseButtonProps> = ({ onClick, children }) => {
+function CoralPulseButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   return (
     <div className="relative inline-block w-full mb-4">
       <div className="absolute inset-0 rounded-full opacity-30" 

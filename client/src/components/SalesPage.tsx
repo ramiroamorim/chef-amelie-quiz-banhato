@@ -5,13 +5,8 @@ import whatsappImage1 from "@assets/Imagem do WhatsApp.png";
 import whatsappImage2 from "@assets/Imagem do WhatsApp (1).png";
 import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 
-interface GreenPulseButtonProps {
-  href: string;
-  children: React.ReactNode;
-}
-
 // Componente de botão pulsante verde
-const GreenPulseButton: React.FC<GreenPulseButtonProps> = ({ href, children }) => {
+function GreenPulseButton({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <div className="relative inline-block w-full md:w-auto mb-4">
       <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-30" 
