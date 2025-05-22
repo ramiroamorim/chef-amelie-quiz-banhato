@@ -108,9 +108,14 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
                   <img 
-                    src="/images/recipes.png"
+                    src={`/assets/images/testimonial${(currentIndex % 4) + 1}.png`}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
                     className="w-full h-auto rounded-lg shadow-sm"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = "/assets/images/recipes-main.png";
+                    }}
                   />
                 </div>
               </div>

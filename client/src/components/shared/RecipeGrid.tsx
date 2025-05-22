@@ -5,7 +5,7 @@ export const RecipeGrid: React.FC = () => {
   return (
     <div className="w-full p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
       <img 
-        src="/images/recipes.png" 
+        src="/assets/images/recipes-main.png" 
         alt="Recettes sans sucre, sans gluten et sans lactose"
         className="w-full h-auto rounded-lg"
       />
