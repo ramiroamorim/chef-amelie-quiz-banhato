@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import React from "react";
 import RadioOption from "@/components/RadioOption";
 import Testimonial from "@/components/Testimonial";
 import { QuizStepType } from "@/types";
