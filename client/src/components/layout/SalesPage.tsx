@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { RecipeGrid } from "../ui/recipe/RecipeGrid";
+import { LINKS, COLORS, TEXTS } from "@/config";
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -43,8 +44,8 @@ const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
 );
 
 export default function SalesPage() {
-  // URL do botão de compra
-  const buyUrl = "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR";
+  // Usando a URL do botão de compra do arquivo centralizado de configurações
+  const buyUrl = LINKS.SALES.BUY_URL;
 
   // Componentes reutilizáveis para diversos elementos da página
   const RecipeContainer = () => (

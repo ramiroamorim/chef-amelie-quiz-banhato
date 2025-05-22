@@ -4,7 +4,7 @@ import ProgressDots from "@/components/quiz/ProgressDots";
 import QuizStep from "@/components/quiz/QuizStep";
 import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
-import { quizSteps } from "@/data/quizData";
+import { quizSteps } from "@/data";
 
 export default function QuizApp() {
   const { 
