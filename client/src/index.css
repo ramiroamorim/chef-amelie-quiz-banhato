@@ -174,12 +174,23 @@
   }
 
   .testimonial {
-    @apply relative bg-white rounded-xl p-4 shadow-sm border border-gray-100;
+    @apply relative bg-white rounded-xl p-4;
   }
-
-  .testimonial:before {
-    @apply absolute -left-[10px] bottom-[15px] w-5 h-5 bg-white transform rotate-45;
-    content: "";
+  
+  /* Modern carousel styling */
+  .testimonial-content {
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .image-container {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .image-container:hover {
+    transform: scale(1.02);
   }
 
   .slide-transition {

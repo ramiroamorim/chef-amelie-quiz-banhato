@@ -76,11 +76,11 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
 
   return (
     <div className="testimonial-wrapper max-w-md mx-auto">
-      <div className="mb-3 text-center text-primary font-medium">
+      <div className="mb-4 text-center text-primary font-medium">
         Faites glisser ➤ pour voir ce qu'elles disent.
       </div>
       
-      <div className="min-h-[400px] h-auto overflow-hidden mb-4 flex-grow">
+      <div className="h-[500px] overflow-hidden mb-6 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -88,36 +88,41 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
-            className="testimonial relative h-full w-full"
+            className="testimonial h-full w-full"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <div className="testimonial-content p-4 bg-[#f8f8f8] rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+            <div className="testimonial-content p-5 bg-white rounded-2xl shadow-lg h-full flex flex-col"
+                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)' }}>
               <p 
-                className="mb-3 text-[#333333] text-sm md:text-base" 
+                className="mb-4 text-[#333333] text-sm md:text-base leading-relaxed" 
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
               {current.image && (
                 <div className="flex-grow flex items-center justify-center">
-                  <div className="w-full h-full flex items-center justify-center py-2">
-                    <img 
-                      src={current.image} 
-                      alt={current.imageAlt || "Témoignage"} 
-                      className="rounded-lg max-w-full max-h-[350px] shadow-sm"
-                      style={{ 
-                        objectFit: 'contain',
-                        objectPosition: 'center',
-                        display: 'block'
-                      }}
-                    />
+                  <div className="image-container w-full h-[280px] flex items-center justify-center">
+                    <div className="relative w-full h-full" style={{ aspectRatio: '1.5/1' }}>
+                      <img 
+                        src={current.image} 
+                        alt={current.imageAlt || "Témoignage"} 
+                        className="rounded-xl shadow-sm"
+                        style={{ 
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: 'center top',
+                          display: 'block'
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
               
               {current.time && (
-                <div className="text-right mt-2">
+                <div className="text-right mt-3">
                   <span className="text-xs text-gray-500">{current.time}</span>
                 </div>
               )}
@@ -126,27 +131,27 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
         </AnimatePresence>
       </div>
 
-      <div className="flex justify-center items-center gap-4 my-6">
+      <div className="flex justify-between items-center gap-2 my-4 px-2">
         <button 
           onClick={handlePrev}
-          className="bg-black text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md"
+          className="bg-black hover:bg-gray-800 transition-colors text-white w-12 h-12 rounded-full flex items-center justify-center shadow-md"
           aria-label="Témoignage précédent"
         >
           <ChevronLeft />
         </button>
         
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1.5 items-center">
           {testimonials.map((_, index) => (
             <span 
               key={index} 
-              className={`block w-2 h-2 rounded-full ${index === currentIndex ? 'bg-primary' : 'bg-gray-300'}`}
+              className={`block w-2.5 h-2.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-primary scale-125' : 'bg-gray-300'}`}
             />
           ))}
         </div>
         
         <button 
           onClick={handleNext}
-          className={`${currentIndex === testimonials.length - 1 ? 'bg-primary' : 'bg-black'} text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md`}
+          className={`${currentIndex === testimonials.length - 1 ? 'bg-primary hover:bg-primary/90' : 'bg-black hover:bg-gray-800'} transition-colors text-white w-12 h-12 rounded-full flex items-center justify-center shadow-md`}
           aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
         >
           <ChevronRight />
