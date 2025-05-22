@@ -24,12 +24,15 @@ export function useQuiz(totalSteps: number) {
   };
 
   const handleNextStep = () => {
-    if (currentStep < totalSteps) {
+    if (currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
-    } else if (showResult) {
-      setShowSalesPage(true);
-    } else {
+    } else if (!showResult) {
+      // Se chegamos ao final do quiz, mostrar o resultado
       setShowResult(true);
+    } else {
+      // Se já estamos mostrando o resultado, ir para a página de vendas
+      setShowSalesPage(true);
+      setShowResult(false);
     }
   };
 

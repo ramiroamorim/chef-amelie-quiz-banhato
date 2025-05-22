@@ -35,6 +35,11 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
     }
   };
 
+  const handleViewProfile = () => {
+    // Call onComplete directly to proceed to the next step
+    onComplete();
+  };
+
   // Handlers de toque para deslizar na tela
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -161,7 +166,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
       <div className="text-center mt-8">
         <button 
           className="btn-primary btn-pulse w-full md:w-auto py-4 px-10 font-medium text-base rounded-full"
-          onClick={onComplete}
+          onClick={handleViewProfile}
         >
           🔍 DÉCOUVRIR MON PROFIL
         </button>
