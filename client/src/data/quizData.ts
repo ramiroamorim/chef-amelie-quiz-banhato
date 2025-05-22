@@ -1,21 +1,22 @@
 import { QuizStepType, TestimonialType } from "@/types";
 
 // Image imports
-import chefAmelie from "@assets/500 Receitas Chef Amelie Dupont.png";
+// Definimos a URL da imagem do chef diretamente
+const chefAmelie = "/recipe-grid.png";
 
-// Testimonial image imports
-import testimonial1 from "@assets/22 Mai 2025 Screenshot WhatsApp.png";
-import testimonial2 from "@assets/22 Mai 2025 Screenshot WhatsApp (1).png";
-import testimonial3 from "@assets/22 Mai 2025 Screenshot WhatsApp (2).png";
-import testimonial4 from "@assets/22 Mai 2025 Screenshot WhatsApp (3).png";
-import testimonial5 from "@assets/22 Mai 2025 Screenshot WhatsApp (4).png";
-import testimonial6 from "@assets/22 Mai 2025 Screenshot WhatsApp (5).png";
-import testimonial7 from "@assets/22 Mai 2025 Screenshot WhatsApp (6).png";
-import testimonial8 from "@assets/22 Mai 2025 Screenshot WhatsApp (7).png";
-import testimonial9 from "@assets/22 Mai 2025 Screenshot WhatsApp (8).png";
-import testimonial10 from "@assets/Screenshot May 22 2025 from WhatsApp.png";
-import testimonial11 from "@assets/Screenshot May 22 2025 from WhatsApp (1).png";
-import testimonial12 from "@assets/22 Mai 2025 Screenshot do WhatsApp.png";
+// Usamos a mesma imagem para todos os testimonials por enquanto
+const testimonial1 = "/recipe-grid.png";
+const testimonial2 = "/recipe-grid.png";
+const testimonial3 = "/recipe-grid.png";
+const testimonial4 = "/recipe-grid.png";
+const testimonial5 = "/recipe-grid.png";
+const testimonial6 = "/recipe-grid.png";
+const testimonial7 = "/recipe-grid.png";
+const testimonial8 = "/recipe-grid.png";
+const testimonial9 = "/recipe-grid.png";
+const testimonial10 = "/recipe-grid.png";
+const testimonial11 = "/recipe-grid.png";
+const testimonial12 = "/recipe-grid.png";
 
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page
