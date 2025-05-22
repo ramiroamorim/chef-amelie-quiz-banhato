@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
 
 interface TestimonialData {
@@ -86,54 +85,47 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
       </div>
       
       <div className="h-auto min-h-[480px] overflow-hidden mb-6 relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.3 }}
-            className="testimonial h-full w-full"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            <div className="testimonial-content p-5 bg-white rounded-2xl shadow-lg flex flex-col"
-                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '450px' }}>
-              <p 
-                className="mb-4 text-[#333333] text-sm md:text-base leading-relaxed" 
-                dangerouslySetInnerHTML={{ __html: current.message }} 
-              />
-              
-              {current.image && (
-                <div className="mt-auto">
-                  <div className="image-container w-full flex items-center justify-center">
-                    <img 
-                      src={current.image} 
-                      alt={current.imageAlt || "Témoignage"} 
-                      className="rounded-xl shadow-sm mx-auto"
-                      style={{ 
-                        width: 'auto',
-                        height: 'auto',
-                        maxWidth: '100%',
-                        maxHeight: '280px',
-                        objectFit: 'contain',
-                        objectPosition: 'center center',
-                        display: 'block'
-                      }}
-                    />
-                  </div>
+        <div
+          className="testimonial h-full w-full"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div className="testimonial-content p-5 bg-white rounded-2xl shadow-lg flex flex-col"
+               style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '450px' }}>
+            <p 
+              className="mb-4 text-[#333333] text-sm md:text-base leading-relaxed" 
+              dangerouslySetInnerHTML={{ __html: current.message }} 
+            />
+            
+            {current.image && (
+              <div className="mt-auto">
+                <div className="image-container w-full flex items-center justify-center">
+                  <img 
+                    src={current.image} 
+                    alt={current.imageAlt || "Témoignage"} 
+                    className="rounded-xl shadow-sm mx-auto"
+                    style={{ 
+                      width: 'auto',
+                      height: 'auto',
+                      maxWidth: '100%',
+                      maxHeight: '280px',
+                      objectFit: 'contain',
+                      objectPosition: 'center center',
+                      display: 'block'
+                    }}
+                  />
                 </div>
-              )}
-              
-              {current.time && (
-                <div className="text-right mt-3">
-                  <span className="text-xs text-gray-500">{current.time}</span>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+              </div>
+            )}
+            
+            {current.time && (
+              <div className="text-right mt-3">
+                <span className="text-xs text-gray-500">{current.time}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="flex justify-between items-center gap-2 my-4 px-2">
