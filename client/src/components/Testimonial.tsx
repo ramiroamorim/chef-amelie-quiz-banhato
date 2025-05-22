@@ -108,9 +108,13 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto">
                   <img 
-                    src="/recipe-image.png" 
+                    src={`/testimonials/testimonial${currentIndex + 1}.png`}
                     alt="500 recettes sans sucre, sans gluten et sans lactose" 
                     className="rounded-xl w-full shadow-sm border border-gray-100"
+                    onError={(e) => {
+                      e.currentTarget.src = "/recipe-image.png";
+                      console.log("Fallback to default image");
+                    }}
                   />
                 </div>
               </div>
