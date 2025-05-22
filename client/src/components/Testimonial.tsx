@@ -109,7 +109,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                 <div className="mt-auto">
                   <div className="image-container w-full flex items-center justify-center">
                     <img 
-                      src={current.image} 
+                      src="/testimonial-image.png" 
                       alt={current.imageAlt || "Témoignage"} 
                       className="rounded-xl shadow-sm mx-auto"
                       style={{ 
