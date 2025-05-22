@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
-import RecipeGrid from "./shared/RecipeGrid";
+import { RecipeGrid } from "./shared/RecipeGrid";
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {

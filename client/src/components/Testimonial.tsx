@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
-import RecipeGrid from "./shared/RecipeGrid";
 
 interface TestimonialData {
   message: string;
@@ -109,15 +108,9 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
                   <img 
-                    src={`/testimonial-images/testimonial${(currentIndex % 4) + 1}.png`}
+                    src="/images/recipes.png"
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
                     className="w-full h-auto rounded-lg shadow-sm"
-                    onError={(e) => {
-                      console.log("Switching to fallback image");
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = "/testimonial-images/recipe-main.png";
-                    }}
                   />
                 </div>
               </div>
