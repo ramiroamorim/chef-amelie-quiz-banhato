@@ -64,12 +64,14 @@ export default function QuizStep({
 
         {/* Button with pulse animation */}
         {step.buttonText && (
-          <button 
-            className="btn-primary btn-pulse w-full md:w-auto md:px-10 py-4 mt-4 mb-6 font-medium text-lg mx-auto"
-            onClick={onNextStep}
-          >
-            {step.buttonText}
-          </button>
+          <div className="relative w-full md:w-auto md:mx-auto mt-4 mb-6">
+            <button 
+              className="btn-primary btn-pulse w-full md:w-auto md:px-16 py-5 font-medium text-lg mx-auto block"
+              onClick={onNextStep}
+            >
+              {step.buttonText}
+            </button>
+          </div>
         )}
 
         {/* Footer Text */}
