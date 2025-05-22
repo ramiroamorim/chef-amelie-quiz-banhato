@@ -5,7 +5,7 @@ export type Answer = {
 };
 
 export function useQuiz(totalSteps: number) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0); // Start at 0 for landing page
   const [answers, setAnswers] = useState<Answer>({});
   const [showResult, setShowResult] = useState(false);
   const [showSalesPage, setShowSalesPage] = useState(false);

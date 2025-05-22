@@ -18,7 +18,71 @@ export default function QuizStep({
   onNextStep 
 }: QuizStepProps) {
   if (!isVisible) return null;
+  
+  // Special layout for landing page (step 0)
+  if (step.name === 'landing') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="quiz-step landing-page text-center"
+      >
+        {/* Title */}
+        {step.title && (
+          <h1 
+            className="text-3xl md:text-4xl font-bold mb-8 text-[#E05B2D]"
+          >
+            {step.title}
+          </h1>
+        )}
 
+        {/* Text Blocks */}
+        {step.textBlocks && (
+          <div className="space-y-6 mb-8 text-lg">
+            {step.textBlocks.map((text, i) => (
+              <p 
+                key={i} 
+                className={text.highlight ? "text-primary font-medium" : ""}
+                dangerouslySetInnerHTML={{ __html: text.content }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Image */}
+        {step.image && (
+          <div className="my-8 max-w-md mx-auto">
+            <img 
+              src={step.image} 
+              alt={step.imageAlt || ""} 
+              className="w-full h-auto"
+            />
+          </div>
+        )}
+        
+        {/* Down arrow indicator */}
+        <div className="my-4 text-3xl text-[#E05B2D]">▼</div>
+
+        {/* Button */}
+        {step.buttonText && (
+          <button 
+            className="btn-primary w-full md:w-auto md:px-10 py-4 rounded-full mt-4 mb-6 font-medium text-lg mx-auto"
+            onClick={onNextStep}
+          >
+            {step.buttonText}
+          </button>
+        )}
+
+        {/* Footer Text */}
+        {step.footerText && (
+          <div className="text-sm text-gray-600 mt-4" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
+        )}
+      </motion.div>
+    );
+  }
+
+  // Standard layout for quiz steps
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}

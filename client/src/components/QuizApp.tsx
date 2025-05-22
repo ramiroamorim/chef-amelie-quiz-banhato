@@ -19,11 +19,11 @@ export default function QuizApp() {
 
   return (
     <div className="min-h-screen px-4 py-8">
-      {/* Progress Dots - only show when not on sales page */}
-      {!showSalesPage && (
+      {/* Progress Dots - only show during actual quiz, not on landing or sales page */}
+      {currentStep > 0 && !showResult && !showSalesPage && (
         <ProgressDots 
           currentStep={currentStep} 
-          totalSteps={totalSteps} 
+          totalSteps={totalSteps - 1} 
         />
       )}
 
@@ -34,8 +34,8 @@ export default function QuizApp() {
           <QuizStep
             key={index}
             step={step}
-            stepNumber={index + 1}
-            isVisible={currentStep === index + 1 && !showResult && !showSalesPage}
+            stepNumber={index}
+            isVisible={currentStep === index && !showResult && !showSalesPage}
             onOptionSelect={handleOptionSelect}
             onNextStep={handleNextStep}
           />

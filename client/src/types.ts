@@ -23,6 +23,7 @@ export interface QuizStepType {
   textBlocks?: TextBlock[];
   options?: Option[];
   buttonText?: string;
+  footerText?: string;
 }
 
 export interface TestimonialType {

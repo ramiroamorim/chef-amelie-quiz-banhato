@@ -1,6 +1,27 @@
 import { QuizStepType, TestimonialType } from "@/types";
 
 export const quizSteps: QuizStepType[] = [
+  // Step 0 - Landing Page
+  {
+    name: "landing",
+    title: "On vous a menti.",
+    textBlocks: [
+      {
+        content: "Vous pouvez manger un <strong>brownie fondant</strong>, une <strong>brioche moelleuse</strong>, ou une <strong>tartelette chocolat-noisette</strong> — <em>sans sucre, sans gluten, sans lactose.</em>"
+      },
+      {
+        content: "Et vous resservir. Sans culpabilité."
+      },
+      {
+        content: "🎁 En 1 minute, découvrez votre <strong>profil gourmand</strong> et accédez à la <em>collection privée</em> de 500 recettes emblématiques de la Chef Amélie."
+      }
+    ],
+    image: "https://cdn.xquiz.co/images/94f2084a-557c-43be-abcc-2ba23141cb46",
+    imageAlt: "Desserts sans sucre, sans gluten, sans lactose",
+    buttonText: "Découvrir mon profil gourmand",
+    footerText: "Plus de <strong>30 000 femmes</strong> ont déjà découvert le leur<br>Ce test ne prend que 60 secondes"
+  },
+  
   // Step 1
   {
     name: "discourage",
