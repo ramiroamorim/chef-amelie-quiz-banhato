@@ -1,9 +1,5 @@
 import { motion } from "framer-motion";
 import React from "react";
-import recipeImage1 from "@assets/500 Receitas Chef Amelie Dupont.png";
-import whatsappImage1 from "@assets/Imagem do WhatsApp.png";
-import whatsappImage2 from "@assets/Imagem do WhatsApp (1).png";
-import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -52,7 +48,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <img src={recipeImage1} alt="Recettes Chef Amélie Dupont" className="rounded-md w-full max-w-[500px]" />
+          <img src="/recipe-grid.png" alt="Recettes Chef Amélie Dupont" className="rounded-md w-full max-w-[500px]" />
         </div>
 
         <div className="mb-8 bg-[#F1F9F1] p-6 rounded-md border-l-4 border-[#4CAF50]">
@@ -84,7 +80,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <img src={whatsappImage1} alt="Chef Amélie Dupont" className="rounded-md w-full max-w-[500px]" />
+          <img src="/recipe-grid.png" alt="Chef Amélie Dupont" className="rounded-md w-full max-w-[500px]" />
         </div>
 
         <div className="mb-8 bg-[#F5F9FF] p-6 rounded-md border-l-4 border-[#2196F3]">
@@ -134,7 +130,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <img src={whatsappImage2} alt="Exemples de recettes" className="rounded-md w-full max-w-[500px]" />
+          <img src="/recipe-grid.png" alt="Exemples de recettes" className="rounded-md w-full max-w-[500px]" />
         </div>
 
         <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
@@ -150,7 +146,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <img src={whatsappImage3} alt="Exemples de recettes" className="rounded-md w-full max-w-[500px]" />
+          <img src="/recipe-grid.png" alt="Exemples de recettes" className="rounded-md w-full max-w-[500px]" />
         </div>
 
         <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
