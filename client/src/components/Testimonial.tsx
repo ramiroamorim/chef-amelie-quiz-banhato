@@ -105,17 +105,42 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
-              <div className="mt-auto">
-                <div className="image-container w-full flex items-center justify-center border border-gray-200 rounded-xl p-2 bg-white">
-                  <div 
-                    className="w-full h-[280px] rounded-xl bg-contain bg-center bg-no-repeat" 
-                    style={{ 
-                      backgroundImage: `url('/recipe-collection.png')`,
-                      backgroundSize: 'contain',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat'
-                    }}
-                  />
+              <div className="mt-4 mb-4">
+                <div className="w-full max-w-[400px] mx-auto bg-white border border-gray-200 rounded-xl p-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="rounded-lg overflow-hidden bg-gray-50 relative">
+                      <div className="absolute top-0 left-0 m-1 px-2 py-1 text-xs bg-white bg-opacity-80 rounded-md text-green-700">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[100px] bg-[#f9f5f2]"></div>
+                    </div>
+                    <div className="rounded-lg overflow-hidden bg-gray-50 relative">
+                      <div className="absolute top-0 left-0 m-1 px-2 py-1 text-xs bg-white bg-opacity-80 rounded-md text-green-700">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[100px] bg-[#f9f5f2]"></div>
+                    </div>
+                    <div className="rounded-lg overflow-hidden bg-gray-50 relative">
+                      <div className="absolute top-0 left-0 m-1 px-2 py-1 text-xs bg-white bg-opacity-80 rounded-md text-green-700">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[100px] bg-[#f9f5f2]"></div>
+                    </div>
+                    <div className="rounded-lg overflow-hidden bg-gray-50 relative">
+                      <div className="absolute top-0 left-0 m-1 px-2 py-1 text-xs bg-white bg-opacity-80 rounded-md text-green-700">
+                        ✓ SANS SUCRE<br/>
+                        ✓ SANS GLUTEN<br/>
+                        ✓ SANS LACTOSE
+                      </div>
+                      <div className="h-[100px] bg-[#f9f5f2]"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
               
