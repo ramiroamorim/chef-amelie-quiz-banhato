@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
+// Vamos importar uma imagem estática diretamente aqui
+import recipesImg from "../assets/images/recipes.png";
 
 interface TestimonialData {
   message: string;
@@ -108,14 +110,9 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto">
                   <img 
-                    src="/recipe-image.png"
+                    src={recipesImg}
                     alt={current.imageAlt || "500 recettes sans sucre, sans gluten et sans lactose"} 
                     className="rounded-xl w-full shadow-sm border border-gray-100"
-                    onError={(e) => {
-                      console.log("Fallback to default image");
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/recipe-image.png";
-                    }}
                   />
                 </div>
               </div>
