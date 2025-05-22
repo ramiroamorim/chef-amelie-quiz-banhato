@@ -9,9 +9,9 @@ import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
     <div className="relative inline-block w-full md:w-auto mb-4">
-      <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-75" 
+      <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-30" 
         style={{
-          animation: "ping 2s cubic-bezier(0.66, 0, 0, 1) infinite"
+          animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
         }}
       ></div>
       <a 
