@@ -30,16 +30,12 @@ export default function QuizStep({
       >
         {/* Title */}
         {step.title && (
-          <h1 
-            className="text-3xl md:text-4xl font-bold mb-8 text-[#E05B2D]"
-          >
-            {step.title}
-          </h1>
+          <h1>{step.title}</h1>
         )}
 
         {/* Text Blocks */}
         {step.textBlocks && (
-          <div className="space-y-6 mb-8 text-lg">
+          <div className="text-blocks">
             {step.textBlocks.map((text, i) => (
               <p 
                 key={i} 
@@ -50,7 +46,7 @@ export default function QuizStep({
           </div>
         )}
 
-        {/* Image */}
+        {/* Image - Food images grid */}
         {step.image && (
           <div className="my-8 max-w-md mx-auto">
             <img 
@@ -62,12 +58,12 @@ export default function QuizStep({
         )}
         
         {/* Down arrow indicator */}
-        <div className="my-4 text-3xl text-[#E05B2D]">▼</div>
+        <div className="arrow-down">▼</div>
 
         {/* Button */}
         {step.buttonText && (
           <button 
-            className="btn-primary w-full md:w-auto md:px-10 py-4 rounded-full mt-4 mb-6 font-medium text-lg mx-auto"
+            className="btn-primary w-full md:w-auto md:px-10 py-4 mt-4 mb-6 font-medium text-lg mx-auto"
             onClick={onNextStep}
           >
             {step.buttonText}
@@ -76,7 +72,7 @@ export default function QuizStep({
 
         {/* Footer Text */}
         {step.footerText && (
-          <div className="text-sm text-gray-600 mt-4" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
+          <div className="footer-text" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
         )}
       </motion.div>
     );

@@ -77,11 +77,31 @@
   }
 
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 ease-in-out;
+    @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-full transition-all duration-200 ease-in-out;
+  }
+
+  .landing-page h1 {
+    @apply text-[#E05B2D] text-3xl md:text-4xl font-bold mb-6;
+  }
+
+  .landing-page .text-blocks {
+    @apply space-y-5 text-lg mb-8;
+  }
+
+  .landing-page .text-blocks p {
+    @apply leading-relaxed;
+  }
+
+  .landing-page .arrow-down {
+    @apply text-3xl text-[#E05B2D] my-4;
+  }
+
+  .landing-page .footer-text {
+    @apply text-sm text-gray-600 mt-4;
   }
 
   .radio-option {
-    @apply block w-full rounded-xl p-4 cursor-pointer border border-gray-200 transition-all duration-200 ease-in-out hover:border-primary hover:bg-[#FEF8F6];
+    @apply block w-full rounded-full p-4 cursor-pointer border border-gray-200 transition-all duration-200 ease-in-out hover:border-primary hover:bg-[#FEF8F6];
   }
 
   .radio-option input:checked ~ .radio-checkmark:after {
