@@ -106,19 +106,14 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               />
               
               <div className="mt-auto">
-                <div className="image-container w-full flex items-center justify-center">
-                  <img 
-                    src={`/testimonials/testimonial${(currentIndex % 3) + 1}.png`}
-                    alt={current.imageAlt || "Témoignage"} 
-                    className="rounded-xl shadow-sm mx-auto"
+                <div className="image-container w-full flex items-center justify-center border border-gray-200 rounded-xl p-2 bg-white">
+                  <div 
+                    className="w-full h-[280px] rounded-xl bg-contain bg-center bg-no-repeat" 
                     style={{ 
-                      width: 'auto',
-                      height: 'auto',
-                      maxWidth: '100%',
-                      maxHeight: '280px',
-                      objectFit: 'contain',
-                      objectPosition: 'center center',
-                      display: 'block'
+                      backgroundImage: `url('/recipe-collection.png')`,
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
                     }}
                   />
                 </div>
