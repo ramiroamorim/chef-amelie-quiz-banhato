@@ -1,5 +1,8 @@
 import { QuizStepType, TestimonialType } from "@/types";
 
+// Image imports
+import chefAmelie from "@assets/500 Receitas Chef Amelie Dupont.png";
+
 // Testimonial image imports
 import testimonial1 from "@assets/22 Mai 2025 Screenshot WhatsApp.png";
 import testimonial2 from "@assets/22 Mai 2025 Screenshot WhatsApp (1).png";
@@ -125,7 +128,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 4
   {
     name: "chef_profile",
-    image: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
+    image: chefAmelie,
     imageAlt: "Chef Amélie Dupont",
     title: "Une rencontre avec la Cheffe Amélie Dupont",
     description: "Son histoire, sa mission, ses recettes.",
