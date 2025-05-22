@@ -4,7 +4,53 @@ import whatsappImage1 from "@assets/Imagem do WhatsApp.png";
 import whatsappImage2 from "@assets/Imagem do WhatsApp (1).png";
 import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 
+// Componente de botão pulsante verde
+const GreenPulseButton = ({ href, children }) => {
+  return (
+    <a 
+      href={href}
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full mb-4 text-white overflow-hidden"
+      style={{ 
+        background: "#4CAF50",
+        boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)",
+        zIndex: 1
+      }}
+    >
+      <span className="relative z-10">{children}</span>
+      <span className="absolute inset-0 rounded-full" style={{ background: "#4CAF50", zIndex: -1 }}></span>
+      <span 
+        className="absolute inset-0 rounded-full animate-pulse-green" 
+        style={{ 
+          background: "#4CAF50", 
+          zIndex: -2,
+          animation: "pulse 2s cubic-bezier(0.66, 0, 0, 1) infinite"
+        }}
+      ></span>
+      <style jsx>{`
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+            opacity: 0.7;
+          }
+          100% {
+            transform: scale(1.15);
+            opacity: 0;
+          }
+        }
+        .animate-pulse-green {
+          animation: pulse 2s cubic-bezier(0.66, 0, 0, 1) infinite;
+        }
+      `}</style>
+    </a>
+  );
+};
+
 export default function SalesPage() {
+  // URL do botão de compra
+  const buyUrl = "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR";
+
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-[700px] mx-auto px-4 py-8 text-[#333]">
@@ -113,18 +159,9 @@ export default function SalesPage() {
           <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
           <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
           
-          <a 
-            href="https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full mb-4 text-white"
-            style={{ 
-              background: "#4CAF50",
-              boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
-            }}
-          >
+          <GreenPulseButton href={buyUrl}>
             JE VEUX LE PACK POUR 17€
-          </a>
+          </GreenPulseButton>
           
           <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
         </div>
@@ -138,18 +175,9 @@ export default function SalesPage() {
           <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
           <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
           
-          <a 
-            href="https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full mb-4 text-white"
-            style={{ 
-              background: "#4CAF50",
-              boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
-            }}
-          >
+          <GreenPulseButton href={buyUrl}>
             JE VEUX LE PACK POUR 17€
-          </a>
+          </GreenPulseButton>
           
           <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
         </div>
