@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
+import RecipeGrid from "./shared/RecipeGrid";
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -30,14 +31,10 @@ export default function SalesPage() {
   // URL do botão de compra
   const buyUrl = "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR";
 
-  // Componente de imagem de receitas
-  const RecipeGrid = () => (
-    <div className="max-w-[500px] w-full">
-      <img 
-        src="/recipe-image.png" 
-        alt="500 recettes sans sucre, sans gluten et sans lactose" 
-        className="rounded-md w-full shadow-sm border border-gray-100"
-      />
+  // Container para a grade de receitas
+  const RecipeContainer = () => (
+    <div className="max-w-[500px] w-full mx-auto">
+      <RecipeGrid />
     </div>
   );
 
@@ -59,7 +56,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeGrid />
+          <RecipeContainer />
         </div>
 
         <div className="mb-8 bg-[#F1F9F1] p-6 rounded-md border-l-4 border-[#4CAF50]">
@@ -91,7 +88,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeGrid />
+          <RecipeContainer />
         </div>
 
         <div className="mb-8 bg-[#F5F9FF] p-6 rounded-md border-l-4 border-[#2196F3]">
@@ -141,7 +138,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeGrid />
+          <RecipeContainer />
         </div>
 
         <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
@@ -157,7 +154,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeGrid />
+          <RecipeContainer />
         </div>
 
         <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">

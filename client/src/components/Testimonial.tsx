@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
+import RecipeGrid from "./shared/RecipeGrid";
 
 interface TestimonialData {
   message: string;
@@ -107,42 +108,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto">
-                  <div className="w-full p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-[#FDF8F5] rounded-md overflow-hidden shadow-sm relative">
-                        <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[11px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-                          ✓ SANS SUCRE<br/>
-                          ✓ SANS GLUTEN<br/>
-                          ✓ SANS LACTOSE
-                        </div>
-                        <div className="h-[120px] bg-gradient-to-br from-amber-50 to-orange-50 rounded"></div>
-                      </div>
-                      <div className="bg-[#FDF8F5] rounded-md overflow-hidden shadow-sm relative">
-                        <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[11px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-                          ✓ SANS SUCRE<br/>
-                          ✓ SANS GLUTEN<br/>
-                          ✓ SANS LACTOSE
-                        </div>
-                        <div className="h-[120px] bg-gradient-to-br from-amber-50 to-orange-50 rounded"></div>
-                      </div>
-                      <div className="bg-[#FDF8F5] rounded-md overflow-hidden shadow-sm relative">
-                        <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[11px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-                          ✓ SANS SUCRE<br/>
-                          ✓ SANS GLUTEN<br/>
-                          ✓ SANS LACTOSE
-                        </div>
-                        <div className="h-[120px] bg-gradient-to-br from-amber-50 to-orange-50 rounded"></div>
-                      </div>
-                      <div className="bg-[#FDF8F5] rounded-md overflow-hidden shadow-sm relative">
-                        <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[11px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-                          ✓ SANS SUCRE<br/>
-                          ✓ SANS GLUTEN<br/>
-                          ✓ SANS LACTOSE
-                        </div>
-                        <div className="h-[120px] bg-gradient-to-br from-amber-50 to-orange-50 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
+                  <RecipeGrid />
                 </div>
               </div>
               
