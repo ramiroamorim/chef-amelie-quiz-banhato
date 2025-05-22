@@ -169,36 +169,7 @@ export const quizSteps: QuizStepType[] = [
     name: "testimonials",
     title: "<span class='text-primary font-semibold'>Centaines de femmes </span><span class='text-[#333333]'>ont déjà testé ces recettes et vu leur corps se transformer.</span>",
     description: "<span class='text-primary'>Faites glisser ➤ pour voir ce qu'elles disent.</span>",
-    textBlocks: [
-      {
-        content: `
-          <div class="testimonial mb-8 relative">
-            <div class="testimonial-content p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-              <p class="mb-2">
-                Amélie... j'ai perdu 4kg sans faire de régime 😊<br>
-                Juste en suivant vos recettes.<br>
-                Je me sens plus légère, plus belle, plus MOI ❤️<br>
-                Et je vous envoie la photo de mon moelleux au chocolat pour que vous voyiez 😋<br>
-                Franchement... merci.
-                <span class="text-xs text-gray-500">9:54PM</span>
-              </p>
-              
-              <img src="https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300" alt="Moelleux au chocolat" class="w-full h-auto rounded-lg">
-              <span class="text-xs text-gray-500">9:54PM</span>
-            </div>
-          </div>
-
-          <div class="pagination-controls flex justify-center items-center gap-2 mb-8">
-            <button class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center">
-              &#10094;
-            </button>
-            <button class="bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center">
-              &#10095;
-            </button>
-          </div>
-        `
-      }
-    ],
+    isTestimonialStep: true,
     buttonText: "🔍 DÉCOUVRIR MON PROFIL"
   }
 ];

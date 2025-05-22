@@ -24,6 +24,7 @@ export interface QuizStepType {
   options?: Option[];
   buttonText?: string;
   footerText?: string;
+  isTestimonialStep?: boolean;
 }
 
 export interface TestimonialType {

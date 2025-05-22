@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TestimonialData {
   message: string;
@@ -10,9 +10,10 @@ interface TestimonialData {
 
 interface TestimonialProps {
   testimonials: TestimonialData[];
+  onComplete: () => void;
 }
 
-export default function Testimonial({ testimonials }: TestimonialProps) {
+export default function Testimonial({ testimonials, onComplete }: TestimonialProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -20,7 +21,12 @@ export default function Testimonial({ testimonials }: TestimonialProps) {
   };
 
   const handleNext = () => {
-    setCurrentIndex(prev => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    if (currentIndex === testimonials.length - 1) {
+      // If we're on the last testimonial, call onComplete to proceed to the next step
+      onComplete();
+    } else {
+      setCurrentIndex(prev => prev + 1);
+    }
   };
 
   if (testimonials.length === 0) return null;
@@ -28,28 +34,35 @@ export default function Testimonial({ testimonials }: TestimonialProps) {
   const current = testimonials[currentIndex];
 
   return (
-    <>
-      <motion.div
-        key={currentIndex}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.3 }}
-        className="testimonial mb-8 relative"
-      >
-        <div className="testimonial-content p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-          <p className="mb-2" dangerouslySetInnerHTML={{ __html: current.message }} />
-          
-          {current.image && (
-            <img 
-              src={current.image} 
-              alt={current.imageAlt || "Témoignage"} 
-              className="w-full h-auto rounded-lg"
-            />
-          )}
-          <span className="text-xs text-gray-500">{current.time}</span>
-        </div>
-      </motion.div>
+    <div className="testimonial-wrapper">
+      <div className="mb-3 text-center text-primary font-medium">
+        Faites glisser ➤ pour voir ce qu'elles disent.
+      </div>
+      
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+          className="testimonial mb-6 relative"
+          style={{ background: '#FFFDF9', borderRadius: '12px' }}
+        >
+          <div className="testimonial-content p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p className="mb-2" dangerouslySetInnerHTML={{ __html: current.message }} />
+            
+            {current.image && (
+              <img 
+                src={current.image} 
+                alt={current.imageAlt || "Témoignage"} 
+                className="w-full h-auto rounded-lg"
+              />
+            )}
+            <span className="text-xs text-gray-500">{current.time}</span>
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       <div className="flex justify-center items-center gap-2 mb-8">
         <button 
@@ -61,12 +74,21 @@ export default function Testimonial({ testimonials }: TestimonialProps) {
         </button>
         <button 
           onClick={handleNext}
-          className="bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center"
-          aria-label="Témoignage suivant"
+          className={`${currentIndex === testimonials.length - 1 ? 'bg-primary' : 'bg-gray-300'} text-white w-8 h-8 rounded-full flex items-center justify-center`}
+          aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
         >
           &#10095;
         </button>
       </div>
-    </>
+
+      <div className="text-center mt-8">
+        <button 
+          className="btn-primary w-full md:w-auto py-4 px-10 font-medium text-base rounded-full"
+          onClick={onComplete}
+        >
+          🔍 DÉCOUVRIR MON PROFIL
+        </button>
+      </div>
+    </div>
   );
 }

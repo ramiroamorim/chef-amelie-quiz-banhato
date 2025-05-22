@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import RadioOption from "@/components/RadioOption";
+import Testimonial from "@/components/Testimonial";
 import { QuizStepType } from "@/types";
+import { testimonials } from "@/data/quizData";
 
 interface QuizStepProps {
   step: QuizStepType;
@@ -74,6 +76,32 @@ export default function QuizStep({
         {step.footerText && (
           <div className="footer-text" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
         )}
+      </motion.div>
+    );
+  }
+
+  // Special layout for testimonial step
+  if (step.isTestimonialStep) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="quiz-step"
+      >
+        {/* Title */}
+        {step.title && (
+          <h2 
+            className="text-xl md:text-2xl font-medium mb-4 text-center"
+            dangerouslySetInnerHTML={{ __html: step.title }}
+          />
+        )}
+
+        {/* Testimonial Component */}
+        <Testimonial 
+          testimonials={testimonials}
+          onComplete={onNextStep}
+        />
       </motion.div>
     );
   }
@@ -154,7 +182,7 @@ export default function QuizStep({
       )}
 
       {/* Button for steps without options (like step 4) */}
-      {step.buttonText && (
+      {step.buttonText && !step.options && (
         <button 
           className="btn-primary w-full mt-6 flex items-center justify-center" 
           onClick={onNextStep}

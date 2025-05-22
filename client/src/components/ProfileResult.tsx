@@ -10,12 +10,12 @@ export default function ProfileResult({ onViewSuggestions }: ProfileResultProps)
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="profile-result"
+      className="profile-result text-center"
     >
-      <h2 className="text-xl md:text-2xl font-semibold mb-2">Votre profil gourmand :</h2>
-      <h3 className="text-lg md:text-xl text-primary font-medium mb-6">La Curieuse Épicurienne</h3>
+      <h2 className="text-xl md:text-2xl font-bold mb-2">Votre profil gourmand :</h2>
+      <h3 className="text-lg md:text-xl text-primary font-semibold mb-6">La Curieuse Épicurienne</h3>
 
-      <div className="space-y-4 text-[#555555]">
+      <div className="space-y-5 text-[#555555] text-left">
         <p>Vous êtes du genre à explorer de nouvelles saveurs, à tester des recettes inattendues et à faire plaisir sans culpabilité.</p>
         
         <p>Votre palais recherche l'équilibre entre le plaisir et le bien-être — sans sacrifier la gourmandise.</p>
@@ -24,10 +24,10 @@ export default function ProfileResult({ onViewSuggestions }: ProfileResultProps)
       </div>
 
       <button 
-        className="btn-primary w-full mt-8 flex items-center justify-center" 
+        className="btn-primary w-full mt-8 py-4 font-medium text-lg"
         onClick={onViewSuggestions}
       >
-        <span>Voir les suggestions de la Chef 👩‍🍳</span>
+        Voir les suggestions de la Chef 🍽️
       </button>
     </motion.div>
   );
