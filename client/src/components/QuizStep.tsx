@@ -62,10 +62,10 @@ export default function QuizStep({
         {/* Down arrow indicator */}
         <div className="arrow-down">▼</div>
 
-        {/* Button */}
+        {/* Button with pulse animation */}
         {step.buttonText && (
           <button 
-            className="btn-primary w-full md:w-auto md:px-10 py-4 mt-4 mb-6 font-medium text-lg mx-auto"
+            className="btn-primary btn-pulse w-full md:w-auto md:px-10 py-4 mt-4 mb-6 font-medium text-lg mx-auto"
             onClick={onNextStep}
           >
             {step.buttonText}
