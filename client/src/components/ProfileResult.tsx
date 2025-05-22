@@ -1,4 +1,3 @@
-// Removido import que estava causando problemas no build
 import React from "react";
 
 // Componente de botão coral simplificado
@@ -15,7 +14,7 @@ function CoralPulseButton({ onClick, children }: { onClick: () => void; children
       {children}
     </button>
   );
-};
+}
 
 interface ProfileResultProps {
   onViewSuggestions: () => void;
@@ -23,12 +22,7 @@ interface ProfileResultProps {
 
 export default function ProfileResult({ onViewSuggestions }: ProfileResultProps) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="profile-result max-w-md mx-auto my-16 px-6"
-    >
+    <div className="profile-result max-w-md mx-auto my-16 px-6">
       <h2 className="text-2xl font-bold mb-2 text-primary">Votre profil gourmand :</h2>
       <h3 className="text-3xl font-normal text-[#333333] mb-10">La Curieuse Épicurienne</h3>
 
@@ -51,6 +45,6 @@ export default function ProfileResult({ onViewSuggestions }: ProfileResultProps)
           Voir les suggestions de la Chef 🍽️
         </CoralPulseButton>
       </div>
-    </motion.div>
+    </div>
   );
 }
