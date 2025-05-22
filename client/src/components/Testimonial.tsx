@@ -80,7 +80,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
         Faites glisser ➤ pour voir ce qu'elles disent.
       </div>
       
-      <div className="h-[450px] md:h-[500px] overflow-hidden">
+      <div className="min-h-[400px] h-auto overflow-hidden mb-4 flex-grow">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -88,7 +88,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
-            className="testimonial mb-6 relative h-full"
+            className="testimonial relative h-full w-full"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -100,17 +100,24 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               />
               
               {current.image && (
-                <div className="mt-auto flex-grow flex items-center justify-center mb-2">
-                  <img 
-                    src={current.image} 
-                    alt={current.imageAlt || "Témoignage"} 
-                    className="w-full h-auto rounded-lg max-h-[350px] object-contain"
-                  />
+                <div className="flex-grow flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center py-2">
+                    <img 
+                      src={current.image} 
+                      alt={current.imageAlt || "Témoignage"} 
+                      className="rounded-lg max-w-full max-h-[350px] shadow-sm"
+                      style={{ 
+                        objectFit: 'contain',
+                        objectPosition: 'center',
+                        display: 'block'
+                      }}
+                    />
+                  </div>
                 </div>
               )}
               
               {current.time && (
-                <div className="text-right">
+                <div className="text-right mt-2">
                   <span className="text-xs text-gray-500">{current.time}</span>
                 </div>
               )}
