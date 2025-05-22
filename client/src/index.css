@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Animação removida temporariamente para corrigir problemas de build */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
 
 :root {
   --background: 0 0% 100%;

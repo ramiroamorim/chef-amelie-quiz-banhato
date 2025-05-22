@@ -1,4 +1,4 @@
-import React from "react";
+import { motion } from "framer-motion";
 import RadioOption from "@/components/RadioOption";
 import Testimonial from "@/components/Testimonial";
 import { QuizStepType } from "@/types";
@@ -24,7 +24,12 @@ export default function QuizStep({
   // Special layout for landing page (step 0)
   if (step.name === 'landing') {
     return (
-      <div className="quiz-step landing-page text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="quiz-step landing-page text-center"
+      >
         {/* Title */}
         {step.title && (
           <h1>{step.title}</h1>
@@ -73,14 +78,19 @@ export default function QuizStep({
         {step.footerText && (
           <div className="footer-text" dangerouslySetInnerHTML={{ __html: step.footerText }}></div>
         )}
-      </div>
+      </motion.div>
     );
   }
 
   // Special layout for testimonial step
   if (step.isTestimonialStep) {
     return (
-      <div className="quiz-step">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="quiz-step"
+      >
         {/* Title */}
         {step.title && (
           <h2 
@@ -94,13 +104,18 @@ export default function QuizStep({
           testimonials={testimonials}
           onComplete={onNextStep}
         />
-      </div>
+      </motion.div>
     );
   }
 
   // Standard layout for quiz steps
   return (
-    <div className="quiz-step">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="quiz-step"
+    >
       {/* Title */}
       {step.title && (
         <h2 
@@ -170,17 +185,21 @@ export default function QuizStep({
 
       {/* Button for steps without options (like step 4) */}
       {step.buttonText && !step.options && (
-        <button 
-          className="relative w-full mt-6 py-4 px-8 rounded-full text-white flex items-center justify-center"
-          onClick={onNextStep}
-          style={{ 
-            background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
-            boxShadow: "0 4px 15px rgba(224, 114, 96, 0.3)"
-          }}
-        >
-          <span>{step.buttonText}</span>
-        </button>
+        <div className="relative w-full mt-6">
+          <div className="absolute inset-0 rounded-full opacity-30" 
+            style={{
+              background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
+              animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
+            }}
+          ></div>
+          <button 
+            className="btn-primary relative w-full py-4 px-8 flex items-center justify-center z-10" 
+            onClick={onNextStep}
+          >
+            <span>{step.buttonText}</span>
+          </button>
+        </div>
       )}
-    </div>
+    </motion.div>
   );
 }
