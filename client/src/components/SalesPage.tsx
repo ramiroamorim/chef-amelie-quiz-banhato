@@ -27,14 +27,45 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
   );
 };
 
+// Componente para exibir a seção de preço e botão de compra
+const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
+  <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
+    <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
+    <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
+    <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
+    
+    <GreenPulseButton href={buyUrl}>
+      JE VEUX LE PACK POUR 17€
+    </GreenPulseButton>
+    
+    <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
+  </div>
+);
+
 export default function SalesPage() {
   // URL do botão de compra
   const buyUrl = "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR";
 
-  // Container para a grade de receitas
+  // Componentes reutilizáveis para diversos elementos da página
   const RecipeContainer = () => (
     <div className="max-w-[500px] w-full mx-auto">
       <RecipeGrid />
+    </div>
+  );
+  
+  // Container com borda colorida
+  const ColorBorderCard = ({ 
+    bgColor = "#F5F9FF", 
+    borderColor = "#2196F3", 
+    children 
+  }: { 
+    bgColor?: string, 
+    borderColor?: string, 
+    children: React.ReactNode 
+  }) => (
+    <div className={`mb-8 p-6 rounded-md border-l-4`} 
+         style={{ backgroundColor: bgColor, borderColor: borderColor }}>
+      {children}
     </div>
   );
 
@@ -59,7 +90,7 @@ export default function SalesPage() {
           <RecipeContainer />
         </div>
 
-        <div className="mb-8 bg-[#F1F9F1] p-6 rounded-md border-l-4 border-[#4CAF50]">
+        <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
           <h3 className="text-xl font-bold text-[#4CAF50] mb-4">💚 Pour qui c'est:</h3>
           <ul className="list-none pl-1 space-y-3">
             <li>🌿 Femmes avec intolérances (gluten, lactose, sucre)</li>
@@ -67,9 +98,9 @@ export default function SalesPage() {
             <li>😩 Celles fatiguées des plats tristes et sans goût</li>
             <li>✨ Celles qui veulent une méthode simple et durable</li>
           </ul>
-        </div>
+        </ColorBorderCard>
 
-        <div className="mb-8 bg-[#FFF5F5] p-6 rounded-md border-l-4 border-[#F44336]">
+        <ColorBorderCard bgColor="#FFF5F5" borderColor="#F44336">
           <h3 className="text-xl font-bold text-[#F44336] mb-4">🚫 Pour qui ce n'est pas:</h3>
           <ul className="list-none pl-1 space-y-3">
             <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
@@ -77,21 +108,21 @@ export default function SalesPage() {
             <li>🌀 Celles qui préfèrent rester dans le désordre</li>
             <li>🍕 Celles qui refusent de cuisiner même un minimum</li>
           </ul>
-        </div>
+        </ColorBorderCard>
 
-        <div className="mb-8 bg-[#FFF5F5] p-6 rounded-md border-l-4 border-[#A85544]">
+        <ColorBorderCard bgColor="#FFF5F5" borderColor="#A85544">
           <p className="italic font-bold text-[#A85544] mb-3">Vous ne trouverez pas ces recettes sur Google.</p>
           <p className="mb-4 text-center">
             Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé.
             Chaque plat a été pensé pour <strong>apaiser, nourrir</strong>… et redonner du <strong>plaisir</strong> à celles qui avaient renoncé.
           </p>
-        </div>
+        </ColorBorderCard>
 
         <div className="mb-8 flex justify-center">
           <RecipeContainer />
         </div>
 
-        <div className="mb-8 bg-[#F5F9FF] p-6 rounded-md border-l-4 border-[#2196F3]">
+        <ColorBorderCard bgColor="#F5F9FF" borderColor="#2196F3">
           <h2 className="text-2xl font-bold text-[#2196F3] mb-4">📦 Ce que vous allez recevoir :</h2>
           <p className="mb-4">Un accès à <span className="text-[#A85544] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
           
@@ -101,9 +132,9 @@ export default function SalesPage() {
             <li>🍫 <span className="text-[#A85544] font-bold">100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
             <li>🧭 <span className="text-[#A85544] font-bold">Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
           </ul>
-        </div>
+        </ColorBorderCard>
 
-        <div className="mb-8 bg-[#FFF8F0] p-6 rounded-md border-l-4 border-[#FF9800]">
+        <ColorBorderCard bgColor="#FFF8F0" borderColor="#FF9800">
           <h2 className="text-2xl font-bold text-[#FF9800] mb-4">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
           <div className="space-y-5">
@@ -127,7 +158,7 @@ export default function SalesPage() {
               <p className="ml-8">Gagnez du temps avec des produits simples, testés, validés.</p>
             </div>
           </div>
-        </div>
+        </ColorBorderCard>
 
         <div className="text-center mb-8">
           <p className="mb-2">Ce n'est pas un régime.</p>
@@ -141,33 +172,13 @@ export default function SalesPage() {
           <RecipeContainer />
         </div>
 
-        <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
-          <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
-          <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
-          <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
-          
-          <GreenPulseButton href={buyUrl}>
-            JE VEUX LE PACK POUR 17€
-          </GreenPulseButton>
-          
-          <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
-        </div>
+        <PriceSection buyUrl={buyUrl} />
 
         <div className="mb-8 flex justify-center">
           <RecipeContainer />
         </div>
 
-        <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
-          <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
-          <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
-          <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
-          
-          <GreenPulseButton href={buyUrl}>
-            JE VEUX LE PACK POUR 17€
-          </GreenPulseButton>
-          
-          <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
-        </div>
+        <PriceSection buyUrl={buyUrl} />
 
         <div className="text-center mb-4">
           <p className="mb-4">Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
