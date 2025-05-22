@@ -1,5 +1,19 @@
 import { QuizStepType, TestimonialType } from "@/types";
 
+// Testimonial image imports
+import testimonial1 from "@assets/22 Mai 2025 Screenshot WhatsApp.png";
+import testimonial2 from "@assets/22 Mai 2025 Screenshot WhatsApp (1).png";
+import testimonial3 from "@assets/22 Mai 2025 Screenshot WhatsApp (2).png";
+import testimonial4 from "@assets/22 Mai 2025 Screenshot WhatsApp (3).png";
+import testimonial5 from "@assets/22 Mai 2025 Screenshot WhatsApp (4).png";
+import testimonial6 from "@assets/22 Mai 2025 Screenshot WhatsApp (5).png";
+import testimonial7 from "@assets/22 Mai 2025 Screenshot WhatsApp (6).png";
+import testimonial8 from "@assets/22 Mai 2025 Screenshot WhatsApp (7).png";
+import testimonial9 from "@assets/22 Mai 2025 Screenshot WhatsApp (8).png";
+import testimonial10 from "@assets/Screenshot May 22 2025 from WhatsApp.png";
+import testimonial11 from "@assets/Screenshot May 22 2025 from WhatsApp (1).png";
+import testimonial12 from "@assets/22 Mai 2025 Screenshot do WhatsApp.png";
+
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page
   {
@@ -176,15 +190,75 @@ export const quizSteps: QuizStepType[] = [
 
 export const testimonials: TestimonialType[] = [
   {
-    message: "Amélie... j'ai perdu 4kg sans faire de régime 😊<br>Juste en suivant vos recettes.<br>Je me sens plus légère, plus belle, plus MOI ❤️<br>Et je vous envoie la photo de mon moelleux au chocolat pour que vous voyiez 😋<br>Franchement... merci.",
-    time: "9:54PM",
-    image: "https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300",
-    imageAlt: "Moelleux au chocolat"
+    message: "Avant je me réveillais gonflée, fatiguée, perdue.<br>En 21 jours avec le Plan Express j'ai perdu 3,1kg, mes vêtements tombent mieux...<br>Mais surtout : je me sens en paix à table. C'est nouveau.",
+    time: "",
+    image: testimonial10,
+    imageAlt: "Témoignage avec photos avant/après"
   },
   {
-    message: "Ces recettes ont changé ma vie ! Plus de ballonnements, plus d'énergie, et je me sens enfin libre de manger ce que je veux sans souffrir après. Le brownie sans sucre est devenu mon dessert favori ! 🙏",
-    time: "11:22AM",
-    image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300",
-    imageAlt: "Brownie sans sucre"
+    message: "Je n'ai jamais eu autant de plaisir à cuisiner sans sucre 😍",
+    time: "",
+    image: testimonial9,
+    imageAlt: "Témoignage cuisine sans sucre"
+  },
+  {
+    message: "Je suis choquée...<br>Pas une seule fringale cette semaine.<br>J'ai mangé normalement, j'ai cuisiné rapide, et pourtant je me sens PLUS LÉGÈRE que jamais.<br>C'est la première fois que je ne culpabilise pas à table.",
+    time: "",
+    image: testimonial8,
+    imageAlt: "Témoignage Le Plan Express"
+  },
+  {
+    message: "Je peux enfin manger du sucré sans craindre pour ma glycémie. Je suis diabétique et c'est toujours compliqué de trouver des desserts qui soient bons et sans sucre. J'ai fait votre brownie et il était parfait. Juste sucré comme il faut, la texture nickel... Franchement, je ne pensais pas que c'était possible. Merci pour ces recettes!!! 🙏🙏🙏",
+    time: "",
+    image: testimonial3,
+    imageAlt: "Témoignage brownie sans sucre pour diabétique"
+  },
+  {
+    message: "Amelie, bonjour..... J'ai perdu 4 kilos sans même m'en rendre compte. J'ai pris votre livre pour manger plus sainement, et au final, ça m'a aussi aidée à perdre du poids. Les recettes sont rassasiantes et équilibrées, du coup j'ai arrêté de grignoter n'importe quoi. Maintenant, je mange bien, sans frustration, et je me sens mieux 🙏❤️❤️",
+    time: "",
+    image: testimonial4,
+    imageAlt: "Témoignage perte de poids"
+  },
+  {
+    message: "Mon fils m'a demandé de refaire les cookies du Plan Express. Avant il détestait mes recettes \"sans sucre\". Maintenant il dit que je cuisine comme une chef... ❤️ merci",
+    time: "14:55",
+    image: testimonial6,
+    imageAlt: "Témoignage cookies sans sucre"
+  },
+  {
+    message: "Vos recettes sont merveilleuses<br>Je digère mieux, je me sens plus légère... et je mange enfin avec plaisir.",
+    time: "",
+    image: testimonial11,
+    imageAlt: "Témoignage digestion améliorée"
+  },
+  {
+    message: "adorées !<br>Grâce à tes recettes, j'ai enfin trouvé l'équilibre. Je mange avec plaisir, je digère bien... et j'ai perdu 4 kg sans y penser.",
+    time: "",
+    image: testimonial7,
+    imageAlt: "Témoignage équilibre alimentaire"
+  },
+  {
+    message: "Chef, je ne sais pas comment vous remercier. J'ai toujours eu des problèmes digestifs et je pensais que c'était normal d'être ballonnée tout le temps. Depuis que j'ai testé quelques recettes de votre livre, mon transit va beaucoup mieux. Je me sens plus légère, et en plus, tout est vraiment bon. Je n'aurais jamais cru qu'une alimentation sans gluten et sans lactose pouvait être aussi gourmande. Merci.",
+    time: "",
+    image: testimonial5,
+    imageAlt: "Témoignage problèmes digestifs résolus"
+  },
+  {
+    message: "Salut chef! C'est Béatrice qui parle.... Mon fils est coeliaque et enfin, on mange tous la même chose. Avant, je faisais des plats à part pour lui, mais souvent, il n'aimait pas trop. Avec vos recettes, tout le monde mange pareil et adore. Le pain à la patate douce est devenu son préféré. Merci pour ces idées, ça change tout au quotidien.",
+    time: "2:42 PM",
+    image: testimonial2,
+    imageAlt: "Témoignage coeliaque"
+  },
+  {
+    message: "Amelie, bonsoir!! Franchement, je suis trop contente. Depuis que j'ai découvert mon intolérance au lactose, j'avais arrêté de faire des desserts parce que rien ne me plaisait vraiment. Mais hier, j'ai fait votre gâteau aux carottes et il était parfait. Moelleux, savoureux, et le glaçage sans sucre est trop bon. Ça fait plaisir de pouvoir se faire plaisir sans culpabiliser 🙏❤️",
+    time: "7:46 PM",
+    image: testimonial1,
+    imageAlt: "Témoignage intolérance au lactose"
+  },
+  {
+    message: "Je pensais devoir dire adieu au pain, mais grâce à vos recettes, j'en remange enfin!! J'ai toujours adoré le pain au petit-déj, mais depuis que j'ai arrêté le gluten, toutes les alternatives étaient sèches et fades. J'ai essayé votre pain à l'avoine et j'ai été bluffée par la texture et le goût. Il est moelleux et savoureux, même ma famille l'adore. Merci pour ce livre!!!! 😋❤️",
+    time: "5:33 AM",
+    image: testimonial12,
+    imageAlt: "Témoignage pain sans gluten"
   }
 ];
