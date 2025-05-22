@@ -186,7 +186,7 @@ export default function QuizStep({
       {/* Button for steps without options (like step 4) */}
       {step.buttonText && !step.options && (
         <button 
-          className="btn-primary w-full mt-6 flex items-center justify-center" 
+          className="btn-primary btn-pulse w-full mt-6 flex items-center justify-center" 
           onClick={onNextStep}
         >
           <span>{step.buttonText}</span>
