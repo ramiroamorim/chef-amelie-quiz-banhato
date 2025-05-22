@@ -17,12 +17,11 @@ const testimonialImages = [
   testimonialImage4
 ];
 
-interface TestimonialData {
-  message: string;
-  time: string;
-  image?: string;
-  imageAlt?: string;
-}
+// Usamos o tipo importado da pasta centralizada
+import { TestimonialType } from "@/types/quiz";
+
+// Renomeamos para manter compatibilidade com o código existente
+type TestimonialData = TestimonialType;
 
 interface TestimonialProps {
   testimonials: TestimonialData[];
