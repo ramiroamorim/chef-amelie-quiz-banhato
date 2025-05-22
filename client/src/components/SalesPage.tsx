@@ -30,43 +30,14 @@ export default function SalesPage() {
   // URL do botão de compra
   const buyUrl = "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR";
 
-  // Grid de receitas em todos os locais da página
+  // Componente de imagem de receitas
   const RecipeGrid = () => (
-    <div className="max-w-[500px] w-full p-2 bg-[#fff8f5] rounded-md border border-[#E5DDD8]">
-      <div className="grid grid-cols-2 gap-2">
-        <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
-          <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-            ✓ SANS SUCRE<br/>
-            ✓ SANS GLUTEN<br/>
-            ✓ SANS LACTOSE
-          </div>
-          <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
-        </div>
-        <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
-          <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-            ✓ SANS SUCRE<br/>
-            ✓ SANS GLUTEN<br/>
-            ✓ SANS LACTOSE
-          </div>
-          <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
-        </div>
-        <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
-          <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-            ✓ SANS SUCRE<br/>
-            ✓ SANS GLUTEN<br/>
-            ✓ SANS LACTOSE
-          </div>
-          <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
-        </div>
-        <div className="bg-[#FDF8F5] p-1 rounded-md overflow-hidden shadow-sm relative">
-          <div className="absolute top-0 left-0 z-10 m-1 px-1.5 py-1 text-[10px] font-medium bg-white bg-opacity-90 rounded text-green-700 shadow-sm">
-            ✓ SANS SUCRE<br/>
-            ✓ SANS GLUTEN<br/>
-            ✓ SANS LACTOSE
-          </div>
-          <div className="h-[120px] bg-gradient-to-br from-amber-100 to-orange-100 rounded"></div>
-        </div>
-      </div>
+    <div className="max-w-[500px] w-full">
+      <img 
+        src="/recipe-image.png" 
+        alt="500 recettes sans sucre, sans gluten et sans lactose" 
+        className="rounded-md w-full shadow-sm border border-gray-100"
+      />
     </div>
   );
 
