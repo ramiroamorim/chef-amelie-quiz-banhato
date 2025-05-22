@@ -2,6 +2,21 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
 
+// Importação das imagens dos testemunhos
+import testimonialImage1 from '@/assets/images/testimonial1.png';
+import testimonialImage2 from '@/assets/images/testimonial2.png';
+import testimonialImage3 from '@/assets/images/testimonial3.png';
+import testimonialImage4 from '@/assets/images/testimonial4.png';
+import recipeMainImage from '@/assets/images/recipes-main.png';
+
+// Array com as imagens importadas
+const testimonialImages = [
+  testimonialImage1,
+  testimonialImage2,
+  testimonialImage3,
+  testimonialImage4
+];
+
 interface TestimonialData {
   message: string;
   time: string;
@@ -108,13 +123,13 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               <div className="mt-4 mb-4">
                 <div className="max-w-[500px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
                   <img 
-                    src={`/assets/images/testimonial${(currentIndex % 4) + 1}.png`}
+                    src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
                     className="w-full h-auto rounded-lg shadow-sm"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
-                      target.src = "/assets/images/recipes-main.png";
+                      target.src = recipeMainImage;
                     }}
                   />
                 </div>
