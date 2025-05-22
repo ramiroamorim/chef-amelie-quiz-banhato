@@ -5,28 +5,21 @@ import whatsappImage1 from "@assets/Imagem do WhatsApp.png";
 import whatsappImage2 from "@assets/Imagem do WhatsApp (1).png";
 import whatsappImage3 from "@assets/Imagem do WhatsApp (2).png";
 
-// Componente de botão pulsante verde
+// Componente de botão verde simplificado
 function GreenPulseButton({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <div className="relative inline-block w-full md:w-auto mb-4">
-      <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-30" 
-        style={{
-          animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
-        }}
-      ></div>
-      <a 
-        href={href}
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full text-white"
-        style={{ 
-          background: "#4CAF50",
-          boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
-        }}
-      >
-        {children}
-      </a>
-    </div>
+    <a 
+      href={href}
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="relative inline-block w-full md:w-auto py-4 px-10 mb-4 text-lg font-bold rounded-full text-white"
+      style={{ 
+        background: "#4CAF50",
+        boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
+      }}
+    >
+      {children}
+    </a>
   );
 };
 
