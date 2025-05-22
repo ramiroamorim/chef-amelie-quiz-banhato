@@ -46,6 +46,8 @@
       box-shadow: 0 4px 15px rgba(224, 114, 96, 0.3);
       position: relative;
       animation: pulse 2s infinite;
+      cursor: pointer;
+      border: none;
     }
     
     @keyframes pulse {
@@ -90,10 +92,154 @@
       font-size: 14px;
       color: #888;
     }
+    
+    /* Quiz Section */
+    .quiz-container {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      background-color: #fff;
+    }
+    
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      margin: 0 5px;
+    }
+    
+    .dot.active {
+      background: #E07260;
+    }
+    
+    .quiz-title {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .options {
+      margin-top: 20px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .option:hover {
+      border-color: #E78D7B;
+    }
+    
+    .option.selected {
+      border-color: #E07260;
+      background-color: rgba(224, 114, 96, 0.05);
+    }
+    
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .option.selected .radio-circle {
+      border-color: #E07260;
+    }
+    
+    .option.selected .radio-circle::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #E07260;
+    }
+    
+    /* Result Section */
+    .result-container {
+      display: none;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      background-color: #fff;
+    }
+    
+    .result-title {
+      color: #A85544;
+      margin-bottom: 20px;
+    }
+    
+    /* Sales Section */
+    .sales-container {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    
+    .recipe-book {
+      border: 2px solid #f0e0dd;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 30px 0;
+      background: #fdf9f8;
+    }
+    
+    .recipe-book-title {
+      color: #A85544;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    
+    .price-section {
+      text-align: center;
+      margin: 40px 0;
+    }
+    
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 20px;
+    }
+    
+    .current-price {
+      font-size: 30px;
+      color: #4CA25F;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .btn-green {
+      background: linear-gradient(90deg, #68C87C 0%, #4CA25F 100%);
+      box-shadow: 0 4px 15px rgba(76, 162, 95, 0.3);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- Landing Section -->
+  <div class="container" id="landing-section">
     <h1>Quiz Gourmand Chef Amélie Dupont</h1>
     
     <p>Découvrez votre profil gourmand et accédez à la collection privée de 500 recettes sans sucre, sans gluten et sans lactose de la Chef Amélie Dupont.</p>
@@ -115,12 +261,138 @@
       </div>
     </div>
     
-    <a href="https://chefameliedupont.xquiz.io/" class="btn-primary">Commencer le Quiz</a>
+    <button class="btn-primary" onclick="startQuiz()">Commencer le Quiz</button>
     
     <div class="footer">
       <p>© 2025 Chef Amélie Dupont - Tous droits réservés</p>
-      <p>Cette page est une démonstration.</p>
     </div>
   </div>
+  
+  <!-- Quiz Section -->
+  <div class="quiz-container" id="quiz-section">
+    <div class="progress-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    
+    <h2 class="quiz-title">Quelle est votre plus grande difficulté en cuisine?</h2>
+    
+    <div class="options">
+      <div class="option" onclick="selectOption(this)">
+        <div class="radio-circle"></div>
+        <div>Manque de temps pour cuisiner</div>
+      </div>
+      <div class="option" onclick="selectOption(this)">
+        <div class="radio-circle"></div>
+        <div>Difficultés à trouver des ingrédients sains</div>
+      </div>
+      <div class="option" onclick="selectOption(this)">
+        <div class="radio-circle"></div>
+        <div>Manque d'inspiration pour des recettes</div>
+      </div>
+      <div class="option" onclick="selectOption(this)">
+        <div class="radio-circle"></div>
+        <div>Problème pour équilibrer les repas</div>
+      </div>
+    </div>
+    
+    <button class="btn-primary" style="width: 100%; margin-top: 30px;" onclick="showResults()">Continuer</button>
+  </div>
+  
+  <!-- Result Section -->
+  <div class="result-container" id="result-section">
+    <h2 class="result-title">Votre profil gourmand: Gourmet Équilibré</h2>
+    
+    <p>Félicitations! D'après vos réponses, vous êtes un Gourmet Équilibré. 
+      Vous appréciez les bonnes choses de la vie tout en étant conscient de l'importance d'une alimentation saine.</p>
+    
+    <p>Les recettes suivantes sont parfaites pour votre profil:</p>
+    
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">✓</div>
+        <div>Plats savoureux qui maintiennent votre équilibre</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✓</div>
+        <div>Desserts sains qui satisfont votre gourmandise</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✓</div>
+        <div>Recettes rapides adaptées à votre emploi du temps</div>
+      </div>
+    </div>
+    
+    <button class="btn-primary" onclick="showSales()">Découvrir mes recettes personnalisées</button>
+  </div>
+  
+  <!-- Sales Section -->
+  <div class="sales-container" id="sales-section">
+    <h1>500 Recettes Gourmandes Sans Sucre, Sans Gluten et Sans Lactose</h1>
+    <p>Spécialement conçues pour les Gourmets Équilibrés comme vous!</p>
+    
+    <div class="recipe-book">
+      <h2 class="recipe-book-title">La Collection Privée de Chef Amélie Dupont</h2>
+      
+      <p>Ce recueil exclusif contient 500 recettes délicieuses qui:</p>
+      
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <div>Nourrissent votre corps avec des ingrédients naturels</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <div>Font mincir avec plaisir et sans privation</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <div>Rééquilibrent votre flore intestinale</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="price-section">
+      <p class="original-price">Prix normal: 97€</p>
+      <p class="current-price">Aujourd'hui: 37€ seulement</p>
+      <p>Offre à durée limitée - Expire bientôt!</p>
+      
+      <button class="btn-primary btn-green">J'obtiens mes 500 recettes maintenant!</button>
+    </div>
+    
+    <div class="footer">
+      <p>© 2025 Chef Amélie Dupont - Tous droits réservés</p>
+    </div>
+  </div>
+  
+  <script>
+    function startQuiz() {
+      document.getElementById('landing-section').style.display = 'none';
+      document.getElementById('quiz-section').style.display = 'block';
+    }
+    
+    function selectOption(element) {
+      // Remove selected class from all options
+      const options = document.querySelectorAll('.option');
+      options.forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked option
+      element.classList.add('selected');
+    }
+    
+    function showResults() {
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('result-section').style.display = 'block';
+    }
+    
+    function showSales() {
+      document.getElementById('result-section').style.display = 'none';
+      document.getElementById('sales-section').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
