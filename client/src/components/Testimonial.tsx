@@ -80,7 +80,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
         Faites glisser ➤ pour voir ce qu'elles disent.
       </div>
       
-      <div className="h-[500px] overflow-hidden mb-6 relative">
+      <div className="h-auto min-h-[480px] overflow-hidden mb-6 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -93,30 +93,30 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <div className="testimonial-content p-5 bg-white rounded-2xl shadow-lg h-full flex flex-col"
-                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)' }}>
+            <div className="testimonial-content p-5 bg-white rounded-2xl shadow-lg flex flex-col"
+                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '450px' }}>
               <p 
                 className="mb-4 text-[#333333] text-sm md:text-base leading-relaxed" 
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
               {current.image && (
-                <div className="flex-grow flex items-center justify-center">
-                  <div className="image-container w-full h-[280px] flex items-center justify-center">
-                    <div className="relative w-full h-full" style={{ aspectRatio: '1.5/1' }}>
-                      <img 
-                        src={current.image} 
-                        alt={current.imageAlt || "Témoignage"} 
-                        className="rounded-xl shadow-sm"
-                        style={{ 
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          objectPosition: 'center top',
-                          display: 'block'
-                        }}
-                      />
-                    </div>
+                <div className="mt-auto">
+                  <div className="image-container w-full flex items-center justify-center">
+                    <img 
+                      src={current.image} 
+                      alt={current.imageAlt || "Témoignage"} 
+                      className="rounded-xl shadow-sm mx-auto"
+                      style={{ 
+                        width: 'auto',
+                        height: 'auto',
+                        maxWidth: '100%',
+                        maxHeight: '280px',
+                        objectFit: 'contain',
+                        objectPosition: 'center center',
+                        display: 'block'
+                      }}
+                    />
                   </div>
                 </div>
               )}

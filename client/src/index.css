@@ -181,12 +181,19 @@
   .testimonial-content {
     transition: all 0.3s ease;
     box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
   }
   
   .image-container {
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease;
+    margin: 0 auto;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .image-container:hover {
