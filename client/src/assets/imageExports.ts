@@ -22,6 +22,8 @@ import testimonial1 from './images/testimonials/testimonial1.png';
 import testimonial2 from './images/testimonials/testimonial2.png';
 import testimonial3 from './images/testimonials/testimonial3.png';
 import testimonial4 from './images/testimonials/testimonial4.png';
+import testimonialBread from './images/testimonials/testimonial-bread.jpg';
+import testimonialBrownie from './images/testimonials/testimonial-brownie.jpg';
 
 // Thank You Page Images
 import thankYouPage from './images/thank-you/thank-you-page.png';
@@ -46,7 +48,9 @@ export const TestimonialImages = {
   testimonial1,
   testimonial2,
   testimonial3,
-  testimonial4
+  testimonial4,
+  bread: testimonialBread,
+  brownie: testimonialBrownie
 };
 
 export const ThankYouImages = {
@@ -73,6 +77,8 @@ export {
   testimonial2,
   testimonial3,
   testimonial4,
+  testimonialBread,
+  testimonialBrownie,
   
   // Thank You Page Images
   thankYouPage,

@@ -167,7 +167,7 @@ export default function SalesPage() {
         <div className="mb-6 space-y-4">
           <div className="border border-gray-200 rounded-md overflow-hidden">
             <img 
-              src="/images/whatsapp-bread.jpg" 
+              src={TestimonialImages.bread} 
               alt="Témoignage client - pain sans gluten"
               className="w-full h-auto"
             />
@@ -175,7 +175,7 @@ export default function SalesPage() {
           
           <div className="border border-gray-200 rounded-md overflow-hidden">
             <img 
-              src="/images/whatsapp-brownie.jpg" 
+              src={TestimonialImages.brownie} 
               alt="Témoignage client - brownie sans sucre"
               className="w-full h-auto"
             />
