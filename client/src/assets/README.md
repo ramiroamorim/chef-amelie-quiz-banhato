@@ -1,33 +1,39 @@
-# Organisation des Assets
+# Estrutura de Assets
 
-Cette structure contient tous les assets utilisés dans l'application Chef Amélie Dupont, organisés par catégorie.
+Esta pasta contém todos os assets utilizados no projeto Chef Amélie Dupont, organizados por categoria.
 
-## Structure des Dossiers
+## Organização
 
-- `/images` - Images organisées par catégorie
-  - `/chef` - Photos et images de Chef Amélie
-  - `/recipes` - Images des recettes et plats
-  - `/testimonials` - Photos pour les témoignages
-  - `/book` - Images du livre de recettes
+- `/images`: Imagens gerais da aplicação
+- `/quiz`: Imagens específicas usadas no quiz
+- `/screenshots`: Capturas de tela para referência
+- `/references`: Imagens de referência do design original
+- `icons.tsx`: Componente contendo ícones SVG utilizados no projeto
+- `*.png`: Imagens específicas usadas em múltiplas partes da aplicação
 
-## Bonnes Pratiques
+## Diretrizes
 
-1. **Organisation** - Toujours placer les nouvelles images dans le dossier approprié
-2. **Nommage** - Utiliser des noms descriptifs en minuscules avec des tirets
-3. **Optimisation** - Optimiser les images pour le web avant de les ajouter
-4. **Import** - Utiliser l'alias `@/assets` pour les imports
+1. **Adicionar Novos Assets**:
+   - Coloque novos assets na pasta correspondente à sua função
+   - Utilize nomes claros e descritivos, seguindo o padrão kebab-case (ex: `recipe-grid.png`)
+   - Para imagens grandes, considere otimizá-las antes de adicionar
 
-## Exemple d'Utilisation
+2. **Remover ou Substituir Assets**:
+   - Ao substituir uma imagem, mantenha o mesmo nome para evitar quebrar referências
+   - Ao remover uma imagem, verifique todas as importações no código
 
-```tsx
-// Import d'une image
-import chefImage from '@/assets/images/chef/chef-amelie.png';
+3. **Organização**:
+   - Mantenha a estrutura de pastas organizada
+   - Se uma nova categoria for necessária, crie uma pasta dedicada
 
-function ChefProfile() {
-  return (
-    <div>
-      <img src={chefImage} alt="Chef Amélie Dupont" />
-    </div>
-  );
-}
+## Importando Assets
+
+Para importar assets no código, utilize o caminho relativo com o alias `@assets`:
+
+```jsx
+// ✅ Importando uma imagem
+import recipeGrid from "@assets/recipe-grid.png";
+
+// ✅ Importando um ícone
+import { ChefIcon } from "@assets/icons";
 ```
