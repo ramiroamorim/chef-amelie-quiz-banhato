@@ -66,46 +66,110 @@ export default function ThankYou() {
           </p>
         </div>
         
-        {/* Player de áudio */}
-        <Card className="w-full mb-10 overflow-hidden">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-[#B34431]">Chef Amélie Dupont</p>
+        {/* Player de áudio - design moderno similar à referência */}
+        <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
               {ChefImages && ChefImages.profile ? (
                 <img 
                   src={ChefImages.profile} 
                   alt="Chef Amélie Dupont" 
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md"
                 />
               ) : (
                 <div 
-                  className="h-10 w-10 rounded-full bg-[#B34431] text-white flex items-center justify-center text-sm font-bold"
-                  title="Chef Amélie Dupont"
+                  className="h-12 w-12 rounded-full bg-white border border-[#e9ecef] overflow-hidden shadow-md"
                 >
-                  AD
+                  <img 
+                    src="/images/chef-amelie.jpg" 
+                    alt="Chef Amélie Dupont"
+                    className="w-full h-full object-cover" 
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      // Fallback para as iniciais quando a imagem não carregar
+                      const fallbackDiv = document.createElement('div');
+                      fallbackDiv.className = "h-full w-full flex items-center justify-center bg-[#B34431] text-white text-sm font-bold";
+                      fallbackDiv.textContent = "AD";
+                      target.parentElement?.appendChild(fallbackDiv);
+                      target.style.display = 'none';
+                    }}
+                  />
                 </div>
               )}
             </div>
             
-            <div className="flex items-center mt-4">
-              {/* Botão de play/pause */}
+            <div className="flex items-center">
+              {/* Botão de play/pause estilizado */}
               <button 
                 onClick={toggleAudio}
-                className="h-10 w-10 rounded-full bg-[#2E7BC2] flex items-center justify-center text-white mr-3"
+                className="h-12 w-12 rounded-full bg-[#2476c7] hover:bg-[#1c64a9] transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-[#2476c7] focus:ring-opacity-50"
+                aria-label={audioPlaying ? "Pause" : "Play"}
               >
-                {audioPlaying ? "⏸" : "▶"}
+                <svg 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`${audioPlaying ? "hidden" : "block"}`}
+                >
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
+                </svg>
+                <svg 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`${audioPlaying ? "block" : "hidden"}`}
+                >
+                  <path d="M6 4H10V20H6V4ZM14 4H18V20H14V4Z" fill="currentColor" />
+                </svg>
               </button>
               
-              {/* Barra de progresso */}
-              <div className="flex-1 h-8 bg-gray-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-gray-200 to-gray-300 flex items-center"
-                >
-                  <div 
-                    className="h-full bg-[#2E7BC2] rounded-full"
-                    style={{ width: `${progressPosition}%` }}
-                  ></div>
+              {/* Container para visualização de onda e progresso */}
+              <div className="flex-1 h-10 relative">
+                {/* Visualização de onda de áudio (estático, decorativo) */}
+                <div className="absolute inset-0 w-full h-full flex items-center justify-between">
+                  {/* Linhas verticais que simulam uma forma de onda de áudio */}
+                  {Array.from({ length: 50 }).map((_, index) => {
+                    // Altura variada para simular forma de onda de áudio, com padrão mais realista
+                    const height = Math.abs(Math.sin((index * 0.3) % Math.PI) * 70 + 
+                                    Math.cos((index * 0.2) % Math.PI) * 20) + 5;
+                    
+                    // Determina se este segmento está na parte "reproduzida" do áudio
+                    const isPlayed = index < (progressPosition / 100 * 50);
+                    
+                    return (
+                      <div 
+                        key={index}
+                        className={`mx-[1px] ${isPlayed ? 'bg-[#2476c7]' : 'bg-[#e9ecef]'}`}
+                        style={{ 
+                          height: `${height}%`, 
+                          width: '2px',
+                          opacity: isPlayed ? 0.7 : 0.5,
+                          transition: 'background-color 0.3s, opacity 0.3s'
+                        }}
+                      ></div>
+                    );
+                  })}
                 </div>
+                
+                {/* Área clicável para controle de progresso */}
+                <div 
+                  className="absolute inset-0 cursor-pointer"
+                  onClick={(e) => {
+                    if (audioRef.current) {
+                      const container = e.currentTarget;
+                      const rect = container.getBoundingClientRect();
+                      const clickPosition = (e.clientX - rect.left) / rect.width;
+                      audioRef.current.currentTime = clickPosition * audioRef.current.duration;
+                      setProgressPosition(clickPosition * 100);
+                    }
+                  }}
+                ></div>
               </div>
             </div>
           </CardContent>
