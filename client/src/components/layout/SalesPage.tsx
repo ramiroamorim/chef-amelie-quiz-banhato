@@ -90,16 +90,40 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="grid" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.gridCollage} 
+              alt="Collection de recettes sans sucre, sans gluten et sans lactose"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="book" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.book} 
+              alt="Livre de recettes Chef Amélie Dupont"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="collage" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.collage} 
+              alt="Collection de recettes Chef Amélie Dupont"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="testimonial" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.recipes} 
+              alt="Témoignage client"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
 
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
@@ -130,7 +154,13 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="grid" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.recipesMain} 
+              alt="Variété de recettes saines et délicieuses"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
 
         <ColorBorderCard bgColor="#F5F9FF" borderColor="#2196F3">
@@ -171,7 +201,13 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeContainer variant="book" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.grid} 
+              alt="Recettes variées et équilibrées"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
 
         <PriceSection buyUrl={buyUrl} />
