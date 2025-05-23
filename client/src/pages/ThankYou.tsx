@@ -259,10 +259,14 @@ export default function ThankYou() {
           <div className="w-full flex flex-col items-center mt-4">
             <Button 
               className="bg-[#57C084] hover:bg-[#45A871] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg mb-4 transition-all transform hover:scale-105"
+              onClick={() => window.location.href = "https://pay.hotmart.com/V99272097O?off=kz99x2py&checkoutMode=10&bid=1748014910797"}
             >
               JE VEUX UN PLAN CHAQUE DIMANCHE !
             </Button>
-            <a href="#" className="text-[#B34431] text-sm hover:underline">
+            <a 
+              href="/" 
+              className="text-[#B34431] text-sm hover:underline"
+            >
               Non, merci !
             </a>
           </div>
