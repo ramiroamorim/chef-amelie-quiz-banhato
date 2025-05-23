@@ -102,11 +102,35 @@ export default function SalesPage() {
           </div>
         </div>
 
-        {/* Grade de imagens de receitas - seguindo a referência */}
-        <RecipeImageFrame 
-          src={RecipeImages.gridCollage} 
-          alt="Collection de recettes sans sucre, sans gluten et sans lactose" 
-        />
+        {/* Grade de imagens de receitas - grid 2x4 exatamente como na referência */}
+        <div className="mb-8">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+            <div className="p-1 bg-white rounded-lg shadow-sm">
+              <img src={RecipeImages.recipes} alt="Recette saine" className="rounded-md w-full h-auto" />
+            </div>
+          </div>
+        </div>
 
         {/* Seções para quem é e para quem não é */}
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
@@ -137,11 +161,16 @@ export default function SalesPage() {
           </p>
         </div>
 
-        {/* Imagem do livro de receitas */}
-        <RecipeImageFrame 
-          src={RecipeImages.book} 
-          alt="Livre de recettes Chef Amélie Dupont" 
-        />
+        {/* Imagem do livro de receitas - como na referência */}
+        <div className="mb-8 flex justify-center">
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.book} 
+              alt="Livre de recettes Chef Amélie Dupont"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+        </div>
 
         {/* O que você vai receber */}
         <ColorBorderCard bgColor="#F5F9FF" borderColor="#2196F3">
@@ -156,11 +185,16 @@ export default function SalesPage() {
           </ul>
         </ColorBorderCard>
 
-        {/* Outra imagem do conjunto de receitas */}
-        <RecipeImageFrame 
-          src={RecipeImages.main} 
-          alt="Variété de recettes saines et délicieuses" 
-        />
+        {/* Imagem da chef com o livro - seguindo a referência */}
+        <div className="mb-8 flex justify-center">
+          <div className="max-w-[700px] w-full mx-auto bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <img 
+              src={RecipeImages.main} 
+              alt="Chef Amélie avec son livre de recettes"
+              className="w-full h-auto"
+            />
+          </div>
+        </div>
 
         {/* Bônus exclusivos */}
         <ColorBorderCard bgColor="#FFF8F0" borderColor="#FF9800">
@@ -176,11 +210,16 @@ export default function SalesPage() {
           </div>
         </ColorBorderCard>
 
-        {/* Fotografia de Chef Amélie com as receitas */}
-        <RecipeImageFrame 
-          src={RecipeImages.grid} 
-          alt="Chef Amélie démontre ses recettes" 
-        />
+        {/* Fotografia da pessoa mostrando o livro no celular - seguindo a referência */}
+        <div className="mb-8 flex justify-center">
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={RecipeImages.grid} 
+              alt="Cliente satisfaite montrant le livre sur son téléphone"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+        </div>
 
         {/* Seção de preço e compra */}
         <PriceSection buyUrl={buyUrl} />
