@@ -35,13 +35,5 @@ export const RecipeCollage: React.FC<RecipeCollageProps> = ({ variant = 'grid' }
       altText = "Collection de recettes sans sucre, sans gluten et sans lactose";
   }
 
-  return (
-    <div className="w-full p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-      <img 
-        src={image} 
-        alt={altText}
-        className="w-full h-auto rounded-lg"
-      />
-    </div>
-  );
+  return null;
 };
