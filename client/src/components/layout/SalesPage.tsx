@@ -18,8 +18,8 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
         rel="noopener noreferrer"
         className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full text-white"
         style={{ 
-          background: "#4CAF50",
-          boxShadow: "0 4px 10px rgba(76, 175, 80, 0.3)"
+          background: COLORS.SUCCESS,
+          boxShadow: `0 4px 10px rgba(76, 175, 80, 0.3)`
         }}
       >
         {children}
@@ -31,15 +31,15 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
 // Componente para exibir a seção de preço e botão de compra
 const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
   <div className="py-6 px-6 text-center mb-8 bg-[#FDF8F5] rounded-lg">
-    <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
-    <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement 17€</p>
-    <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
+    <p className="mb-1">Valeur réelle du pack : <span className="line-through">{TEXTS.SALES.PRICE.ORIGINAL}</span></p>
+    <p className="text-2xl font-bold text-[#A85544] mb-4">Aujourd'hui : seulement {TEXTS.SALES.PRICE.CURRENT}</p>
+    <p className="font-bold text-[#F44336] mb-6">⚠️ {TEXTS.SALES.PRICE.REMAINING}</p>
     
     <GreenPulseButton href={buyUrl}>
-      JE VEUX LE PACK POUR 17€
+      {TEXTS.SALES.BUY_BUTTON}
     </GreenPulseButton>
     
-    <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
+    <p className="text-sm">📩 {TEXTS.SALES.DELIVERY}</p>
   </div>
 );
 
@@ -139,34 +139,25 @@ export default function SalesPage() {
           <h2 className="text-2xl font-bold text-[#FF9800] mb-4">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
           <div className="space-y-5">
-            <div>
-              <p className="font-bold">🎁 Bonus 1 : Guide de substitutions intelligentes</p>
-              <p className="ml-8">Remplacez sucre, farine ou lait sans perdre le goût.</p>
-            </div>
-            
-            <div>
-              <p className="font-bold">🎁 Bonus 2 : Carte de satiété naturelle</p>
-              <p className="ml-8">Construisez des assiettes qui rassasient sans excès.</p>
-            </div>
-            
-            <div>
-              <p className="font-bold">🎁 Bonus 3 : Protocole intestin + glycémie</p>
-              <p className="ml-8">Améliorez votre digestion et votre énergie au quotidien.</p>
-            </div>
-            
-            <div>
-              <p className="font-bold">🎁 Bonus 4 : Liste de courses intelligente</p>
-              <p className="ml-8">Gagnez du temps avec des produits simples, testés, validés.</p>
-            </div>
+            {TEXTS.SALES.BONUSES.map((bonus, index) => (
+              <div key={index}>
+                <p className="font-bold">{bonus.title}</p>
+                <p className="ml-8">{bonus.description}</p>
+              </div>
+            ))}
           </div>
         </ColorBorderCard>
 
         <div className="text-center mb-8">
-          <p className="mb-2">Ce n'est pas un régime.</p>
-          <p className="mb-4">Ce n'est pas une promesse vide.</p>
-          <p className="mb-2">C'est un raccourci vers ce que vous vouliez depuis des années :</p>
-          <p className="font-bold mb-4"><strong>manger avec plaisir, sans douleur.</strong></p>
-          <p>Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.</p>
+          {TEXTS.SALES.CLOSING_TEXT.map((text, index) => {
+            // Destacamos a 4ª linha (índice 3) com negrito
+            if (index === 3) {
+              return <p key={index} className="font-bold mb-4"><strong>{text}</strong></p>;
+            }
+            // Espaçamento adequado para cada parágrafo
+            const isSecondText = index === 1;
+            return <p key={index} className={`mb-${isSecondText ? '4' : '2'}`}>{text}</p>;
+          })}
         </div>
 
         <div className="mb-8 flex justify-center">

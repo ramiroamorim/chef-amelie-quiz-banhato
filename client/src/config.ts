@@ -44,6 +44,31 @@ export const TEXTS = {
       REMAINING: "Dernières 20 unités disponibles à 17€ seulement!"
     },
     BUY_BUTTON: "JE VEUX LE PACK POUR 17€",
-    DELIVERY: "Livraison immédiate par e-mail. Sans abonnement. Sans engagement."
+    DELIVERY: "Livraison immédiate par e-mail. Sans abonnement. Sans engagement.",
+    BONUSES: [
+      {
+        title: "🎁 Bonus 1 : Guide de substitutions intelligentes",
+        description: "Remplacez sucre, farine ou lait sans perdre le goût."
+      },
+      {
+        title: "🎁 Bonus 2 : Carte de satiété naturelle",
+        description: "Construisez des assiettes qui rassasient sans excès."
+      },
+      {
+        title: "🎁 Bonus 3 : Protocole intestin + glycémie",
+        description: "Améliorez votre digestion et votre énergie au quotidien."
+      },
+      {
+        title: "🎁 Bonus 4 : Liste de courses intelligente",
+        description: "Gagnez du temps avec des produits simples, testés, validés."
+      }
+    ],
+    CLOSING_TEXT: [
+      "Ce n'est pas un régime.",
+      "Ce n'est pas une promesse vide.",
+      "C'est un raccourci vers ce que vous vouliez depuis des années :",
+      "manger avec plaisir, sans douleur.",
+      "Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto."
+    ]
   }
 };
