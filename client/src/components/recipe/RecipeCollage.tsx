@@ -1,6 +1,5 @@
 import React from 'react';
-import recipesCollageImage from '@/assets/images/recipes/recipes-grid-collage.png';
-import recipeBookCollageImage from '@/assets/images/recipes/recipe-book-collage.png';
+import { RecipeImages } from '@/assets/imageExports';
 
 interface RecipeCollageProps {
   variant?: 'grid' | 'book';
@@ -11,7 +10,7 @@ interface RecipeCollageProps {
  * Apresenta diferentes receitas ou o livro de receitas com base na variante escolhida
  */
 export const RecipeCollage: React.FC<RecipeCollageProps> = ({ variant = 'grid' }) => {
-  const image = variant === 'grid' ? recipesCollageImage : recipeBookCollageImage;
+  const image = variant === 'grid' ? RecipeImages.gridCollage : RecipeImages.collage;
   const altText = variant === 'grid' 
     ? "Collection de recettes sans sucre, sans gluten et sans lactose" 
     : "Livre de recettes Chef Amélie Dupont";

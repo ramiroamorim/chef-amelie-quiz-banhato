@@ -4,9 +4,7 @@
  */
 
 import { QuizStepType } from "@/types/quiz";
-import recipeMainImage from '@/assets/images/recipes/recipes-main.png';
-import recipeGridImage from '@/assets/images/recipes/recipes-grid.png';
-import chefAmelieImage from '@/assets/images/chef/chef-amelie.png';
+import { RecipeImages, ChefImages } from '@/assets/imageExports';
 
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page
@@ -58,7 +56,7 @@ export const quizSteps: QuizStepType[] = [
   {
     name: "dessert",
     title: "<span class='text-primary font-semibold'>Même sans sucre, sans gluten, sans lactose... </span><span class='text-[#333333]'>quelle de ces gourmandises vous donne le plus envie ?</span>",
-    image: recipeGridImage,
+    image: RecipeImages.grid,
     imageAlt: "Collection de desserts sans sucre, sans gluten, sans lactose",
     options: [
       {
@@ -103,7 +101,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 4
   {
     name: "chef_profile",
-    image: chefAmelieImage,
+    image: ChefImages.amelie,
     imageAlt: "Chef Amélie Dupont",
     title: "Une rencontre avec la Cheffe Amélie Dupont",
     description: "Son histoire, sa mission, ses recettes.",
