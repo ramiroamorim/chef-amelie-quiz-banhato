@@ -90,8 +90,8 @@ export default function SalesPage() {
           </div>
         </div>
 
-        <div className="mb-8 flex justify-center">
-          <RecipeContainer variant="grid" />
+        <div className="mb-8">
+          <RecipeImageGrid />
         </div>
 
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
