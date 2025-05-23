@@ -1,8 +1,8 @@
 import React from 'react';
-import { RecipeImages } from '@/assets/imageExports';
+import { RecipeImages, TestimonialImages } from '@/assets/imageExports';
 
 interface RecipeCollageProps {
-  variant?: 'grid' | 'book';
+  variant?: 'grid' | 'book' | 'collage' | 'testimonial';
 }
 
 /**
