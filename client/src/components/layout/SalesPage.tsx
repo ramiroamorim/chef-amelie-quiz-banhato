@@ -6,7 +6,7 @@ import { ChefImages, RecipeImages, TestimonialImages } from '@/assets/imageExpor
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
     <div className="relative inline-block w-full md:w-auto mb-4">
-      <div className="absolute inset-0 rounded-full bg-[#4CAF50] opacity-30" 
+      <div className="absolute inset-0 rounded-full bg-[#57C084] opacity-30" 
         style={{
           animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
         }}
@@ -30,15 +30,15 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
 // Componente para exibir a seção de preço e botão de compra
 const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
   <div className="py-6 px-6 text-center mb-8 bg-[#FFF5F5] rounded-lg border border-[#FFE5E5]">
-    <p className="mb-1">Aujourd'hui seulement: <span className="line-through">17€</span></p>
-    <p className="text-2xl font-bold text-[#B34431] mb-4">12€</p>
-    <p className="font-bold text-[#F44336] mb-6">⚠️ Cette offre expire dans 24 heures.</p>
+    <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
+    <p className="text-2xl font-bold text-[#B34431] mb-4">Aujourd'hui : seulement 17€</p>
+    <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
     
     <GreenPulseButton href={buyUrl}>
-      JE VEUX UN PLAN CHAQUE DIMANCHE!
+      JE VEUX LE PACK POUR 17€
     </GreenPulseButton>
     
-    <p className="text-sm">📩 Livraison instantanée dans votre boîte e-mail.</p>
+    <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
   </div>
 );
 
@@ -52,8 +52,7 @@ export default function SalesPage() {
         {/* Cabeçalho da página */}
         <div className="bg-[#FFF8F5] p-6 rounded-md mb-8">
           <h1 className="text-xl font-normal text-[#B34431] mb-3">
-            500 recettes sans sucre, sans gluten et sans lactose
-            <br />
+            <span className="block">500 recettes sans sucre, sans gluten et sans lactose</span>
             <span className="block mt-2">qui nourrissent, font mincir avec plaisir</span>
             <span className="block mt-2">et rééquilibrent votre corps.</span>
           </h1>
@@ -151,10 +150,18 @@ export default function SalesPage() {
 
         {/* Recettes exclusives section */}
         <div className="bg-[#FFF8F5] p-4 rounded-md mb-6 text-center">
-          <p className="text-[#B34431] font-semibold mb-2 text-lg">Vous ne trouverez pas ces recettes sur Google.</p>
+          <p className="text-[#B34431] font-semibold mb-2 text-lg italic">Vous ne trouverez pas ces recettes sur Google.</p>
           <p className="text-[#333333] text-sm">
             Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-semibold">apaiser, nourrir</span>... et redonner du <span className="font-semibold">plaisir</span> à celles qui avaient renoncé.
           </p>
+        </div>
+        
+        {/* Texto adicional conforme a referência */}
+        <div className="mb-6 text-center">
+          <p className="mb-2 text-sm">Ce n'est pas un régime.</p>
+          <p className="mb-2 text-sm">Ce n'est pas une promesse vide.</p>
+          <p className="mb-4 text-sm">C'est un raccourci vers ce que vous vouliez depuis des années : <strong>manger avec plaisir, sans douleur.</strong></p>
+          <p className="mb-2 text-sm">Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.</p>
         </div>
 
         {/* Imagem do livro de receitas */}
@@ -169,13 +176,13 @@ export default function SalesPage() {
         {/* Ce que vous allez recevoir section */}
         <div className="mb-6 p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
           <h2 className="text-lg font-bold text-[#2196F3] mb-2">📦 Ce que vous allez recevoir :</h2>
-          <p className="mb-2 text-sm">Un accès à <span className="text-[#B34431] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler.</p>
+          <p className="mb-2 text-sm">Un accès à <span className="text-[#B34431] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
           
           <ul className="list-none pl-1 mb-2 space-y-3 text-sm">
-            <li>🍽️ <span className="text-[#B34431] font-bold">100 petits-déjeuners & collations</span> — pour bien démarrer la journée</li>
-            <li>🥦 <span className="text-[#B34431] font-bold">300 déjeuners & dîners</span> — faciles et nourrissants</li>
-            <li>🍫 <span className="text-[#B34431] font-bold">100 desserts gourmands</span> — sans sucre raffiné</li>
-            <li>🧭 <span className="text-[#B34431] font-bold">Organisation par objectif</span> : digestion, satiété, énergie</li>
+            <li>🍽️ <span className="text-[#B34431] font-bold">100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
+            <li>🥦 <span className="text-[#B34431] font-bold">300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
+            <li>🍫 <span className="text-[#B34431] font-bold">100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
+            <li>🧭 <span className="text-[#B34431] font-bold">Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
           </ul>
         </div>
 
@@ -194,16 +201,20 @@ export default function SalesPage() {
           
           <ul className="list-none pl-0 space-y-3 text-sm">
             <li>
-              <p className="font-bold">🥣 Bonus 1 : Guide des alternatives saines</p>
-              <p className="ml-5">15 pages avec toutes les alternatives sans sucre, sans gluten, sans lactose pour chaque recette.</p>
+              <p className="font-bold">🎁 Bonus 1 : Guide de substitutions intelligentes</p>
+              <p className="ml-5">Remplacez sucre, farine ou lait sans perdre le goût.</p>
             </li>
             <li>
-              <p className="font-bold">🛒 Bonus 2 : Liste de courses simplifiée</p>
-              <p className="ml-5">Organisée par semaine et par supermarché pour gagner du temps.</p>
+              <p className="font-bold">🎁 Bonus 2 : Carte de satiété naturelle</p>
+              <p className="ml-5">Construisez des assiettes qui rassasient sans excès.</p>
             </li>
             <li>
-              <p className="font-bold">📊 Bonus 3 : Planificateur hebdomadaire</p>
-              <p className="ml-5">Planifiez vos repas en 5 minutes par semaine, sans casse-tête.</p>
+              <p className="font-bold">🎁 Bonus 3 : Protocole intestin + glycémie</p>
+              <p className="ml-5">Améliorez votre digestion et votre énergie au quotidien.</p>
+            </li>
+            <li>
+              <p className="font-bold">🎁 Bonus 4 : Liste de courses intelligente</p>
+              <p className="ml-5">Gagnez du temps avec des produits simples, testés, validés.</p>
             </li>
           </ul>
         </div>
