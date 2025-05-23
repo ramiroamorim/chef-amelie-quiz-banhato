@@ -60,12 +60,6 @@ export const quizSteps: QuizStepType[] = [
     title: "<span class='text-primary font-semibold'>Même sans sucre, sans gluten, sans lactose... </span><span class='text-[#333333]'>quelle de ces gourmandises vous donne le plus envie ?</span>",
     image: recipeGridImage,
     imageAlt: "Collection de desserts sans sucre, sans gluten, sans lactose",
-    imageGrid: [
-      {
-        src: recipeGridImage,
-        alt: "Collection de desserts Chef Amélie Dupont"
-      }
-    ],
     options: [
       {
         value: "brownie",
