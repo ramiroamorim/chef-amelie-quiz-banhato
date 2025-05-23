@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
+import chefProfileImg from "@/assets/images/chef/chef-profile.png";
 
 export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -69,12 +70,11 @@ export default function ThankYou() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <p className="font-medium text-[#B34431]">Chef Amélie Dupont</p>
-              <div 
-                className="h-10 w-10 rounded-full bg-[#B34431] text-white flex items-center justify-center text-sm font-bold"
-                title="Chef Amélie Dupont"
-              >
-                AD
-              </div>
+              <img 
+                src={chefProfileImg} 
+                alt="Chef Amélie Dupont" 
+                className="h-10 w-10 rounded-full object-cover"
+              />
             </div>
             
             <div className="flex items-center mt-4">
