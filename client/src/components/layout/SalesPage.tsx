@@ -63,67 +63,13 @@ export default function SalesPage() {
           </div>
         </div>
 
-        {/* Grid de 8 imagens (2×4) exactamente como na referência */}
-        <div className="mb-8">
-          <div className="grid grid-cols-2 gap-2">
-            {/* Cada imagem tem um pequeno padding e borda arredondada */}
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Pain sans gluten" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Salade nourrissante" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Soupe détox" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Plat principal" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Dessert sans sucre" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Gâteau sans gluten" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Petit-déjeuner sain" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-            <div className="bg-white p-1 rounded-md border border-gray-100">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Collation énergétique" 
-                className="w-full h-auto aspect-square object-cover rounded-md"
-              />
-            </div>
-          </div>
+        {/* Imagem única da grade de receitas conforme a referência */}
+        <div className="mb-8 border border-gray-200 rounded-md overflow-hidden">
+          <img 
+            src={RecipeImages.gridCollage} 
+            alt="Collection de recettes sans sucre, sans gluten et sans lactose"
+            className="w-full h-auto"
+          />
         </div>
 
         {/* Pour qui c'est: section */}
