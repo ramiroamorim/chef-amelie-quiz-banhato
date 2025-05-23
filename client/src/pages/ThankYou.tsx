@@ -4,13 +4,16 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
+// Importamos o arquivo de áudio diretamente no HTML em vez de carregá-lo via JavaScript
+// para garantir melhor compatibilidade e pré-carregamento
+const AUDIO_SRC = "/audio/message.wav";
+
 export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [audioLoaded, setAudioLoaded] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progressPosition, setProgressPosition] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const progressTimerRef = useRef<number | null>(null);
   
   // Timer para mostrar o botão após 2 minutos (120000ms)
   // Reduzido para 10 segundos (10000ms) em desenvolvimento para teste
@@ -22,28 +25,15 @@ export default function ThankYou() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Efeito para criar o elemento de áudio programaticamente
+  // Efeito para lidar com eventos do elemento de áudio
   useEffect(() => {
-    // Criar o elemento de áudio
-    const audio = new Audio("/audio/message.wav");
-    audioRef.current = audio;
+    const audioElement = audioRef.current;
     
-    // Pré-carregamento do áudio
-    audio.load();
-    
-    const handleCanPlay = () => {
-      console.log("Áudio carregado e pronto para reprodução");
-      setAudioLoaded(true);
-    };
-    
-    const handleError = (e: Event) => {
-      console.error("Erro ao carregar áudio:", e);
-      setAudioError(true);
-    };
+    if (!audioElement) return;
     
     const handleTimeUpdate = () => {
-      if (audio.duration > 0) {
-        const position = (audio.currentTime / audio.duration) * 100;
+      if (audioElement.duration > 0) {
+        const position = (audioElement.currentTime / audioElement.duration) * 100;
         setProgressPosition(position);
       }
     };
@@ -52,70 +42,105 @@ export default function ThankYou() {
       setAudioPlaying(false);
     };
     
-    // Configurar os manipuladores de eventos
-    audio.addEventListener('canplaythrough', handleCanPlay);
-    audio.addEventListener('error', handleError);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('ended', handleEnded);
+    const handleError = (e: Event) => {
+      console.error("Erro ao carregar/reproduzir áudio:", e);
+      if (audioPlaying) {
+        // Ativar simulação visual se o áudio falhar durante a reprodução
+        simulateAudioProgress();
+      }
+    };
+    
+    // Adicionar event listeners
+    audioElement.addEventListener('timeupdate', handleTimeUpdate);
+    audioElement.addEventListener('ended', handleEnded);
+    audioElement.addEventListener('error', handleError);
     
     // Limpeza
     return () => {
-      audio.pause();
-      audio.removeEventListener('canplaythrough', handleCanPlay);
-      audio.removeEventListener('error', handleError);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', handleEnded);
+      audioElement.removeEventListener('timeupdate', handleTimeUpdate);
+      audioElement.removeEventListener('ended', handleEnded);
+      audioElement.removeEventListener('error', handleError);
+      
+      // Parar o áudio e a simulação ao desmontar
+      audioElement.pause();
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+      }
     };
-  }, []);
+  }, [audioPlaying]);
   
   // Função para controlar a reprodução do áudio
   const toggleAudio = () => {
-    if (audioRef.current) {
-      if (audioPlaying) {
-        // Parar o áudio se estiver tocando
-        audioRef.current.pause();
-        setAudioPlaying(false);
-      } else {
-        // Atualizar o estado para refletir a interface
-        setAudioPlaying(true);
+    if (!audioRef.current) return;
+    
+    if (audioPlaying) {
+      // Parar o áudio e a simulação
+      audioRef.current.pause();
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
+      setAudioPlaying(false);
+    } else {
+      // Iniciar reprodução
+      setAudioPlaying(true);
+      
+      try {
+        // Reiniciar áudio se estiver no final
+        if (audioRef.current.currentTime >= audioRef.current.duration - 0.1) {
+          audioRef.current.currentTime = 0;
+        }
         
-        // Tentar reproduzir o áudio
         const playPromise = audioRef.current.play();
         
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Áudio iniciado com sucesso");
-            })
-            .catch(error => {
-              console.error("Erro ao reproduzir áudio:", error);
-              
-              // Em caso de erro na reprodução, usamos uma simulação visual
-              simulateAudioProgress();
-            });
-        } else {
-          // Navegadores antigos que não retornam uma promessa
-          console.warn("Navegador não suporta Promise para reprodução de áudio");
-          simulateAudioProgress();
+          playPromise.catch(error => {
+            console.error("Erro ao reproduzir áudio:", error);
+            simulateAudioProgress();
+          });
         }
+      } catch (error) {
+        console.error("Erro ao manipular áudio:", error);
+        simulateAudioProgress();
       }
+    }
+  };
+  
+  // Função para avançar ou retroceder no áudio
+  const seekAudio = (position: number) => {
+    if (!audioRef.current) return;
+    
+    try {
+      const newTime = (position / 100) * (audioRef.current.duration || 180);
+      audioRef.current.currentTime = newTime;
+      setProgressPosition(position);
+    } catch (error) {
+      console.error("Erro ao buscar posição no áudio:", error);
     }
   };
   
   // Função auxiliar para simular o progresso do áudio visualmente
   const simulateAudioProgress = () => {
+    // Limpar timer existente, se houver
+    if (progressTimerRef.current) {
+      clearInterval(progressTimerRef.current);
+    }
+    
     console.log("Usando simulação visual de progresso");
-    let progress = 0;
-    const progressTimer = window.setInterval(() => {
-      progress += 1;
+    let progress = progressPosition || 0;
+    
+    progressTimerRef.current = window.setInterval(() => {
+      progress += 0.33; // Mais lento para simular um áudio real
       setProgressPosition(progress);
+      
       if (progress >= 100) {
-        clearInterval(progressTimer);
+        if (progressTimerRef.current) {
+          clearInterval(progressTimerRef.current);
+          progressTimerRef.current = null;
+        }
         setAudioPlaying(false);
       }
-    }, 300); // Simula um áudio de ~30 segundos
-    
-    return () => clearInterval(progressTimer);
+    }, 100);
   };
 
   return (
@@ -147,6 +172,14 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
+            {/* Elemento de áudio nativo (invisível) para melhor compatibilidade */}
+            <audio 
+              ref={audioRef}
+              src={AUDIO_SRC}
+              preload="auto"
+              style={{ display: 'none' }}
+            />
+            
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
               {ChefImages && ChefImages.amelie ? (
@@ -239,33 +272,21 @@ export default function ThankYou() {
                 <div 
                   className="absolute inset-0 cursor-pointer"
                   onClick={(e) => {
-                    try {
-                      if (audioRef.current && !isNaN(audioRef.current.duration)) {
-                        const container = e.currentTarget;
-                        const rect = container.getBoundingClientRect();
-                        const clickPosition = (e.clientX - rect.left) / rect.width;
-                        const newTime = clickPosition * audioRef.current.duration;
-                        
-                        // Garantir que o tempo esteja dentro dos limites válidos
-                        if (newTime >= 0 && newTime <= audioRef.current.duration) {
-                          audioRef.current.currentTime = newTime;
-                          setProgressPosition(clickPosition * 100);
-                        }
-                      }
-                    } catch (error) {
-                      console.error("Erro ao ajustar tempo do áudio:", error);
-                    }
+                    const container = e.currentTarget;
+                    const rect = container.getBoundingClientRect();
+                    const clickPosition = (e.clientX - rect.left) / rect.width;
+                    
+                    // Calcular a nova posição como porcentagem
+                    const newPositionPercent = clickPosition * 100;
+                    
+                    // Atualizar o áudio e a visualização
+                    seekAudio(newPositionPercent);
                   }}
                 ></div>
               </div>
             </div>
           </CardContent>
         </Card>
-        
-        {/* 
-          Observação: O elemento de áudio é criado programaticamente via useEffect 
-          para melhor controle e tratamento de erros
-        */}
         
         {/* Botão de ação (visível após tempo definido) */}
         {showButton && (
