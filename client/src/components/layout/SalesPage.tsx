@@ -132,14 +132,7 @@ export default function SalesPage() {
           </ul>
         </div>
 
-        {/* Imagem da chef com tablet/livro de receitas */}
-        <div className="mb-6 border border-gray-200 rounded-md overflow-hidden">
-          <img 
-            src={RecipeImages.main} 
-            alt="Chef Amélie avec son livre"
-            className="w-full h-auto"
-          />
-        </div>
+
 
         {/* Bonus exclusifs section */}
         <div className="mb-6 p-4 rounded-md border-l-4 bg-[#FFF8E8] border-[#FF9800]">
