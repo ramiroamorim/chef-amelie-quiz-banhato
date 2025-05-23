@@ -143,13 +143,13 @@ export default function QuizStep({
 
       {/* Image Grid */}
       {step.imageGrid && (
-        <div className="grid grid-cols-2 gap-4 my-6">
+        <div className="flex justify-center my-6">
           {step.imageGrid.map((img, i) => (
             <img 
               key={i}
               src={img.src} 
               alt={img.alt} 
-              className="w-full h-auto rounded-lg" 
+              className="w-full max-w-2xl h-auto rounded-lg" 
             />
           ))}
         </div>

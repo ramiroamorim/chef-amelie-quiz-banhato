@@ -5,6 +5,7 @@
 
 import { QuizStepType } from "@/types/quiz";
 import recipeMainImage from '@/assets/images/recipes-main.png';
+import recipeGridImage from '@/assets/images/recipes-grid.png';
 
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page
@@ -56,22 +57,12 @@ export const quizSteps: QuizStepType[] = [
   {
     name: "dessert",
     title: "<span class='text-primary font-semibold'>Même sans sucre, sans gluten, sans lactose... </span><span class='text-[#333333]'>quelle de ces gourmandises vous donne le plus envie ?</span>",
+    image: recipeGridImage,
+    imageAlt: "Collection de desserts sans sucre, sans gluten, sans lactose",
     imageGrid: [
       {
-        src: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
-        alt: "Brownie fondant"
-      },
-      {
-        src: "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
-        alt: "Brioche à la cannelle"
-      },
-      {
-        src: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
-        alt: "Tartelette chocolat-noisette"
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568471173242-461f0a730452?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
-        alt: "Baguette croustillante"
+        src: recipeGridImage,
+        alt: "Collection de desserts Chef Amélie Dupont"
       }
     ],
     options: [
