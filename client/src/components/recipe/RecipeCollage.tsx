@@ -10,7 +10,7 @@ interface RecipeCollageProps {
  * Apresenta diferentes receitas ou o livro de receitas com base na variante escolhida
  */
 export const RecipeCollage: React.FC<RecipeCollageProps> = ({ variant = 'grid' }) => {
-  const image = variant === 'grid' ? RecipeImages.gridCollage : RecipeImages.collage;
+  const image = variant === 'grid' ? RecipeImages.gridCollage : RecipeImages.book;
   const altText = variant === 'grid' 
     ? "Collection de recettes sans sucre, sans gluten et sans lactose" 
     : "Livre de recettes Chef Amélie Dupont";
