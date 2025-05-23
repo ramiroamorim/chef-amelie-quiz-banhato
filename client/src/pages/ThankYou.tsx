@@ -28,34 +28,43 @@ export default function ThankYou() {
     const audio = new Audio("/audio/message.wav");
     audioRef.current = audio;
     
-    // Configurar os manipuladores de eventos
-    audio.addEventListener('canplaythrough', () => {
-      setAudioLoaded(true);
-    });
+    // Pré-carregamento do áudio
+    audio.load();
     
-    audio.addEventListener('error', (e) => {
+    const handleCanPlay = () => {
+      console.log("Áudio carregado e pronto para reprodução");
+      setAudioLoaded(true);
+    };
+    
+    const handleError = (e: Event) => {
       console.error("Erro ao carregar áudio:", e);
       setAudioError(true);
-    });
+    };
     
-    audio.addEventListener('timeupdate', () => {
+    const handleTimeUpdate = () => {
       if (audio.duration > 0) {
         const position = (audio.currentTime / audio.duration) * 100;
         setProgressPosition(position);
       }
-    });
+    };
     
-    audio.addEventListener('ended', () => {
+    const handleEnded = () => {
       setAudioPlaying(false);
-    });
+    };
+    
+    // Configurar os manipuladores de eventos
+    audio.addEventListener('canplaythrough', handleCanPlay);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', handleEnded);
     
     // Limpeza
     return () => {
       audio.pause();
-      audio.removeEventListener('canplaythrough', () => {});
-      audio.removeEventListener('error', () => {});
-      audio.removeEventListener('timeupdate', () => {});
-      audio.removeEventListener('ended', () => {});
+      audio.removeEventListener('canplaythrough', handleCanPlay);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', handleEnded);
     };
   }, []);
   
@@ -67,42 +76,46 @@ export default function ThankYou() {
         audioRef.current.pause();
         setAudioPlaying(false);
       } else {
-        // Demonstração: simulamos que o áudio está funcionando para visualização
+        // Atualizar o estado para refletir a interface
         setAudioPlaying(true);
         
-        // Tentativa real de reproduzir o áudio (pode falhar no ambiente)
-        try {
-          audioRef.current.play().catch(error => {
-            console.error("Erro ao reproduzir áudio:", error);
-            // Continua com a simulação visual mesmo se o áudio real falhar
-          });
-        } catch (e) {
-          console.warn("Usando simulação visual apenas.");
+        // Tentar reproduzir o áudio
+        const playPromise = audioRef.current.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Áudio iniciado com sucesso");
+            })
+            .catch(error => {
+              console.error("Erro ao reproduzir áudio:", error);
+              
+              // Em caso de erro na reprodução, usamos uma simulação visual
+              simulateAudioProgress();
+            });
+        } else {
+          // Navegadores antigos que não retornam uma promessa
+          console.warn("Navegador não suporta Promise para reprodução de áudio");
+          simulateAudioProgress();
         }
-        
-        // Simulação de progresso para demonstração visual
-        // Em caso de falha na reprodução real do áudio
-        let progressTimer: number | null = null;
-        
-        if (!audioLoaded || audioError) {
-          let progress = 0;
-          progressTimer = window.setInterval(() => {
-            progress += 1;
-            setProgressPosition(progress);
-            if (progress >= 100) {
-              clearInterval(progressTimer!);
-              setAudioPlaying(false);
-            }
-          }, 300); // Simula um áudio de 30 segundos
-        }
-        
-        return () => {
-          if (progressTimer !== null) {
-            clearInterval(progressTimer);
-          }
-        };
       }
     }
+  };
+  
+  // Função auxiliar para simular o progresso do áudio visualmente
+  const simulateAudioProgress = () => {
+    console.log("Usando simulação visual de progresso");
+    let progress = 0;
+    const progressTimer = window.setInterval(() => {
+      progress += 1;
+      setProgressPosition(progress);
+      if (progress >= 100) {
+        clearInterval(progressTimer);
+        setAudioPlaying(false);
+      }
+    }, 300); // Simula um áudio de ~30 segundos
+    
+    return () => clearInterval(progressTimer);
   };
 
   return (
