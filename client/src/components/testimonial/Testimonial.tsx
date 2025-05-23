@@ -75,22 +75,26 @@ export function Testimonial({ testimonials, onComplete }: TestimonialProps) {
             transition={{ duration: 0.3 }}
             className="flex flex-col md:flex-row gap-6 items-center"
           >
-            <div className="testimonial-image w-full md:w-1/3">
+            <div className="testimonial-image w-full md:w-2/5 flex items-center justify-center">
               <img
                 src={testimonials[activeIndex].image || testimonialImages[activeIndex % testimonialImages.length]}
                 alt={testimonials[activeIndex].imageAlt || `Témoignage ${activeIndex + 1}`}
-                className="w-full h-auto rounded-xl"
+                className="w-full max-w-[280px] h-auto rounded-xl object-contain"
+                style={{ maxHeight: "280px" }}
               />
             </div>
             
-            <div className="testimonial-content w-full md:w-2/3">
+            <div className="testimonial-content w-full md:w-3/5">
               <div className="mb-4">
-                <p className="text-[#555555] italic mb-2">
-                  "{testimonials[activeIndex].message}"
-                </p>
-                <p className="text-sm text-gray-400">
-                  {testimonials[activeIndex].time}
-                </p>
+                <p 
+                  className="text-[#555555] text-lg italic mb-2"
+                  dangerouslySetInnerHTML={{ __html: testimonials[activeIndex].message }}
+                ></p>
+                {testimonials[activeIndex].time && (
+                  <p className="text-sm text-gray-400">
+                    {testimonials[activeIndex].time}
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>
