@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
-import { ChefImages, ThankYouImages } from "@/assets/imageExports";
+import { ChefImages } from "@/assets/imageExports";
 
 export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -11,10 +11,11 @@ export default function ThankYou() {
   const [progressPosition, setProgressPosition] = useState(0);
   
   // Timer para mostrar o botão após 2 minutos (120000ms)
+  // Reduzido para 10 segundos (10000ms) em desenvolvimento para teste
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowButton(true);
-    }, 120000);
+    }, 10000); // Em produção: 120000
     
     return () => clearTimeout(timer);
   }, []);
@@ -70,11 +71,20 @@ export default function ThankYou() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <p className="font-medium text-[#B34431]">Chef Amélie Dupont</p>
-              <img 
-                src={ChefImages.profile} 
-                alt="Chef Amélie Dupont" 
-                className="h-10 w-10 rounded-full object-cover"
-              />
+              {ChefImages && ChefImages.profile ? (
+                <img 
+                  src={ChefImages.profile} 
+                  alt="Chef Amélie Dupont" 
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              ) : (
+                <div 
+                  className="h-10 w-10 rounded-full bg-[#B34431] text-white flex items-center justify-center text-sm font-bold"
+                  title="Chef Amélie Dupont"
+                >
+                  AD
+                </div>
+              )}
             </div>
             
             <div className="flex items-center mt-4">
@@ -83,16 +93,13 @@ export default function ThankYou() {
                 onClick={toggleAudio}
                 className="h-10 w-10 rounded-full bg-[#2E7BC2] flex items-center justify-center text-white mr-3"
               >
-                {audioPlaying ? "⏸️" : "▶️"}
+                {audioPlaying ? "⏸" : "▶"}
               </button>
               
               {/* Barra de progresso */}
               <div className="flex-1 h-8 bg-gray-100 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-gray-200 to-gray-300 flex items-center"
-                  style={{
-                    backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIzMHB4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxkZWZzPgogICAgPHBhdHRlcm4gaWQ9IndhdmUiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSIxMCIgaGVpZ2h0PSIyMCI+CiAgICAgIDxwYXRoIGQ9Ik0wLDEwIEwxMCwxMCBMNSwyMCBMMCwxMCBaIiBmaWxsPSJyZ2JhKDIwMCwyMDAsMjAwLDAuNSkiIC8+CiAgICA8L3BhdHRlcm4+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjd2F2ZSkiIC8+Cjwvc3ZnPg==')"
-                  }}
                 >
                   <div 
                     className="h-full bg-[#2E7BC2] rounded-full"
@@ -112,7 +119,7 @@ export default function ThankYou() {
           onEnded={() => setAudioPlaying(false)}
         />
         
-        {/* Botão de ação (visível após 2 minutos) */}
+        {/* Botão de ação (visível após tempo definido) */}
         {showButton && (
           <div className="w-full flex flex-col items-center mt-4">
             <Button 
