@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { RecipeGrid } from "../ui/recipe/RecipeGrid";
+import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { LINKS, COLORS, TEXTS } from "@/config";
 
 // Componente de botão pulsante verde

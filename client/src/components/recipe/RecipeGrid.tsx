@@ -2,8 +2,11 @@ import React from 'react';
 import recipeImage from '@/assets/images/recipes-main.png';
 
 /**
- * Componente simples para exibir a grade de receitas
- * Usado em várias partes da aplicação para mostrar as receitas do chef
+ * Componente simples para exibir a grade de receitas do Chef Amélie
+ * Usado em várias partes da aplicação para mostrar o catálogo de receitas
+ * 
+ * Este componente foi movido para pasta /components/recipe para seguir a
+ * convenção de organização por domínio em vez de por tipo de componente
  */
 export const RecipeGrid: React.FC = () => {
   return (
