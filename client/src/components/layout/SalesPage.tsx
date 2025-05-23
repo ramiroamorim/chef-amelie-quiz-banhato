@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import React from "react";
 import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { RecipeCollage } from "@/components/recipe/RecipeCollage";
-import { RecipeImageGrid, RecipeImageGridCompact } from "@/components/recipe/RecipeImageGrid";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 
@@ -90,8 +89,8 @@ export default function SalesPage() {
           </div>
         </div>
 
-        <div className="mb-8">
-          <RecipeImageGrid />
+        <div className="mb-8 flex justify-center">
+          <RecipeContainer variant="grid" />
         </div>
 
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
