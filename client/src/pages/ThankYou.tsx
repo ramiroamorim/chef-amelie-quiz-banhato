@@ -136,9 +136,9 @@ export default function ThankYou() {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
-              {ChefImages && ChefImages.profile ? (
+              {ChefImages && ChefImages.amelie ? (
                 <img 
-                  src={ChefImages.profile} 
+                  src={ChefImages.amelie} 
                   alt="Chef Amélie Dupont" 
                   className="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md"
                 />
