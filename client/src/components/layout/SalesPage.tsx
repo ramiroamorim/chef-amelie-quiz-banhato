@@ -163,30 +163,22 @@ export default function SalesPage() {
         {/* Seção de preço e compra */}
         <PriceSection buyUrl={buyUrl} />
 
-        {/* Mensagens de WhatsApp simuladas com fotos de receitas */}
-        <div className="mb-6">
-          <div className="max-w-[85%] bg-[#e2f7cb] p-3 rounded-lg mb-4 ml-auto">
-            <p className="text-sm mb-2">C'est tellement bon tout ce que j'ai essayé. Le pain sans gluten est incroyable... mes enfants adorent et mon mari ne voit même pas la différence! 😍</p>
-            <div className="rounded-lg overflow-hidden">
-              <img 
-                src={RecipeImages.recipes} 
-                alt="Pain sans gluten fait maison" 
-                className="w-full h-auto" 
-              />
-            </div>
-            <p className="text-xs text-right mt-1 text-gray-500">10:45</p>
+        {/* Duas imagens de testemunhos/mensagens */}
+        <div className="mb-6 space-y-4">
+          <div className="border border-gray-200 rounded-md overflow-hidden">
+            <img 
+              src="/images/whatsapp-bread.jpg" 
+              alt="Témoignage client - pain sans gluten"
+              className="w-full h-auto"
+            />
           </div>
           
-          <div className="max-w-[85%] bg-[#e2f7cb] p-3 rounded-lg mb-4 ml-auto">
-            <p className="text-sm mb-2">Amélie - j'ai perdu 3kg cette semaine grâce aux recettes légères que tu m'as envoyé, je me sens tellement mieux et plus d'énergie! Le brownie sans sucre est DÉLICIEUX 😋</p>
-            <div className="rounded-lg overflow-hidden">
-              <img 
-                src={RecipeImages.collage} 
-                alt="Brownie sans sucre" 
-                className="w-full h-auto" 
-              />
-            </div>
-            <p className="text-xs text-right mt-1 text-gray-500">14:22</p>
+          <div className="border border-gray-200 rounded-md overflow-hidden">
+            <img 
+              src="/images/whatsapp-brownie.jpg" 
+              alt="Témoignage client - brownie sans sucre"
+              className="w-full h-auto"
+            />
           </div>
         </div>
 
