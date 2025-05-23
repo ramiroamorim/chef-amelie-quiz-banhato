@@ -103,7 +103,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 4
   {
     name: "chef_profile",
-    image: chefAmelieImage,
+    image: recipeMainImage,
     imageAlt: "Chef Amélie Dupont",
     title: "Une rencontre avec la Cheffe Amélie Dupont",
     description: "Son histoire, sa mission, ses recettes.",
