@@ -48,13 +48,6 @@ const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
 export default function SalesPage() {
   // Usando a URL do botão de compra do arquivo centralizado de configurações
   const buyUrl = LINKS.SALES.BUY_URL;
-
-  // Componentes reutilizáveis para diversos elementos da página
-  const RecipeContainer = ({ variant = 'grid' }: { variant?: 'grid' | 'book' }) => (
-    <div className="max-w-[700px] w-full mx-auto">
-      {variant === 'book' ? <RecipeGrid /> : <RecipeCollage variant="grid" />}
-    </div>
-  );
   
   // Container com borda colorida
   const ColorBorderCard = ({ 
@@ -72,9 +65,29 @@ export default function SalesPage() {
     </div>
   );
 
+  // Componente para exibir uma imagem de receita com moldura
+  const RecipeImageFrame = ({ 
+    src, 
+    alt 
+  }: { 
+    src: string, 
+    alt: string 
+  }) => (
+    <div className="mb-8 flex justify-center">
+      <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <img 
+          src={src} 
+          alt={alt}
+          className="w-full h-auto rounded-lg"
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-[700px] mx-auto px-4 py-8 text-[#333]">
+        {/* Cabeçalho da página */}
         <div className="bg-[#FDF8F5] p-6 rounded-md mb-8">
           <h1 className="text-2xl md:text-3xl font-normal text-[#A85544] mb-3">
             500 recettes sans sucre, sans gluten et sans lactose
@@ -89,43 +102,13 @@ export default function SalesPage() {
           </div>
         </div>
 
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.gridCollage} 
-              alt="Collection de recettes sans sucre, sans gluten et sans lactose"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.book} 
-              alt="Livre de recettes Chef Amélie Dupont"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.collage} 
-              alt="Collection de recettes Chef Amélie Dupont"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.recipes} 
-              alt="Témoignage client"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
+        {/* Grade de imagens de receitas - seguindo a referência */}
+        <RecipeImageFrame 
+          src={RecipeImages.gridCollage} 
+          alt="Collection de recettes sans sucre, sans gluten et sans lactose" 
+        />
 
+        {/* Seções para quem é e para quem não é */}
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
           <h3 className="text-xl font-bold text-[#4CAF50] mb-4">💚 Pour qui c'est:</h3>
           <ul className="list-none pl-1 space-y-3">
@@ -146,6 +129,7 @@ export default function SalesPage() {
           </ul>
         </ColorBorderCard>
 
+        {/* Seção sobre a exclusividade das receitas */}
         <div className="bg-[#FDF1F1] p-6 rounded-lg mb-8 text-center">
           <p className="text-[#A85544] font-semibold text-xl mb-4">Vous ne trouverez pas ces recettes sur Google.</p>
           <p className="text-[#333333] text-lg">
@@ -153,16 +137,13 @@ export default function SalesPage() {
           </p>
         </div>
 
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.recipesMain} 
-              alt="Variété de recettes saines et délicieuses"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
+        {/* Imagem do livro de receitas */}
+        <RecipeImageFrame 
+          src={RecipeImages.book} 
+          alt="Livre de recettes Chef Amélie Dupont" 
+        />
 
+        {/* O que você vai receber */}
         <ColorBorderCard bgColor="#F5F9FF" borderColor="#2196F3">
           <h2 className="text-2xl font-bold text-[#2196F3] mb-4">📦 Ce que vous allez recevoir :</h2>
           <p className="mb-4">Un accès à <span className="text-[#A85544] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
@@ -175,6 +156,13 @@ export default function SalesPage() {
           </ul>
         </ColorBorderCard>
 
+        {/* Outra imagem do conjunto de receitas */}
+        <RecipeImageFrame 
+          src={RecipeImages.main} 
+          alt="Variété de recettes saines et délicieuses" 
+        />
+
+        {/* Bônus exclusivos */}
         <ColorBorderCard bgColor="#FFF8F0" borderColor="#FF9800">
           <h2 className="text-2xl font-bold text-[#FF9800] mb-4">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
@@ -188,42 +176,46 @@ export default function SalesPage() {
           </div>
         </ColorBorderCard>
 
-        <div className="text-center mb-8">
-          {TEXTS.SALES.CLOSING_TEXT.map((text, index) => {
-            // Destacamos a 4ª linha (índice 3) com negrito
-            if (index === 3) {
-              return <p key={index} className="font-bold mb-4"><strong>{text}</strong></p>;
-            }
-            // Espaçamento adequado para cada parágrafo
-            const isSecondText = index === 1;
-            return <p key={index} className={`mb-${isSecondText ? '4' : '2'}`}>{text}</p>;
-          })}
-        </div>
+        {/* Fotografia de Chef Amélie com as receitas */}
+        <RecipeImageFrame 
+          src={RecipeImages.grid} 
+          alt="Chef Amélie démontre ses recettes" 
+        />
 
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.grid} 
-              alt="Recettes variées et équilibrées"
-              className="w-full h-auto rounded-lg"
-            />
+        {/* Seção de preço e compra */}
+        <PriceSection buyUrl={buyUrl} />
+
+        {/* Mensagens de WhatsApp simuladas com fotos de receitas */}
+        <div className="mb-8 px-4">
+          <div className="max-w-[80%] bg-[#e2f7cb] p-4 rounded-lg mb-4 ml-auto">
+            <p className="text-sm mb-2">C'est tellement bon tout ce que j'ai essayé. Le pain sans gluten est incroyable... mes enfants adorent et mon mari ne voit même pas la différence! 😍</p>
+            <div className="rounded-lg overflow-hidden">
+              <img 
+                src={RecipeImages.recipes} 
+                alt="Pain sans gluten fait maison" 
+                className="w-full h-auto" 
+              />
+            </div>
+            <p className="text-xs text-right mt-1 text-gray-500">10:45</p>
+          </div>
+          
+          <div className="max-w-[80%] bg-[#e2f7cb] p-4 rounded-lg mb-4 ml-auto">
+            <p className="text-sm mb-2">Amélie - j'ai perdu 3kg cette semaine grâce aux recettes légères que tu m'as envoyé, je me sens tellement mieux et plus d'énergie! Le brownie sans sucre est DÉLICIEUX 😋</p>
+            <div className="rounded-lg overflow-hidden">
+              <img 
+                src={RecipeImages.collage} 
+                alt="Brownie sans sucre" 
+                className="w-full h-auto" 
+              />
+            </div>
+            <p className="text-xs text-right mt-1 text-gray-500">14:22</p>
           </div>
         </div>
 
+        {/* Seção final de preço e compra */}
         <PriceSection buyUrl={buyUrl} />
 
-        <div className="mb-8 flex justify-center">
-          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <img 
-              src={RecipeImages.book} 
-              alt="500 Recettes Délicieuses Sans Gluten, Sans Sucre, Sans Lactose"
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
-
-        <PriceSection buyUrl={buyUrl} />
-
+        {/* Assinatura da Chef */}
         <div className="text-center mb-4">
           <p className="mb-4">Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
           <p className="font-medium italic">Cheffe Amélie Dupont</p>
