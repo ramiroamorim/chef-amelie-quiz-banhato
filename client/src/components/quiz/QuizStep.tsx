@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import RadioOption from "@/components/quiz/RadioOption";
-import { Testimonial } from "@/components/testimonial/Testimonial";
+import Testimonial from "@/components/quiz/Testimonial";
 import { QuizStepType } from "@/types/quiz";
 import { testimonials } from "@/data";
 
