@@ -158,14 +158,7 @@ export default function SalesPage() {
           </ul>
         </div>
 
-        {/* Imagem pessoa segurando telefone/tablet */}
-        <div className="mb-6 border border-gray-200 rounded-md overflow-hidden">
-          <img 
-            src={RecipeImages.grid} 
-            alt="Client avec les recettes sur son téléphone"
-            className="w-full h-auto"
-          />
-        </div>
+
 
         {/* Seção de preço e compra */}
         <PriceSection buyUrl={buyUrl} />
