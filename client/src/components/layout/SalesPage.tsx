@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { RecipeCollage } from "@/components/recipe/RecipeCollage";
+import { RecipeImageGrid, RecipeImageGridCompact } from "@/components/recipe/RecipeImageGrid";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 
