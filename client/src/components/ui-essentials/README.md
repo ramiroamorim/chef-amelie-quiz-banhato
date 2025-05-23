@@ -22,7 +22,7 @@ Importe os componentes diretamente desta pasta em vez da pasta ui completa:
 
 ```jsx
 // ✅ Correto - importar dos componentes essenciais
-import { Button } from "@/components/ui-core/button";
+import { Button } from "@/components/ui-essentials/button";
 
 // ❌ Evitar - importar de todos os componentes
 // import { Button } from "@/components/ui/button";
