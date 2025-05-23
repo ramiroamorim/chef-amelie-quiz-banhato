@@ -113,13 +113,12 @@ export default function SalesPage() {
           </ul>
         </ColorBorderCard>
 
-        <ColorBorderCard bgColor="#FFF5F5" borderColor="#A85544">
-          <p className="italic font-bold text-[#A85544] mb-3">Vous ne trouverez pas ces recettes sur Google.</p>
-          <p className="mb-4 text-center">
-            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé.
-            Chaque plat a été pensé pour <strong>apaiser, nourrir</strong>… et redonner du <strong>plaisir</strong> à celles qui avaient renoncé.
+        <div className="bg-[#FDF1F1] p-6 rounded-lg mb-8 text-center">
+          <p className="text-[#A85544] font-semibold text-xl mb-4">Vous ne trouverez pas ces recettes sur Google.</p>
+          <p className="text-[#333333] text-lg">
+            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-semibold">apaiser, nourrir</span>... et redonner du <span className="font-semibold">plaisir</span> à celles qui avaient renoncé.
           </p>
-        </ColorBorderCard>
+        </div>
 
         <div className="mb-8 flex justify-center">
           <RecipeCollage variant="grid" />
