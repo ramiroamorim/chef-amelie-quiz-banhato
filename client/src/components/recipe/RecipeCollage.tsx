@@ -1,6 +1,6 @@
 import React from 'react';
-import recipesCollageImage from '@/assets/images/recipes-grid-collage.png';
-import recipeBookCollageImage from '@/assets/images/recipe-book-collage.png';
+import recipesCollageImage from '@/assets/images/recipes/recipes-grid-collage.png';
+import recipeBookCollageImage from '@/assets/images/recipes/recipe-book-collage.png';
 
 interface RecipeCollageProps {
   variant?: 'grid' | 'book';

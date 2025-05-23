@@ -4,9 +4,9 @@
  */
 
 import { QuizStepType } from "@/types/quiz";
-import recipeMainImage from '@/assets/images/recipes-main.png';
-import recipeGridImage from '@/assets/images/recipes-grid.png';
-import chefAmelieImage from '@/assets/images/chef-amelie.png';
+import recipeMainImage from '@/assets/images/recipes/recipes-main.png';
+import recipeGridImage from '@/assets/images/recipes/recipes-grid.png';
+import chefAmelieImage from '@/assets/images/chef/chef-amelie.png';
 
 export const quizSteps: QuizStepType[] = [
   // Step 0 - Landing Page

@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
 
 // Importação das imagens dos testemunhos
-import testimonialImage1 from '@/assets/images/testimonial1.png';
-import testimonialImage2 from '@/assets/images/testimonial2.png';
-import testimonialImage3 from '@/assets/images/testimonial3.png';
-import testimonialImage4 from '@/assets/images/testimonial4.png';
-import recipeMainImage from '@/assets/images/recipes-main.png';
+import testimonialImage1 from '@/assets/images/testimonials/testimonial1.png';
+import testimonialImage2 from '@/assets/images/testimonials/testimonial2.png';
+import testimonialImage3 from '@/assets/images/testimonials/testimonial3.png';
+import testimonialImage4 from '@/assets/images/testimonials/testimonial4.png';
+import recipeMainImage from '@/assets/images/recipes/recipes-main.png';
 
 // Array com as imagens importadas
 const testimonialImages = [

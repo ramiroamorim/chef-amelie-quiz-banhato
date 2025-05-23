@@ -1,5 +1,5 @@
 import React from 'react';
-import recipeBookImage from '@/assets/images/recipe-book.png';
+import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 
 /**
  * Componente simples para exibir a grade de receitas do Chef Amélie
