@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { RecipeGrid } from "@/components/recipe/RecipeGrid";
+import { RecipeCollage } from "@/components/recipe/RecipeCollage";
 import { LINKS, COLORS, TEXTS } from "@/config";
 
 // Componente de botão pulsante verde
@@ -48,9 +49,9 @@ export default function SalesPage() {
   const buyUrl = LINKS.SALES.BUY_URL;
 
   // Componentes reutilizáveis para diversos elementos da página
-  const RecipeContainer = () => (
-    <div className="max-w-[500px] w-full mx-auto">
-      <RecipeGrid />
+  const RecipeContainer = ({ variant = 'grid' }: { variant?: 'grid' | 'book' }) => (
+    <div className="max-w-[700px] w-full mx-auto">
+      {variant === 'book' ? <RecipeGrid /> : <RecipeCollage variant="grid" />}
     </div>
   );
   
@@ -88,7 +89,7 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeContainer />
+          <RecipeContainer variant="grid" />
         </div>
 
         <ColorBorderCard bgColor="#F1F9F1" borderColor="#4CAF50">
@@ -120,7 +121,7 @@ export default function SalesPage() {
         </ColorBorderCard>
 
         <div className="mb-8 flex justify-center">
-          <RecipeContainer />
+          <RecipeCollage variant="grid" />
         </div>
 
         <ColorBorderCard bgColor="#F5F9FF" borderColor="#2196F3">
@@ -161,13 +162,13 @@ export default function SalesPage() {
         </div>
 
         <div className="mb-8 flex justify-center">
-          <RecipeContainer />
+          <RecipeContainer variant="book" />
         </div>
 
         <PriceSection buyUrl={buyUrl} />
 
         <div className="mb-8 flex justify-center">
-          <RecipeContainer />
+          <RecipeCollage variant="book" />
         </div>
 
         <PriceSection buyUrl={buyUrl} />
