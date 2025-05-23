@@ -3,6 +3,7 @@ import React from "react";
 import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { RecipeCollage } from "@/components/recipe/RecipeCollage";
 import { LINKS, COLORS, TEXTS } from "@/config";
+import recipeBookImage from '@/assets/images/recipe-book.png';
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -168,7 +169,13 @@ export default function SalesPage() {
         <PriceSection buyUrl={buyUrl} />
 
         <div className="mb-8 flex justify-center">
-          <RecipeCollage variant="book" />
+          <div className="max-w-[700px] w-full mx-auto p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <img 
+              src={recipeBookImage} 
+              alt="500 Recettes Délicieuses Sans Gluten, Sans Sucre, Sans Lactose"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
         </div>
 
         <PriceSection buyUrl={buyUrl} />
