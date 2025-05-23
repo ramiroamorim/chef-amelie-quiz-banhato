@@ -23,6 +23,10 @@ import testimonial2 from './images/testimonials/testimonial2.png';
 import testimonial3 from './images/testimonials/testimonial3.png';
 import testimonial4 from './images/testimonials/testimonial4.png';
 
+// Thank You Page Images
+import thankYouPage from './images/thank-you/thank-you-page.png';
+import audioPreview from './images/thank-you/audio-preview.png';
+
 // Export por categoria para organização
 export const ChefImages = {
   profile: chefProfile,
@@ -45,18 +49,32 @@ export const TestimonialImages = {
   testimonial4
 };
 
+export const ThankYouImages = {
+  page: thankYouPage,
+  audioPreview: audioPreview
+};
+
 // Exportação plana para compatibilidade com código existente
 export {
+  // Chef Images
   chefProfile,
   chefAmelie,
+  
+  // Recipe Images
   recipeBook,
   recipeCollage,
   recipesGrid,
   recipesGridCollage,
   recipesMain,
   recipes,
+  
+  // Testimonial Images
   testimonial1,
   testimonial2,
   testimonial3,
-  testimonial4
+  testimonial4,
+  
+  // Thank You Page Images
+  thankYouPage,
+  audioPreview
 };

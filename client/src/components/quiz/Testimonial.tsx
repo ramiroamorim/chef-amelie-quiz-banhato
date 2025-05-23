@@ -2,19 +2,15 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "@/assets/icons";
 
-// Importação das imagens dos testemunhos
-import testimonialImage1 from '@/assets/images/testimonials/testimonial1.png';
-import testimonialImage2 from '@/assets/images/testimonials/testimonial2.png';
-import testimonialImage3 from '@/assets/images/testimonials/testimonial3.png';
-import testimonialImage4 from '@/assets/images/testimonials/testimonial4.png';
-import recipeMainImage from '@/assets/images/recipes/recipes-main.png';
+// Importação das imagens de forma centralizada
+import { TestimonialImages, RecipeImages } from "@/assets/imageExports";
 
 // Array com as imagens importadas
 const testimonialImages = [
-  testimonialImage1,
-  testimonialImage2,
-  testimonialImage3,
-  testimonialImage4
+  TestimonialImages.testimonial1,
+  TestimonialImages.testimonial2,
+  TestimonialImages.testimonial3,
+  TestimonialImages.testimonial4
 ];
 
 // Usamos o tipo importado da pasta centralizada
@@ -128,7 +124,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
-                      target.src = recipeMainImage;
+                      target.src = RecipeImages.main;
                     }}
                   />
                 </div>

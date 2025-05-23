@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
-import chefProfileImg from "@/assets/images/chef/chef-profile.png";
+import { ChefImages, ThankYouImages } from "@/assets/imageExports";
 
 export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -71,7 +71,7 @@ export default function ThankYou() {
             <div className="flex items-center justify-between">
               <p className="font-medium text-[#B34431]">Chef Amélie Dupont</p>
               <img 
-                src={chefProfileImg} 
+                src={ChefImages.profile} 
                 alt="Chef Amélie Dupont" 
                 className="h-10 w-10 rounded-full object-cover"
               />
