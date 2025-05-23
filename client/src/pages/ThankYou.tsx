@@ -69,11 +69,12 @@ export default function ThankYou() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <p className="font-medium text-[#B34431]">Chef Amélie Dupont</p>
-              <img 
-                src="/images/recipes.png" 
-                alt="Chef Amélie Dupont" 
-                className="h-10 w-10 rounded-full object-cover"
-              />
+              <div 
+                className="h-10 w-10 rounded-full bg-[#B34431] text-white flex items-center justify-center text-sm font-bold"
+                title="Chef Amélie Dupont"
+              >
+                AD
+              </div>
             </div>
             
             <div className="flex items-center mt-4">
