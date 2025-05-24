@@ -18,7 +18,7 @@ export default function QuizApp() {
   } = useQuiz(quizSteps.length);
 
   return (
-    <div className="min-h-screen px-4 py-8">
+    <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-6 md:py-8 flex flex-col">
       {/* Progress Dots - only show during actual quiz, not on landing or sales page */}
       {currentStep > 0 && !showResult && !showSalesPage && (
         <ProgressDots 
@@ -28,7 +28,7 @@ export default function QuizApp() {
       )}
 
       {/* Quiz Container */}
-      <div className="quiz-container slide-transition">
+      <div className="quiz-container slide-transition flex-1 flex flex-col justify-center">
         {/* Quiz Steps */}
         {quizSteps.map((step, index) => (
           <QuizStep

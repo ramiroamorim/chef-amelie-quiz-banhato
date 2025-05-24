@@ -28,11 +28,11 @@ export default function QuizStep({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="quiz-step landing-page text-center"
+        className="quiz-step landing-page text-center px-2 sm:px-4"
       >
         {/* Title */}
         {step.title && (
-          <h1>{step.title}</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl">{step.title}</h1>
         )}
 
         {/* Text Blocks */}
@@ -41,7 +41,7 @@ export default function QuizStep({
             {step.textBlocks.map((text, i) => (
               <p 
                 key={i} 
-                className={text.highlight ? "text-primary font-medium" : ""}
+                className={text.highlight ? "text-primary font-medium text-sm sm:text-base md:text-lg" : "text-sm sm:text-base md:text-lg"}
                 dangerouslySetInnerHTML={{ __html: text.content }}
               />
             ))}
@@ -50,7 +50,7 @@ export default function QuizStep({
 
         {/* Image - Food images grid */}
         {step.image && (
-          <div className="my-8 max-w-md mx-auto">
+          <div className="my-5 sm:my-6 md:my-8 max-w-md mx-auto">
             <img 
               src={step.image} 
               alt={step.imageAlt || ""} 
@@ -60,13 +60,13 @@ export default function QuizStep({
         )}
         
         {/* Down arrow indicator */}
-        <div className="arrow-down">▼</div>
+        <div className="arrow-down text-2xl sm:text-3xl">▼</div>
 
         {/* Button with pulse animation */}
         {step.buttonText && (
-          <div className="relative w-full md:w-auto md:mx-auto mt-4 mb-6">
+          <div className="relative w-full sm:w-auto sm:mx-auto mt-3 sm:mt-4 mb-4 sm:mb-6">
             <button 
-              className="btn-primary btn-pulse w-full md:w-auto md:px-16 py-5 font-medium text-lg mx-auto block"
+              className="btn-primary btn-pulse w-full sm:w-auto sm:px-12 md:px-16 py-3 sm:py-4 md:py-5 font-medium text-base sm:text-lg mx-auto block"
               onClick={onNextStep}
             >
               {step.buttonText}
@@ -114,12 +114,12 @@ export default function QuizStep({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="quiz-step"
+      className="quiz-step px-2 sm:px-4"
     >
       {/* Title */}
       {step.title && (
         <h2 
-          className="text-xl md:text-2xl font-medium mb-6 text-center"
+          className="text-lg sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center"
           dangerouslySetInnerHTML={{ __html: step.title }}
         />
       )}
@@ -127,7 +127,7 @@ export default function QuizStep({
       {/* Description */}
       {step.description && (
         <p 
-          className="text-center mb-6" 
+          className="text-sm sm:text-base text-center mb-4 sm:mb-6" 
           dangerouslySetInnerHTML={{ __html: step.description }}
         />
       )}
@@ -137,13 +137,13 @@ export default function QuizStep({
         <img 
           src={step.image} 
           alt={step.imageAlt || ""} 
-          className="w-full h-auto rounded-xl mb-4"
+          className="w-full h-auto rounded-xl mb-3 sm:mb-4"
         />
       )}
 
       {/* Image Grid */}
       {step.imageGrid && (
-        <div className="flex justify-center my-6">
+        <div className="flex justify-center my-4 sm:my-6">
           {step.imageGrid.map((img, i) => (
             <img 
               key={i}
@@ -157,11 +157,11 @@ export default function QuizStep({
 
       {/* Text Blocks */}
       {step.textBlocks && (
-        <div className="space-y-4 text-[#555555]">
+        <div className="space-y-3 sm:space-y-4 text-[#555555]">
           {step.textBlocks.map((text, i) => (
             <p 
               key={i} 
-              className={text.highlight ? "text-primary font-medium" : ""}
+              className={text.highlight ? "text-primary font-medium text-sm sm:text-base" : "text-sm sm:text-base"}
               dangerouslySetInnerHTML={{ __html: text.content }}
             />
           ))}
@@ -170,7 +170,7 @@ export default function QuizStep({
 
       {/* Options */}
       {step.options && (
-        <div className="space-y-4 mt-8">
+        <div className="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
           {step.options.map((option, i) => (
             <RadioOption 
               key={i}
@@ -185,7 +185,7 @@ export default function QuizStep({
 
       {/* Button for steps without options (like step 4) */}
       {step.buttonText && !step.options && (
-        <div className="relative w-full mt-6">
+        <div className="relative w-full mt-4 sm:mt-6">
           <div className="absolute inset-0 rounded-full opacity-30" 
             style={{
               background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
@@ -193,7 +193,7 @@ export default function QuizStep({
             }}
           ></div>
           <button 
-            className="btn-primary relative w-full py-4 px-8 flex items-center justify-center z-10" 
+            className="btn-primary relative w-full py-3 sm:py-4 px-6 sm:px-8 flex items-center justify-center z-10 text-sm sm:text-base" 
             onClick={onNextStep}
           >
             <span>{step.buttonText}</span>

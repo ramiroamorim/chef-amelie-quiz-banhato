@@ -135,25 +135,25 @@ export default function SalesPage() {
 
 
         {/* Bonus exclusifs section */}
-        <div className="mb-6 p-4 rounded-md border-l-4 bg-[#FFF8E8] border-[#FF9800]">
-          <h2 className="text-lg font-bold text-[#FF9800] mb-2">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
+        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF8E8] border-[#FF9800]">
+          <h2 className="text-base sm:text-lg font-bold text-[#FF9800] mb-1.5 sm:mb-2">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
-          <ul className="list-none pl-0 space-y-3 text-sm">
+          <ul className="list-none pl-0 space-y-2 sm:space-y-3 text-xs sm:text-sm">
             <li>
               <p className="font-bold">🎁 Bonus 1 : Guide de substitutions intelligentes</p>
-              <p className="ml-5">Remplacez sucre, farine ou lait sans perdre le goût.</p>
+              <p className="ml-3 sm:ml-5">Remplacez sucre, farine ou lait sans perdre le goût.</p>
             </li>
             <li>
               <p className="font-bold">🎁 Bonus 2 : Carte de satiété naturelle</p>
-              <p className="ml-5">Construisez des assiettes qui rassasient sans excès.</p>
+              <p className="ml-3 sm:ml-5">Construisez des assiettes qui rassasient sans excès.</p>
             </li>
             <li>
               <p className="font-bold">🎁 Bonus 3 : Protocole intestin + glycémie</p>
-              <p className="ml-5">Améliorez votre digestion et votre énergie au quotidien.</p>
+              <p className="ml-3 sm:ml-5">Améliorez votre digestion et votre énergie au quotidien.</p>
             </li>
             <li>
               <p className="font-bold">🎁 Bonus 4 : Liste de courses intelligente</p>
-              <p className="ml-5">Gagnez du temps avec des produits simples, testés, validés.</p>
+              <p className="ml-3 sm:ml-5">Gagnez du temps avec des produits simples, testés, validés.</p>
             </li>
           </ul>
         </div>
@@ -164,7 +164,7 @@ export default function SalesPage() {
         <PriceSection buyUrl={buyUrl} />
 
         {/* Duas imagens de testemunhos/mensagens */}
-        <div className="mb-6 space-y-4">
+        <div className="mb-5 sm:mb-6 space-y-3 sm:space-y-4">
           <div className="border border-gray-200 rounded-md overflow-hidden">
             <img 
               src={TestimonialImages.bread} 
@@ -186,9 +186,9 @@ export default function SalesPage() {
         <PriceSection buyUrl={buyUrl} />
 
         {/* Assinatura da Chef */}
-        <div className="text-center mb-4">
-          <p className="mb-2 text-sm">Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
-          <p className="font-medium italic text-sm">Cheffe Amélie Dupont</p>
+        <div className="text-center mb-3 sm:mb-4">
+          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm">Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
+          <p className="font-medium italic text-xs sm:text-sm">Cheffe Amélie Dupont</p>
         </div>
       </div>
     </div>
