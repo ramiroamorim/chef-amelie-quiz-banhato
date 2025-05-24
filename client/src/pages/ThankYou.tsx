@@ -4,9 +4,75 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Importamos o arquivo de áudio diretamente no HTML em vez de carregá-lo via JavaScript
-// para garantir melhor compatibilidade e pré-carregamento
+// Definição do caminho do arquivo de áudio
 const AUDIO_SRC = "/audio/message.wav";
+
+// Componente de áudio simplificado
+const SimpleAudioPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => {
+          console.log("Erro ao reproduzir: reprodução automática bloqueada ou arquivo não disponível");
+        });
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+  
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    
+    const handleEnded = () => setIsPlaying(false);
+    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => setIsPlaying(true);
+    
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("play", handlePlay);
+    
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("play", handlePlay);
+    };
+  }, []);
+  
+  return (
+    <div className="flex flex-col items-center w-full mb-5">
+      <audio 
+        ref={audioRef} 
+        src={AUDIO_SRC} 
+        preload="auto"
+        style={{ display: 'none' }} 
+      />
+      <button 
+        onClick={togglePlay}
+        className="bg-[#2476c7] hover:bg-[#1c64a9] text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {isPlaying ? (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="4" height="16" fill="white"/>
+            <rect x="14" y="4" width="4" height="16" fill="white"/>
+          </svg>
+        ) : (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 5V19L19 12L8 5Z" fill="white"/>
+          </svg>
+        )}
+      </button>
+      <p className="text-sm text-gray-500">
+        {isPlaying ? "Lecture en cours..." : "Cliquez pour écouter le message d'Amélie"}
+      </p>
+    </div>
+  );
+};
 
 export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -172,13 +238,17 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio nativo (invisível) para melhor compatibilidade */}
-            <audio 
-              ref={audioRef}
-              src={AUDIO_SRC}
-              preload="auto"
-              style={{ display: 'none' }}
-            />
+            {/* Elemento de áudio nativo com controles nativos do navegador */}
+            <div className="w-full mb-4">
+              <audio 
+                ref={audioRef}
+                src={AUDIO_SRC}
+                preload="auto"
+                controls
+                controlsList="nodownload"
+                className="w-full"
+              />
+            </div>
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
