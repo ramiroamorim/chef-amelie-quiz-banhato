@@ -51,10 +51,19 @@ export default function SalesPage() {
       <div className="max-w-[500px] mx-auto px-3 sm:px-4 py-6 sm:py-8 text-[#333]">
         {/* Cabeçalho da página */}
         <div className="bg-[#FFF8F5] p-4 sm:p-6 rounded-md mb-6 sm:mb-8">
-          <h1 className="text-lg sm:text-xl font-normal text-[#B34431] mb-2 sm:mb-3">
-            <span className="block">500 recettes sans sucre, sans gluten et sans lactose</span>
-            <span className="block mt-1 sm:mt-2">qui nourrissent, font mincir avec plaisir</span>
-            <span className="block mt-1 sm:mt-2">et rééquilibrent votre corps.</span>
+          <h1 style={{ 
+            fontFamily: "'Times New Roman', serif", 
+            fontStyle: "italic",
+            color: "#B34431",
+            fontSize: "1.5rem",
+            lineHeight: "1.4",
+            marginBottom: "1rem"
+          }}>
+            <span className="block">500 recettes sans sucre, sans</span>
+            <span className="block">gluten et sans lactose</span>
+            <span className="block">qui nourrissent, font mincir</span>
+            <span className="block">avec plaisir</span>
+            <span className="block">et rééquilibrent votre corps.</span>
           </h1>
 
           <div className="mt-3 sm:mt-4">
