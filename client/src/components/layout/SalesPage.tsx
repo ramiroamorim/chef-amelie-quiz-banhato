@@ -15,7 +15,7 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
         href={href}
         target="_blank" 
         rel="noopener noreferrer"
-        className="relative inline-block w-full md:w-auto py-4 px-10 text-lg font-bold rounded-full text-white"
+        className="relative inline-block w-full py-3 sm:py-4 px-6 sm:px-10 text-base sm:text-lg font-bold rounded-full text-white"
         style={{ 
           background: "#57C084",
           boxShadow: `0 4px 10px rgba(87, 192, 132, 0.3)`
@@ -29,16 +29,16 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
 
 // Componente para exibir a seção de preço e botão de compra
 const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
-  <div className="py-6 px-6 text-center mb-8 bg-[#FFF5F5] rounded-lg border border-[#FFE5E5]">
-    <p className="mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
-    <p className="text-2xl font-bold text-[#B34431] mb-4">Aujourd'hui : seulement 17€</p>
-    <p className="font-bold text-[#F44336] mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
+  <div className="py-5 sm:py-6 px-4 sm:px-6 text-center mb-6 sm:mb-8 bg-[#FFF5F5] rounded-lg border border-[#FFE5E5]">
+    <p className="text-sm sm:text-base mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
+    <p className="text-xl sm:text-2xl font-bold text-[#B34431] mb-3 sm:mb-4">Aujourd'hui : seulement 17€</p>
+    <p className="text-sm sm:text-base font-bold text-[#F44336] mb-4 sm:mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
     
     <GreenPulseButton href={buyUrl}>
       JE VEUX LE PACK POUR 17€
     </GreenPulseButton>
     
-    <p className="text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
+    <p className="text-xs sm:text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
   </div>
 );
 
@@ -48,18 +48,18 @@ export default function SalesPage() {
   
   return (
     <div className="bg-white min-h-screen">
-      <div className="max-w-[500px] mx-auto px-4 py-8 text-[#333]">
+      <div className="max-w-[500px] mx-auto px-3 sm:px-4 py-6 sm:py-8 text-[#333]">
         {/* Cabeçalho da página */}
-        <div className="bg-[#FFF8F5] p-6 rounded-md mb-8">
-          <h1 className="text-xl font-normal text-[#B34431] mb-3">
+        <div className="bg-[#FFF8F5] p-4 sm:p-6 rounded-md mb-6 sm:mb-8">
+          <h1 className="text-lg sm:text-xl font-normal text-[#B34431] mb-2 sm:mb-3">
             <span className="block">500 recettes sans sucre, sans gluten et sans lactose</span>
-            <span className="block mt-2">qui nourrissent, font mincir avec plaisir</span>
-            <span className="block mt-2">et rééquilibrent votre corps.</span>
+            <span className="block mt-1 sm:mt-2">qui nourrissent, font mincir avec plaisir</span>
+            <span className="block mt-1 sm:mt-2">et rééquilibrent votre corps.</span>
           </h1>
 
-          <div className="mt-4">
-            <p className="mb-2 text-sm">Pas de régime à la mode. Pas d'ingrédients impossibles à trouver. Pas de plats tristes.</p>
-            <p className="mb-2 text-sm">Seulement une cuisine <strong>vraie, savoureuse et libératrice</strong> — pour les femmes avec des restrictions qui veulent encore <strong>se régaler sans peur.</strong></p>
+          <div className="mt-3 sm:mt-4">
+            <p className="mb-2 text-xs sm:text-sm">Pas de régime à la mode. Pas d'ingrédients impossibles à trouver. Pas de plats tristes.</p>
+            <p className="mb-2 text-xs sm:text-sm">Seulement une cuisine <strong>vraie, savoureuse et libératrice</strong> — pour les femmes avec des restrictions qui veulent encore <strong>se régaler sans peur.</strong></p>
           </div>
         </div>
 
@@ -73,9 +73,9 @@ export default function SalesPage() {
         </div>
 
         {/* Pour qui c'est: section */}
-        <div className="mb-6 p-4 rounded-md border-l-4 bg-[#F1F9F1] border-[#57C084]">
-          <h3 className="text-lg font-bold text-[#57C084] mb-2">💚 Pour qui c'est:</h3>
-          <ul className="list-none pl-1 space-y-2 text-sm">
+        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F1F9F1] border-[#57C084]">
+          <h3 className="text-base sm:text-lg font-bold text-[#57C084] mb-1.5 sm:mb-2">💚 Pour qui c'est:</h3>
+          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
             <li>🌿 Femmes avec intolérances (gluten, lactose, sucre)</li>
             <li>🥗 Celles qui veulent mincir sans frustration</li>
             <li>😩 Celles fatiguées des plats tristes et sans goût</li>
@@ -84,9 +84,9 @@ export default function SalesPage() {
         </div>
 
         {/* Pour qui ce n'est pas: section */}
-        <div className="mb-6 p-4 rounded-md border-l-4 bg-[#FFF5F5] border-[#F44336]">
-          <h3 className="text-lg font-bold text-[#F44336] mb-2">🚫 Pour qui ce n'est pas:</h3>
-          <ul className="list-none pl-1 space-y-2 text-sm">
+        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF5F5] border-[#F44336]">
+          <h3 className="text-base sm:text-lg font-bold text-[#F44336] mb-1.5 sm:mb-2">🚫 Pour qui ce n'est pas:</h3>
+          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
             <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
             <li>🧪 Celles qui cherchent une solution magique</li>
             <li>🌀 Celles qui préfèrent rester dans le désordre</li>
@@ -95,23 +95,23 @@ export default function SalesPage() {
         </div>
 
         {/* Recettes exclusives section */}
-        <div className="bg-[#FFF8F5] p-4 rounded-md mb-6 text-center">
-          <p className="text-[#B34431] font-semibold mb-2 text-lg italic">Vous ne trouverez pas ces recettes sur Google.</p>
-          <p className="text-[#333333] text-sm">
+        <div className="bg-[#FFF8F5] p-3 sm:p-4 rounded-md mb-5 sm:mb-6 text-center">
+          <p className="text-[#B34431] font-semibold mb-1.5 sm:mb-2 text-base sm:text-lg italic">Vous ne trouverez pas ces recettes sur Google.</p>
+          <p className="text-[#333333] text-xs sm:text-sm">
             Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-semibold">apaiser, nourrir</span>... et redonner du <span className="font-semibold">plaisir</span> à celles qui avaient renoncé.
           </p>
         </div>
         
         {/* Texto adicional conforme a referência */}
-        <div className="mb-6 text-center">
-          <p className="mb-2 text-sm">Ce n'est pas un régime.</p>
-          <p className="mb-2 text-sm">Ce n'est pas une promesse vide.</p>
-          <p className="mb-4 text-sm">C'est un raccourci vers ce que vous vouliez depuis des années : <strong>manger avec plaisir, sans douleur.</strong></p>
-          <p className="mb-2 text-sm">Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.</p>
+        <div className="mb-5 sm:mb-6 text-center">
+          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm">Ce n'est pas un régime.</p>
+          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm">Ce n'est pas une promesse vide.</p>
+          <p className="mb-3 sm:mb-4 text-xs sm:text-sm">C'est un raccourci vers ce que vous vouliez depuis des années : <strong>manger avec plaisir, sans douleur.</strong></p>
+          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm">Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.</p>
         </div>
 
         {/* Imagem do livro de receitas */}
-        <div className="mb-6 border border-gray-200 rounded-md overflow-hidden">
+        <div className="mb-5 sm:mb-6 border border-gray-200 rounded-md overflow-hidden">
           <img 
             src={RecipeImages.book} 
             alt="Livre de recettes Chef Amélie Dupont"
@@ -120,11 +120,11 @@ export default function SalesPage() {
         </div>
 
         {/* Ce que vous allez recevoir section */}
-        <div className="mb-6 p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
-          <h2 className="text-lg font-bold text-[#2196F3] mb-2">📦 Ce que vous allez recevoir :</h2>
-          <p className="mb-2 text-sm">Un accès à <span className="text-[#B34431] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
+        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
+          <h2 className="text-base sm:text-lg font-bold text-[#2196F3] mb-1.5 sm:mb-2">📦 Ce que vous allez recevoir :</h2>
+          <p className="mb-2 text-xs sm:text-sm">Un accès à <span className="text-[#B34431] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
           
-          <ul className="list-none pl-1 mb-2 space-y-3 text-sm">
+          <ul className="list-none pl-1 mb-2 space-y-2 sm:space-y-3 text-xs sm:text-sm">
             <li>🍽️ <span className="text-[#B34431] font-bold">100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
             <li>🥦 <span className="text-[#B34431] font-bold">300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
             <li>🍫 <span className="text-[#B34431] font-bold">100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
