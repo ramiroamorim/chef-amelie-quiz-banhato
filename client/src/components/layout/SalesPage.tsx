@@ -99,15 +99,31 @@ export default function SalesPage() {
             <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
             <li>🧪 Celles qui cherchent une solution magique</li>
             <li>🌀 Celles qui préfèrent rester dans le désordre</li>
-            <li>🍕 Celles qui refusent de cuisiner même un minimum</li>
+            <li style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>🍕 Celles qui refusent de cuisiner même un minimum</li>
           </ul>
         </div>
 
         {/* Recettes exclusives section */}
-        <div className="bg-[#FFF8F5] p-3 sm:p-4 rounded-md mb-5 sm:mb-6 text-center">
-          <p className="text-[#B34431] font-semibold mb-1.5 sm:mb-2 text-base sm:text-lg italic">Vous ne trouverez pas ces recettes sur Google.</p>
-          <p className="text-[#333333] text-xs sm:text-sm">
-            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-semibold">apaiser, nourrir</span>... et redonner du <span className="font-semibold">plaisir</span> à celles qui avaient renoncé.
+        <div className="bg-[#FFF8F5] p-3 sm:p-4 rounded-md mb-5 sm:mb-6 text-center border-l-4 border-[#B34431]">
+          <p style={{ 
+            fontFamily: "'Times New Roman', serif", 
+            fontStyle: "italic",
+            color: "#B34431",
+            fontSize: "1.25rem",
+            lineHeight: "1.3",
+            marginBottom: "0.75rem",
+            textAlign: "center"
+          }}>
+            Vous ne trouverez pas ces recettes sur Google.
+          </p>
+          <p style={{ 
+            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            fontSize: "0.9rem",
+            lineHeight: "1.4",
+            textAlign: "center",
+            color: "#333333"
+          }}>
+            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span style={{ fontWeight: "600" }}>apaiser, nourrir</span>... et redonner du <span style={{ fontWeight: "600" }}>plaisir</span> à celles qui avaient renoncé.
           </p>
         </div>
         
