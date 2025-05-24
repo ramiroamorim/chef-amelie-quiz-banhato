@@ -80,7 +80,25 @@
 /* Custom components */
 @layer components {
   .quiz-container {
-    @apply max-w-[600px] mx-auto transition-all duration-300 ease-in-out;
+    @apply max-w-[600px] mx-auto transition-all duration-300 ease-in-out h-full;
+  }
+  
+  @media (max-height: 700px) {
+    .quiz-container {
+      @apply py-2;
+    }
+    
+    .landing-page h1 {
+      @apply mb-3 text-2xl;
+    }
+    
+    .landing-page .text-blocks {
+      @apply mb-4 space-y-3;
+    }
+    
+    .landing-page .arrow-down {
+      @apply my-2;
+    }
   }
 
   .btn-primary {
@@ -201,7 +219,7 @@
   }
 
   .radio-option {
-    @apply block w-full rounded-full p-4 cursor-pointer border border-gray-200 transition-all duration-200 ease-in-out hover:border-primary hover:bg-[#FEF8F6];
+    @apply block w-full rounded-full p-3 sm:p-4 cursor-pointer border border-gray-200 transition-all duration-200 ease-in-out hover:border-primary hover:bg-[#FEF8F6];
   }
 
   .radio-option input:checked ~ .radio-checkmark:after {
@@ -209,12 +227,24 @@
   }
 
   .radio-checkmark:after {
-    @apply hidden absolute top-[4px] left-[4px] w-2 h-2 rounded-full bg-primary;
+    @apply hidden absolute rounded-full bg-primary;
     content: "";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+  }
+  
+  @media (max-width: 640px) {
+    .radio-checkmark:after {
+      width: 6px;
+      height: 6px;
+    }
   }
 
   .testimonial {
-    @apply relative bg-white rounded-xl p-4;
+    @apply relative bg-white rounded-xl p-2 sm:p-4;
   }
   
   /* Modern carousel styling */
@@ -223,6 +253,16 @@
     box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+  }
+  
+  @media (max-height: 700px) {
+    .testimonial-wrapper {
+      @apply py-2;
+    }
+    
+    .testimonial-content {
+      min-height: 320px !important;
+    }
   }
   
   .image-container {
