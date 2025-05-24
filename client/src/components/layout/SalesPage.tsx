@@ -52,12 +52,13 @@ export default function SalesPage() {
         {/* Cabeçalho da página */}
         <div className="bg-[#FFF8F5] p-4 sm:p-6 rounded-md mb-6 sm:mb-8">
           <h1 style={{ 
-            fontFamily: "'Times New Roman', serif", 
+            fontFamily: "Georgia, 'Times New Roman', serif", 
             fontStyle: "italic",
             color: "#B34431",
             fontSize: "1.5rem",
             lineHeight: "1.4",
-            marginBottom: "1rem"
+            marginBottom: "1rem",
+            fontWeight: "normal"
           }}>
             <span className="block">500 recettes sans sucre, sans</span>
             <span className="block">gluten et sans lactose</span>
@@ -93,37 +94,67 @@ export default function SalesPage() {
         </div>
 
         {/* Pour qui ce n'est pas: section */}
-        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF5F5] border-[#F44336]">
-          <h3 className="text-base sm:text-lg font-bold text-[#F44336] mb-1.5 sm:mb-2">🚫 Pour qui ce n'est pas:</h3>
-          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+        <div style={{
+          backgroundColor: "#FFF5F5",
+          marginBottom: "20px",
+          padding: "14px 16px",
+          borderRadius: "8px",
+          borderLeft: "4px solid #F44336"
+        }}>
+          <h3 style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: "700",
+            color: "#F44336",
+            marginBottom: "10px"
+          }}>🚫 Pour qui ce n'est pas:</h3>
+          <ul style={{
+            listStyle: "none",
+            padding: "0 0 0 4px",
+            margin: "0",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8"
+          }}>
             <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
             <li>🧪 Celles qui cherchent une solution magique</li>
             <li>🌀 Celles qui préfèrent rester dans le désordre</li>
-            <li style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>🍕 Celles qui refusent de cuisiner même un minimum</li>
+            <li style={{ 
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+              fontSize: "0.95rem"
+            }}>🍕 Celles qui refusent de cuisiner même un minimum</li>
           </ul>
         </div>
 
         {/* Recettes exclusives section */}
-        <div className="bg-[#FFF8F5] p-3 sm:p-4 rounded-md mb-5 sm:mb-6 text-center border-l-4 border-[#B34431]">
+        <div style={{
+          backgroundColor: "#FFF8F5", 
+          padding: "16px",
+          marginBottom: "20px",
+          borderRadius: "8px",
+          borderLeft: "4px solid #B34431"
+        }}>
           <p style={{ 
-            fontFamily: "'Times New Roman', serif", 
+            fontFamily: "Georgia, serif", 
             fontStyle: "italic",
             color: "#B34431",
             fontSize: "1.25rem",
             lineHeight: "1.3",
-            marginBottom: "0.75rem",
-            textAlign: "center"
+            marginBottom: "12px",
+            textAlign: "center",
+            fontWeight: "normal"
           }}>
             Vous ne trouverez pas ces recettes sur Google.
           </p>
           <p style={{ 
-            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-            fontSize: "0.9rem",
-            lineHeight: "1.4",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.5",
             textAlign: "center",
-            color: "#333333"
+            color: "#333333",
+            margin: "0"
           }}>
-            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span style={{ fontWeight: "600" }}>apaiser, nourrir</span>... et redonner du <span style={{ fontWeight: "600" }}>plaisir</span> à celles qui avaient renoncé.
+            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span style={{ fontWeight: "700" }}>apaiser, nourrir</span>... et redonner du <span style={{ fontWeight: "700" }}>plaisir</span> à celles qui avaient renoncé.
           </p>
         </div>
         
