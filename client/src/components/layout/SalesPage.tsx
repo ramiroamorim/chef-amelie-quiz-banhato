@@ -93,22 +93,38 @@ export default function SalesPage() {
         </div>
 
         {/* Pour qui ce n'est pas: section */}
-        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF5F5] border-[#F44336]">
-          <h3 className="text-base sm:text-lg font-bold text-[#F44336] mb-1.5 sm:mb-2">🚫 Pour qui ce n'est pas:</h3>
-          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
-            <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
-            <li>🧪 Celles qui cherchent une solution magique</li>
-            <li>🌀 Celles qui préfèrent rester dans le désordre</li>
-            <li>🍕 Celles qui refusent de cuisiner même un minimum</li>
-          </ul>
+        <div className="mb-5 sm:mb-6 rounded-md bg-[#FFF5F5] overflow-hidden">
+          <div className="border-l-4 border-[#B34431] h-full p-3 sm:p-4">
+            <h3 className="text-base sm:text-lg font-bold text-[#B34431] mb-1.5 sm:mb-2">🚫 Pour qui ce n'est pas:</h3>
+            <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              <li>🙅‍♀️ Celles qui ne veulent pas changer leurs habitudes</li>
+              <li>🧪 Celles qui cherchent une solution magique</li>
+              <li>🌀 Celles qui préfèrent rester dans le désordre</li>
+              <li className="flex items-start">
+                <span className="mr-2">🍕</span>
+                <span>Celles qui refusent de cuisiner même un minimum</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Recettes exclusives section */}
-        <div className="bg-[#FFF8F5] p-3 sm:p-4 rounded-md mb-5 sm:mb-6 text-center">
-          <p className="text-[#B34431] font-semibold mb-1.5 sm:mb-2 text-base sm:text-lg italic">Vous ne trouverez pas ces recettes sur Google.</p>
-          <p className="text-[#333333] text-xs sm:text-sm">
-            Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-semibold">apaiser, nourrir</span>... et redonner du <span className="font-semibold">plaisir</span> à celles qui avaient renoncé.
-          </p>
+        <div className="mb-5 sm:mb-6 rounded-md bg-[#FFF8F5] overflow-hidden">
+          <div className="border-l-4 border-[#B34431] h-full p-3 sm:p-4">
+            <p style={{ 
+              fontFamily: "'Times New Roman', serif", 
+              fontStyle: "italic",
+              color: "#B34431",
+              fontSize: "1.25rem",
+              textAlign: "center",
+              marginBottom: "0.75rem"
+            }}>
+              Vous ne trouverez pas ces recettes sur Google.
+            </p>
+            <p className="text-[#333333] text-sm text-center">
+              Elles sont nées dans la vraie cuisine d'Amélie — pas sur Pinterest, ni dans un blog copié-collé. Chaque plat a été pensé pour <span className="font-bold">apaiser, nourrir</span>... et redonner du <span className="font-bold">plaisir</span> à celles qui avaient renoncé.
+            </p>
+          </div>
         </div>
         
         {/* Texto adicional conforme a referência */}
