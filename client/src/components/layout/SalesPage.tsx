@@ -339,9 +339,23 @@ export default function SalesPage() {
         <PriceSection buyUrl={buyUrl} />
 
         {/* Assinatura da Chef */}
-        <div className="text-center mb-3 sm:mb-4">
-          <p style={{ fontSize: "1.05rem", marginBottom: "0.75rem" }}>Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
-          <p style={{ fontSize: "1.05rem", fontStyle: "italic", fontWeight: "500" }}>Cheffe Amélie Dupont</p>
+        <div className="text-center mb-6 mt-12 pt-4 pb-2" style={{ maxWidth: "800px", margin: "0 auto" }}>
+          <p style={{ 
+            fontSize: "1.05rem", 
+            marginBottom: "0.75rem", 
+            color: "#666666", 
+            lineHeight: "1.5"
+          }}>
+            Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.
+          </p>
+          <p style={{ 
+            fontSize: "1.15rem", 
+            fontStyle: "italic", 
+            fontWeight: "500", 
+            color: "#B34431"
+          }}>
+            Cheffe Amélie Dupont
+          </p>
         </div>
       </div>
     </div>
