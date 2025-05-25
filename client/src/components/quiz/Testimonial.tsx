@@ -115,8 +115,17 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
-              <div className="mt-3 sm:mt-4 mb-3 sm:mb-4">
+              <div className="mt-3 sm:mt-4 mb-3 sm:mb-4 relative">
                 <div className="max-w-[500px] w-full mx-auto p-2 sm:p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+                  {/* Botões de navegação laterais */}
+                  <button 
+                    onClick={handlePrev}
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-black/80 hover:bg-black transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10"
+                    aria-label="Témoignage précédent"
+                  >
+                    <ChevronLeft />
+                  </button>
+                  
                   <img 
                     src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
@@ -127,6 +136,14 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                       target.src = RecipeImages.main;
                     }}
                   />
+                  
+                  <button 
+                    onClick={handleNext}
+                    className={`absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 ${currentIndex === testimonials.length - 1 ? 'bg-primary/90 hover:bg-primary' : 'bg-black/80 hover:bg-black'} transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10`}
+                    aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
+                  >
+                    <ChevronRight />
+                  </button>
                 </div>
               </div>
               
