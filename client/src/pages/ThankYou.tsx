@@ -4,8 +4,9 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Definição do caminho do arquivo de áudio - usando caminho relativo para melhor compatibilidade
-const AUDIO_SRC = "./audio/message.wav";
+// Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
+// Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
+const AUDIO_SRC = "/audio/message.wav";
 
 // Componente de áudio simplificado
 const SimpleAudioPlayer = () => {
@@ -245,12 +246,13 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio oculto sem controles nativos para evitar problemas */}
+            {/* Elemento de áudio com controles ocultos mas disponíveis em caso de depuração */}
             <div className="w-full mb-4" style={{ display: 'none' }}>
               <audio 
                 ref={audioRef}
                 src={AUDIO_SRC}
-                preload="metadata"
+                preload="auto"
+                controls
                 onError={(e) => {
                   console.error("Erro ao carregar áudio:", e);
                   // Usar simulação quando houver erro
