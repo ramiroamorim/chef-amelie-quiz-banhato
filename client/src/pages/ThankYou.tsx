@@ -94,7 +94,7 @@ export default function ThankYou() {
   
   // Iniciar simulação do áudio automaticamente para melhorar a experiência do usuário
   useEffect(() => {
-    // Iniciar simulação automaticamente após um pequeno atraso
+    // Iniciar simulação automaticamente após 1 segundo
     const autoplayTimer = setTimeout(() => {
       if (!audioPlaying) {
         setAudioPlaying(true);
@@ -104,130 +104,111 @@ export default function ThankYou() {
     
     return () => clearTimeout(autoplayTimer);
   }, []);
-
-  // Efeito para lidar com eventos do elemento de áudio
+  
+  // Este efeito garante que a simulação continue mesmo após recarregar a página
   useEffect(() => {
-    const audioElement = audioRef.current;
-    
-    if (!audioElement) return;
-    
-    const handleTimeUpdate = () => {
-      if (audioElement.duration > 0) {
-        const position = (audioElement.currentTime / audioElement.duration) * 100;
-        setProgressPosition(position);
-      }
-    };
-    
-    const handleEnded = () => {
-      setAudioPlaying(false);
-    };
-    
-    const handleError = (e: Event) => {
-      console.error("Erro ao carregar/reproduzir áudio:", e);
-      if (audioPlaying) {
-        // Ativar simulação visual se o áudio falhar durante a reprodução
-        simulateAudioProgress();
-      }
-    };
-    
-    // Adicionar event listeners
-    audioElement.addEventListener('timeupdate', handleTimeUpdate);
-    audioElement.addEventListener('ended', handleEnded);
-    audioElement.addEventListener('error', handleError);
-    
-    // Limpeza
+    // Se o áudio estiver reproduzindo mas não houver timer, reiniciar a simulação
+    if (audioPlaying && !progressTimerRef.current) {
+      simulateAudioProgress();
+    }
+  }, [audioPlaying]);
+
+  // Removemos a dependência de eventos do elemento de áudio 
+  // e usamos apenas a simulação visual para maior consistência
+  useEffect(() => {
+    // Limpeza ao desmontar o componente
     return () => {
-      audioElement.removeEventListener('timeupdate', handleTimeUpdate);
-      audioElement.removeEventListener('ended', handleEnded);
-      audioElement.removeEventListener('error', handleError);
-      
-      // Parar o áudio e a simulação ao desmontar
-      audioElement.pause();
       if (progressTimerRef.current) {
         clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
       }
     };
-  }, [audioPlaying]);
+  }, []);
   
-  // Função para controlar a reprodução do áudio
+  // Função simplificada para controlar a reprodução visual do áudio
   const toggleAudio = () => {
-    if (!audioRef.current) return;
-    
     if (audioPlaying) {
-      // Parar o áudio e a simulação
-      audioRef.current.pause();
+      // Parar a simulação
       if (progressTimerRef.current) {
         clearInterval(progressTimerRef.current);
         progressTimerRef.current = null;
       }
       setAudioPlaying(false);
     } else {
-      // Iniciar reprodução
+      // Iniciar simulação visual
       setAudioPlaying(true);
-      
-      try {
-        // Reiniciar áudio se estiver no final
-        if (audioRef.current.currentTime >= audioRef.current.duration - 0.1) {
-          audioRef.current.currentTime = 0;
-        }
-        
-        const playPromise = audioRef.current.play();
-        
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error("Erro ao reproduzir áudio:", error);
-            simulateAudioProgress();
-          });
-        }
-      } catch (error) {
-        console.error("Erro ao manipular áudio:", error);
-        simulateAudioProgress();
-      }
+      simulateAudioProgress();
     }
   };
   
-  // Função para avançar ou retroceder no áudio
+  // Função simplificada para atualizar a posição visual da reprodução
   const seekAudio = (position: number) => {
-    if (!audioRef.current) return;
+    // Atualizar a posição do progresso visualmente
+    setProgressPosition(position);
     
-    try {
-      const newTime = (position / 100) * (audioRef.current.duration || 180);
-      audioRef.current.currentTime = newTime;
-      setProgressPosition(position);
-    } catch (error) {
-      console.error("Erro ao buscar posição no áudio:", error);
+    // Se a simulação estiver ativa, reajustar com nova posição
+    if (audioPlaying && progressTimerRef.current) {
+      // Parar a simulação atual
+      clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
+      
+      // Recomeçar a simulação de onde paramos
+      let progress = position;
+      const totalDuration = 120;
+      const updateInterval = 200;
+      const increment = 100 / (totalDuration * 1000 / updateInterval);
+      
+      progressTimerRef.current = window.setInterval(() => {
+        progress += increment;
+        
+        if (progress >= 100) {
+          if (progressTimerRef.current) {
+            clearInterval(progressTimerRef.current);
+            progressTimerRef.current = null;
+          }
+          progress = 100;
+          setAudioPlaying(false);
+        }
+        
+        setProgressPosition(progress);
+      }, updateInterval);
     }
   };
   
-  // Função auxiliar para simular o progresso do áudio visualmente
+  // Função simplificada para simular o progresso do áudio visualmente
   const simulateAudioProgress = () => {
-    // Limpar timer existente, se houver
+    // Limpar timer existente antes de criar um novo
     if (progressTimerRef.current) {
       clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
     }
     
-    console.log("Usando simulação visual de progresso");
-    let progress = progressPosition || 0;
+    // Reiniciar o progresso ao começar
+    setProgressPosition(0);
+    let progress = 0;
     
-    // Duração total da simulação: 3 minutos (180 segundos)
-    const totalDuration = 180;  
-    const updateInterval = 100; // milissegundos
+    // Duração total: 2 minutos (120 segundos)
+    const totalDuration = 120;  
+    const updateInterval = 200; // milissegundos (atualização mais suave)
     
-    // Calcula o incremento por intervalo para completar em ~3 minutos
-    const increment = (100 / (totalDuration * 1000 / updateInterval));
+    // Incremento por intervalo para completar na duração definida
+    const increment = 100 / (totalDuration * 1000 / updateInterval);
     
+    // Iniciar o timer de atualização
     progressTimerRef.current = window.setInterval(() => {
       progress += increment;
-      setProgressPosition(progress);
       
       if (progress >= 100) {
+        // Finalizar quando chegar a 100%
         if (progressTimerRef.current) {
           clearInterval(progressTimerRef.current);
           progressTimerRef.current = null;
         }
-        setProgressPosition(100);
+        progress = 100;
         setAudioPlaying(false);
       }
+      
+      setProgressPosition(progress);
     }, updateInterval);
   };
 
@@ -260,22 +241,11 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio com controles ocultos mas disponíveis em caso de depuração */}
-            <div className="w-full mb-4" style={{ display: 'none' }}>
+            {/* Elemento de áudio oculto - usamos apenas para compatibilidade */}
+            <div style={{ display: 'none' }}>
               <audio 
                 ref={audioRef}
-                src={AUDIO_SRC}
-                preload="auto"
-                controls
-                onError={(e) => {
-                  console.error("Erro ao carregar áudio:", e);
-                  // Usar simulação quando houver erro
-                  setTimeout(() => {
-                    if (audioPlaying) {
-                      simulateAudioProgress();
-                    }
-                  }, 500);
-                }}
+                preload="none"
               />
             </div>
             
