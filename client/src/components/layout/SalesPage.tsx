@@ -1,14 +1,16 @@
 import React from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
-// Importando a imagem diretamente para garantir que o Vite processe corretamente
-import recipeBookImage from '@/assets/images/recipes/recipe-book-new.png';
+// Importando as imagens diretamente para garantir que o Vite processe corretamente
+import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 import recipesMainImage from '@/assets/images/recipes/recipes-main.png';
+import recipesGridCollageImage from '@/assets/images/recipes/recipes-grid-collage.png';
 
 // Objeto modificado com referências diretas
 const RecipeImages = {
   book: recipeBookImage,
-  main: recipesMainImage
+  main: recipesMainImage,
+  gridCollage: recipesGridCollageImage
 };
 
 // Componente de botão pulsante verde
