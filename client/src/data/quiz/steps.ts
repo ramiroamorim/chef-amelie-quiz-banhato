@@ -31,7 +31,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 1
   {
     name: "discourage",
-    title: "<span class='text-[#333333]'>Quand vous essayez de </span><span class='text-primary font-semibold'>manger plus sainement</span>\n<span class='text-[#333333]'>... qu'est-ce qui vous </span><span class='text-primary font-semibold'>décourage</span><span class='text-[#333333]'> le plus ?</span>",
+    title: "<span class='text-[#333333]'>Quand vous essayez de </span><span class='text-primary font-semibold'>manger plus sainement</span><span class='text-[#333333]'>... qu'est-ce qui vous </span><span class='text-primary font-semibold'>décourage</span><span class='text-[#333333]'> le plus ?</span>",
     options: [
       {
         value: "fades",
@@ -55,7 +55,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 2
   {
     name: "dessert",
-    title: "<span class='text-primary font-semibold'>Même sans sucre, sans gluten, sans lactose... </span>\n<span class='text-[#333333]'>quelle de ces gourmandises vous donne le plus envie ?</span>",
+    title: "<span class='text-primary font-semibold'>Même sans sucre, sans gluten, sans lactose... </span><span class='text-[#333333]'>quelle de ces gourmandises vous donne le plus envie ?</span>",
     image: RecipeImages.grid,
     imageAlt: "Collection de desserts sans sucre, sans gluten, sans lactose",
     options: [
@@ -81,7 +81,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 3
   {
     name: "tried_recipes",
-    title: "<span class='text-[#333333]'>Vous avez déjà essayé de suivre des </span><span class='text-primary font-semibold'>recettes \"saines\" </span><span class='text-[#333333]'>trouvées sur internet ?</span>\n<span class='text-[#333333]'>Celles qui promettent tout... mais qui finissent </span><span class='text-primary font-semibold'>trop compliquées, trop fades </span>\n<span class='text-[#333333]'>ou </span><span class='text-primary font-semibold'>complètement ratées </span><span class='text-[#333333]'>?</span>",
+    title: "<span class='text-[#333333]'>Vous avez déjà essayé de suivre des </span><span class='text-primary font-semibold'>recettes \"saines\" </span><span class='text-[#333333]'>trouvées sur internet ?</span><br><span class='text-[#333333]'>Celles qui promettent tout... mais qui finissent </span><span class='text-primary font-semibold'>trop compliquées, trop fades </span><span class='text-[#333333]'>ou </span><span class='text-primary font-semibold'>complètement ratées </span><span class='text-[#333333]'>?</span>",
     options: [
       {
         value: "disappointed",
@@ -129,7 +129,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 5
   {
     name: "improve",
-    title: "<span class='text-primary font-semibold'>Qu'est-ce que vous aimeriez améliorer </span>\n<span class='text-[#333333]'>en priorité aujourd'hui ?</span>",
+    title: "<span class='text-primary font-semibold'>Qu'est-ce que vous aimeriez améliorer </span><span class='text-[#333333]'>en priorité aujourd'hui ?</span>",
     options: [
       {
         value: "digestion",
@@ -157,7 +157,7 @@ export const quizSteps: QuizStepType[] = [
   // Step 6
   {
     name: "testimonials",
-    title: "<span class='text-primary font-semibold'>Centaines de femmes </span>\n<span class='text-[#333333]'>ont déjà testé ces recettes et vu leur corps se transformer.</span>",
+    title: "<span class='text-primary font-semibold'>Centaines de femmes </span><span class='text-[#333333]'>ont déjà testé ces recettes et vu leur corps se transformer.</span>",
     description: "<span class='text-primary'>Faites glisser ➤ pour voir ce qu'elles disent.</span>",
     isTestimonialStep: true,
     buttonText: "🔍 DÉCOUVRIR MON PROFIL"

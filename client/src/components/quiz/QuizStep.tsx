@@ -125,7 +125,7 @@ export default function QuizStep({
       {/* Title */}
       {step.title && (
         <h2 
-          className="text-lg sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center whitespace-pre-line max-w-md mx-auto"
+          className="text-lg sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center"
           dangerouslySetInnerHTML={{ __html: step.title }}
         />
       )}
@@ -133,7 +133,7 @@ export default function QuizStep({
       {/* Description */}
       {step.description && (
         <p 
-          className="text-sm sm:text-base text-center mb-4 sm:mb-6 whitespace-pre-line max-w-md mx-auto" 
+          className="text-sm sm:text-base text-center mb-4 sm:mb-6" 
           dangerouslySetInnerHTML={{ __html: step.description }}
         />
       )}
