@@ -164,7 +164,11 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               
               {current.time && (
                 <div className="text-right mt-2 sm:mt-3">
-                  <span className="text-xs text-gray-500">{current.time}</span>
+                  <span style={{ 
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+                    fontSize: "1.05rem",
+                    color: "#333333"
+                  }}>{current.time}</span>
                 </div>
               )}
             </div>
