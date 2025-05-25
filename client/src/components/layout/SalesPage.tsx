@@ -1,6 +1,15 @@
 import React from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
-import { ChefImages, RecipeImages, TestimonialImages } from '@/assets/imageExports';
+import { ChefImages, TestimonialImages } from '@/assets/imageExports';
+// Importando a imagem diretamente para garantir que o Vite processe corretamente
+import recipeBookImage from '@/assets/images/recipes/recipe-book-new.png';
+import recipesMainImage from '@/assets/images/recipes/recipes-main.png';
+
+// Objeto modificado com referências diretas
+const RecipeImages = {
+  book: recipeBookImage,
+  main: recipesMainImage
+};
 
 // Componente de botão pulsante verde
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -185,6 +194,15 @@ export default function SalesPage() {
               display: "block",
               margin: "0 auto"
             }}
+            onError={(e) => {
+              console.error("Erro ao carregar imagem:", e);
+              const target = e.target as HTMLImageElement;
+              target.onerror = null; // Previne loop infinito
+              // Tentar usar uma URL absoluta como fallback
+              if (RecipeImages && RecipeImages.main) {
+                target.src = RecipeImages.main;
+              }
+            }}
           />
         </div>
 
@@ -279,6 +297,15 @@ export default function SalesPage() {
               maxWidth: "100%",
               display: "block",
               margin: "0 auto"
+            }}
+            onError={(e) => {
+              console.error("Erro ao carregar imagem:", e);
+              const target = e.target as HTMLImageElement;
+              target.onerror = null; // Previne loop infinito
+              // Tentar usar uma URL absoluta como fallback
+              if (RecipeImages && RecipeImages.main) {
+                target.src = RecipeImages.main;
+              }
             }}
           />
         </div>
