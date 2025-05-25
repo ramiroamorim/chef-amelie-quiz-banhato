@@ -16,6 +16,7 @@ import recipesGrid from './images/recipes/recipes-grid.png';
 import recipesGridCollage from './images/recipes/recipes-grid-collage.png';
 import recipesMain from './images/recipes/recipes-main.png';
 import recipes from './images/recipes/recipes.png';
+import bookPages from './images/book/book-pages.png';
 
 // Testimonials Images
 import testimonial1 from './images/testimonials/testimonial1.png';
@@ -41,7 +42,8 @@ export const RecipeImages = {
   grid: recipesGrid,
   gridCollage: recipesGridCollage,
   main: recipesMain,
-  recipes: recipes
+  recipes: recipes,
+  bookPages: bookPages
 };
 
 export const TestimonialImages = {

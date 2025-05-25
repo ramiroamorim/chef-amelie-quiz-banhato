@@ -159,6 +159,21 @@ export default function SalesPage() {
           </p>
         </div>
         
+        {/* Imagem das páginas do livro após a seção exclusiva */}
+        <div className="mb-4 sm:mb-5 overflow-hidden">
+          <img 
+            src={RecipeImages.bookPages} 
+            alt="Pages du livre de recettes sans sucre"
+            className="w-full h-auto rounded-xl shadow-lg"
+            style={{ 
+              border: "1px solid #f0f0f0",
+              maxWidth: "100%",
+              display: "block",
+              margin: "0 auto"
+            }}
+          />
+        </div>
+        
         {/* Imagem do livro de receitas após a seção exclusiva */}
         <div className="mb-5 sm:mb-6 overflow-hidden">
           <img 
