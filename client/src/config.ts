@@ -12,15 +12,17 @@ export const LINKS = {
 
 // Cores principais da aplicação
 export const COLORS = {
-  PRIMARY: "#F27052",
-  PRIMARY_DARK: "#A85544",
-  PRIMARY_LIGHT: "#FDF8F5",
-  SUCCESS: "#4CAF50",
-  WARNING: "#FF9800",
-  ERROR: "#F44336",
-  INFO: "#2196F3",
-  BACKGROUND: "#FFFFFF",
-  TEXT: "#333333"
+  PRIMARY: "#B34431",  // Tom de vermelho escuro usado em textos importantes
+  PRIMARY_DARK: "#993322", // Versão mais escura para hover
+  PRIMARY_LIGHT: "#FFF1EE", // Fundo claro para seções destacadas
+  SUCCESS: "#57C084", // Verde para botões de ação/compra
+  SUCCESS_DARK: "#45A26C", // Verde mais escuro para hover
+  WARNING: "#FF9800", // Laranja para bonus e destaques
+  ERROR: "#F44336", // Vermelho para alertas e limites
+  INFO: "#2196F3", // Azul para informações
+  BACKGROUND: "#FFFFFF", // Fundo branco padrão
+  TEXT: "#333333", // Texto principal
+  BORDER_LIGHT: "#F5DED9" // Bordas claras
 };
 
 // Tempos de animações

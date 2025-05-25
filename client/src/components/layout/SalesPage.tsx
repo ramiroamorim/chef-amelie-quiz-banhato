@@ -6,8 +6,9 @@ import { ChefImages, RecipeImages, TestimonialImages } from '@/assets/imageExpor
 const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
     <div className="relative inline-block w-full md:w-auto mb-4">
-      <div className="absolute inset-0 rounded-full bg-[#57C084] opacity-30" 
+      <div className="absolute inset-0 rounded-full opacity-30" 
         style={{
+          backgroundColor: COLORS.SUCCESS,
           animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
         }}
       ></div>
@@ -17,9 +18,12 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
         rel="noopener noreferrer"
         className="relative inline-block w-full py-3 sm:py-4 px-6 sm:px-10 text-base sm:text-lg font-bold rounded-full text-white"
         style={{ 
-          background: "#57C084",
-          boxShadow: `0 4px 10px rgba(87, 192, 132, 0.3)`
+          backgroundColor: COLORS.SUCCESS,
+          boxShadow: `0 4px 10px rgba(87, 192, 132, 0.3)`,
+          transition: "background-color 0.3s ease"
         }}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = COLORS.SUCCESS_DARK}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = COLORS.SUCCESS}
       >
         {children}
       </a>
@@ -29,16 +33,20 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
 
 // Componente para exibir a seção de preço e botão de compra
 const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
-  <div className="py-5 sm:py-6 px-4 sm:px-6 text-center mb-6 sm:mb-8 bg-[#FFF5F5] rounded-lg border border-[#FFE5E5]">
-    <p className="text-sm sm:text-base mb-1">Valeur réelle du pack : <span className="line-through">34€</span></p>
-    <p className="text-xl sm:text-2xl font-bold text-[#B34431] mb-3 sm:mb-4">Aujourd'hui : seulement 17€</p>
-    <p className="text-sm sm:text-base font-bold text-[#F44336] mb-4 sm:mb-6">⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
+  <div className="py-5 sm:py-6 px-4 sm:px-6 text-center mb-6 sm:mb-8 rounded-lg border" 
+    style={{ 
+      backgroundColor: "#FFF5F5", 
+      borderColor: "#FFE5E5" 
+    }}>
+    <p style={{ fontSize: "1.05rem", marginBottom: "0.5rem" }}>Valeur réelle du pack : <span className="line-through">34€</span></p>
+    <p style={{ fontSize: "1.35rem", fontWeight: "bold", color: COLORS.PRIMARY, marginBottom: "1rem" }}>Aujourd'hui : seulement 17€</p>
+    <p style={{ fontSize: "1.05rem", fontWeight: "bold", color: COLORS.ERROR, marginBottom: "1.5rem" }}>⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
     
     <GreenPulseButton href={buyUrl}>
       JE VEUX LE PACK POUR 17€
     </GreenPulseButton>
     
-    <p className="text-xs sm:text-sm">📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
+    <p style={{ fontSize: "1.05rem" }}>📩 Livraison immédiate par e-mail. Sans abonnement. Sans engagement.</p>
   </div>
 );
 
