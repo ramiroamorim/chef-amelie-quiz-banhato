@@ -10,7 +10,7 @@ import chefProfile from './images/chef/chef-profile.png';
 import chefAmelie from './images/chef/chef-amelie.png';
 
 // Recipes Images
-import recipeBook from './images/recipes/recipe-book.png';
+import recipeBook from './images/recipes/recipe-book-new.png';
 import recipeCollage from './images/recipes/recipe-book-collage.png';
 import recipesGrid from './images/recipes/recipes-grid.png';
 import recipesGridCollage from './images/recipes/recipes-grid-collage.png';

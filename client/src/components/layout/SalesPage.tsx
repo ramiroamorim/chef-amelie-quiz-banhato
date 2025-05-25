@@ -201,11 +201,17 @@ export default function SalesPage() {
         </div>
 
         {/* Imagem do livro de receitas */}
-        <div className="mb-5 sm:mb-6 border border-gray-200 rounded-md overflow-hidden">
+        <div className="mb-5 sm:mb-6 overflow-hidden">
           <img 
             src={RecipeImages.book} 
             alt="Livre de recettes Chef Amélie Dupont"
-            className="w-full h-auto"
+            className="w-full h-auto rounded-xl shadow-lg"
+            style={{ 
+              border: "1px solid #f0f0f0",
+              maxWidth: "100%",
+              display: "block",
+              margin: "0 auto"
+            }}
           />
         </div>
 
