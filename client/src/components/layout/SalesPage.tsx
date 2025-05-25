@@ -182,14 +182,14 @@ export default function SalesPage() {
 
         {/* Ce que vous allez recevoir section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
-          <h2 className="text-base sm:text-lg font-bold text-[#2196F3] mb-1.5 sm:mb-2">📦 Ce que vous allez recevoir :</h2>
-          <p className="mb-2 text-xs sm:text-sm">Un accès à <span className="text-[#B34431] font-bold">500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
+          <h2 style={{ fontSize: "1.15rem", fontWeight: "bold", color: "#2196F3", marginBottom: "0.75rem" }}>📦 Ce que vous allez recevoir :</h2>
+          <p style={{ fontSize: "1.05rem", marginBottom: "0.75rem" }}>Un accès à <span style={{ color: "#B34431", fontWeight: "bold" }}>500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
           
-          <ul className="list-none pl-1 mb-2 space-y-2 sm:space-y-3 text-xs sm:text-sm">
-            <li>🍽️ <span className="text-[#B34431] font-bold">100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
-            <li>🥦 <span className="text-[#B34431] font-bold">300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
-            <li>🍫 <span className="text-[#B34431] font-bold">100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
-            <li>🧭 <span className="text-[#B34431] font-bold">Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
+          <ul className="list-none pl-1 mb-2 space-y-2 sm:space-y-3">
+            <li style={{ fontSize: "1.05rem" }}>🍽️ <span style={{ color: "#B34431", fontWeight: "bold" }}>100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
+            <li style={{ fontSize: "1.05rem" }}>🥦 <span style={{ color: "#B34431", fontWeight: "bold" }}>300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
+            <li style={{ fontSize: "1.05rem" }}>🍫 <span style={{ color: "#B34431", fontWeight: "bold" }}>100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
+            <li style={{ fontSize: "1.05rem" }}>🧭 <span style={{ color: "#B34431", fontWeight: "bold" }}>Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
           </ul>
         </div>
 
@@ -197,24 +197,24 @@ export default function SalesPage() {
 
         {/* Bonus exclusifs section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF8E8] border-[#FF9800]">
-          <h2 className="text-base sm:text-lg font-bold text-[#FF9800] mb-1.5 sm:mb-2">🎁 Bonus exclusifs inclus aujourd'hui :</h2>
+          <h2 style={{ fontSize: "1.15rem", fontWeight: "bold", color: "#FF9800", marginBottom: "0.75rem" }}>🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
-          <ul className="list-none pl-0 space-y-2 sm:space-y-3 text-xs sm:text-sm">
+          <ul className="list-none pl-0 space-y-2 sm:space-y-3">
             <li>
-              <p className="font-bold">🎁 Bonus 1 : Guide de substitutions intelligentes</p>
-              <p className="ml-3 sm:ml-5">Remplacez sucre, farine ou lait sans perdre le goût.</p>
+              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 1 : Guide de substitutions intelligentes</p>
+              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Remplacez sucre, farine ou lait sans perdre le goût.</p>
             </li>
             <li>
-              <p className="font-bold">🎁 Bonus 2 : Carte de satiété naturelle</p>
-              <p className="ml-3 sm:ml-5">Construisez des assiettes qui rassasient sans excès.</p>
+              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 2 : Carte de satiété naturelle</p>
+              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Construisez des assiettes qui rassasient sans excès.</p>
             </li>
             <li>
-              <p className="font-bold">🎁 Bonus 3 : Protocole intestin + glycémie</p>
-              <p className="ml-3 sm:ml-5">Améliorez votre digestion et votre énergie au quotidien.</p>
+              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 3 : Protocole intestin + glycémie</p>
+              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Améliorez votre digestion et votre énergie au quotidien.</p>
             </li>
             <li>
-              <p className="font-bold">🎁 Bonus 4 : Liste de courses intelligente</p>
-              <p className="ml-3 sm:ml-5">Gagnez du temps avec des produits simples, testés, validés.</p>
+              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 4 : Liste de courses intelligente</p>
+              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Gagnez du temps avec des produits simples, testés, validés.</p>
             </li>
           </ul>
         </div>
@@ -302,8 +302,8 @@ export default function SalesPage() {
 
         {/* Assinatura da Chef */}
         <div className="text-center mb-3 sm:mb-4">
-          <p className="mb-1.5 sm:mb-2 text-xs sm:text-sm">Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
-          <p className="font-medium italic text-xs sm:text-sm">Cheffe Amélie Dupont</p>
+          <p style={{ fontSize: "1.05rem", marginBottom: "0.75rem" }}>Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.</p>
+          <p style={{ fontSize: "1.05rem", fontStyle: "italic", fontWeight: "500" }}>Cheffe Amélie Dupont</p>
         </div>
       </div>
     </div>
