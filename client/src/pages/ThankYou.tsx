@@ -6,6 +6,7 @@ import { ChefImages } from "@/assets/imageExports";
 
 // Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
 // Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
+// Tentamos diferentes formatos para garantir compatibilidade
 const AUDIO_SRC = "/audio/message.wav";
 
 // Componente de áudio simplificado
@@ -89,6 +90,19 @@ export default function ThankYou() {
     }, 120000); // 2 minutos exatos
     
     return () => clearTimeout(timer);
+  }, []);
+  
+  // Iniciar simulação do áudio automaticamente para melhorar a experiência do usuário
+  useEffect(() => {
+    // Iniciar simulação automaticamente após um pequeno atraso
+    const autoplayTimer = setTimeout(() => {
+      if (!audioPlaying) {
+        setAudioPlaying(true);
+        simulateAudioProgress();
+      }
+    }, 1000);
+    
+    return () => clearTimeout(autoplayTimer);
   }, []);
 
   // Efeito para lidar com eventos do elemento de áudio
