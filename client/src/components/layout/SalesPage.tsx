@@ -176,46 +176,7 @@ export default function SalesPage() {
           />
         </div>
         
-        {/* Texto adicional conforme a referência */}
-        <div style={{
-          backgroundColor: "#FFF9F3", 
-          padding: "24px 16px",
-          marginBottom: "24px",
-          borderRadius: "12px",
-          border: "1px solid #F5E9DE",
-          borderLeft: "4px solid #B34431"
-        }}>
-          <p style={{ 
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
-            color: "#333333",
-            marginBottom: "18px",
-            fontWeight: "normal"
-          }}>
-            Ce n'est pas un régime. Ce n'est pas une promesse vide.
-          </p>
-          <p style={{ 
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
-            color: "#333333",
-            marginBottom: "18px",
-            fontWeight: "normal"
-          }}>
-            C'est un raccourci vers ce que vous vouliez depuis des années : <span style={{ color: "#B34431", fontWeight: "600" }}>manger avec plaisir, sans douleur.</span>
-          </p>
-          <p style={{ 
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
-            color: "#333333",
-            marginBottom: "0",
-            fontWeight: "normal"
-          }}>
-            Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.
-          </p>
-        </div>
+
 
         {/* Imagem das páginas do livro */}
         <div className="mb-4 sm:mb-5 overflow-hidden">
@@ -271,7 +232,46 @@ export default function SalesPage() {
           </ul>
         </div>
 
-
+        {/* Texto adicional conforme a referência */}
+        <div style={{
+          backgroundColor: "#FFF9F3", 
+          padding: "24px 16px",
+          marginBottom: "24px",
+          borderRadius: "12px",
+          border: "1px solid #F5E9DE",
+          borderLeft: "4px solid #B34431"
+        }}>
+          <p style={{ 
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            lineHeight: "1.6",
+            color: "#333333",
+            marginBottom: "18px",
+            fontWeight: "normal"
+          }}>
+            Ce n'est pas un régime. Ce n'est pas une promesse vide.
+          </p>
+          <p style={{ 
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            lineHeight: "1.6",
+            color: "#333333",
+            marginBottom: "18px",
+            fontWeight: "normal"
+          }}>
+            C'est un raccourci vers ce que vous vouliez depuis des années : <span style={{ color: "#B34431", fontWeight: "600" }}>manger avec plaisir, sans douleur.</span>
+          </p>
+          <p style={{ 
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            lineHeight: "1.6",
+            color: "#333333",
+            marginBottom: "0",
+            fontWeight: "normal"
+          }}>
+            Et aujourd'hui, ça vous coûte moins qu'un plat fade au resto.
+          </p>
+        </div>
 
         {/* Seção de preço e compra */}
         <PriceSection buyUrl={buyUrl} />
