@@ -104,7 +104,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
         Faites glisser ➤ pour voir ce qu'elles disent.
       </div>
       
-      <div className="h-auto min-h-[400px] sm:min-h-[450px] md:min-h-[480px] overflow-hidden mb-4 sm:mb-6 relative">
+      <div className="h-auto min-h-[350px] sm:min-h-[400px] md:min-h-[450px] overflow-hidden mb-3 sm:mb-4 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -117,15 +117,15 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <div className="testimonial-content p-3 sm:p-5 bg-white rounded-2xl shadow-lg flex flex-col"
-                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '380px', height: '100%' }}>
+            <div className="testimonial-content p-2 sm:p-4 bg-white rounded-2xl shadow-lg flex flex-col"
+                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '320px', height: '100%' }}>
               <p 
                 className="mb-3 sm:mb-4 text-[#333333] text-xs sm:text-sm md:text-base leading-relaxed" 
                 dangerouslySetInnerHTML={{ __html: current.message }} 
               />
               
-              <div className="mt-3 sm:mt-4 mb-3 sm:mb-4 relative">
-                <div className="max-w-[500px] w-full mx-auto p-2 sm:p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative">
+                <div className="max-w-[400px] w-full mx-auto p-1 sm:p-2 bg-white rounded-xl border border-gray-200 shadow-sm">
                   {/* Botões de navegação laterais */}
                   <button 
                     onClick={handlePrev}
@@ -142,7 +142,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     loading="eager"
                     decoding="async"
                     style={{ 
-                      maxHeight: "300px",
+                      maxHeight: "200px",
                       objectFit: "contain",
                       aspectRatio: "4/3"
                     }}
