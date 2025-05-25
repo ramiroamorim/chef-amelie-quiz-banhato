@@ -125,11 +125,10 @@ export default function QuizStep({
       {/* Title */}
       {step.title && (
         <h2 
-          className="text-lg sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center"
+          className="sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center text-[16px]"
           dangerouslySetInnerHTML={{ __html: step.title }}
         />
       )}
-
       {/* Description */}
       {step.description && (
         <p 
@@ -137,7 +136,6 @@ export default function QuizStep({
           dangerouslySetInnerHTML={{ __html: step.description }}
         />
       )}
-
       {/* Image com otimização */}
       {step.image && (
         <img 
@@ -152,7 +150,6 @@ export default function QuizStep({
           }}
         />
       )}
-
       {/* Image Grid com otimização */}
       {step.imageGrid && (
         <div className="flex justify-center my-4 sm:my-6">
@@ -172,7 +169,6 @@ export default function QuizStep({
           ))}
         </div>
       )}
-
       {/* Text Blocks */}
       {step.textBlocks && (
         <div className="space-y-2 sm:space-y-3 text-[#555555]">
@@ -185,7 +181,6 @@ export default function QuizStep({
           ))}
         </div>
       )}
-
       {/* Options */}
       {step.options && (
         <div className="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
@@ -200,7 +195,6 @@ export default function QuizStep({
           ))}
         </div>
       )}
-
       {/* Button for steps without options (like step 4) */}
       {step.buttonText && !step.options && (
         <div className="relative w-full mt-4 sm:mt-6">

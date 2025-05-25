@@ -119,10 +119,6 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
           >
             <div className="testimonial-content p-2 sm:p-4 bg-white rounded-2xl shadow-lg flex flex-col"
                  style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '320px', height: '100%' }}>
-              <p 
-                className="mb-3 sm:mb-4 text-[#333333] text-xs sm:text-sm md:text-base leading-relaxed" 
-                dangerouslySetInnerHTML={{ __html: current.message }} 
-              />
               
               <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative">
                 <div className="max-w-[400px] w-full mx-auto p-1 sm:p-2 bg-white rounded-xl border border-gray-200 shadow-sm">
