@@ -249,14 +249,6 @@ export default function ThankYou() {
               />
             </div>
             
-            {/* Barra de progresso personalizada (sempre visível) */}
-            <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
-              <div 
-                className="h-full bg-[#2476c7] rounded-full transition-all duration-100"
-                style={{ width: `${progressPosition}%` }}
-              ></div>
-            </div>
-            
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
               {ChefImages && ChefImages.amelie ? (
