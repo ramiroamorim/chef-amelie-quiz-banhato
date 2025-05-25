@@ -128,28 +128,29 @@ export default function SalesPage() {
 
         {/* Recettes exclusives section */}
         <div style={{
-          backgroundColor: "#FFF8F5", 
-          padding: "16px",
+          backgroundColor: "#FFF1EE", 
+          padding: "24px 16px",
           marginBottom: "20px",
-          borderRadius: "8px",
+          borderRadius: "12px",
+          border: "1px solid #F5DED9",
           borderLeft: "4px solid #B34431"
         }}>
           <p style={{ 
             fontFamily: "Georgia, serif", 
             fontStyle: "italic",
             color: "#B34431",
-            fontSize: "1.25rem",
+            fontSize: "1.35rem",
             lineHeight: "1.3",
-            marginBottom: "12px",
+            marginBottom: "16px",
             textAlign: "center",
-            fontWeight: "normal"
+            fontWeight: "bold"
           }}>
             Vous ne trouverez pas ces recettes sur Google.
           </p>
           <p style={{ 
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "0.95rem",
-            lineHeight: "1.5",
+            fontSize: "1.05rem",
+            lineHeight: "1.6",
             textAlign: "center",
             color: "#333333",
             margin: "0"
