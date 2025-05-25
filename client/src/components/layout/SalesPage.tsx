@@ -159,6 +159,21 @@ export default function SalesPage() {
           </p>
         </div>
         
+        {/* Imagem do livro de receitas após a seção exclusiva */}
+        <div className="mb-5 sm:mb-6 overflow-hidden">
+          <img 
+            src={RecipeImages.book} 
+            alt="Livre de recettes Chef Amélie Dupont"
+            className="w-full h-auto rounded-xl shadow-lg"
+            style={{ 
+              border: "1px solid #f0f0f0",
+              maxWidth: "100%",
+              display: "block",
+              margin: "0 auto"
+            }}
+          />
+        </div>
+        
         {/* Texto adicional conforme a referência */}
         <div style={{
           backgroundColor: "#FFF9F3", 
@@ -200,20 +215,7 @@ export default function SalesPage() {
           </p>
         </div>
 
-        {/* Imagem do livro de receitas */}
-        <div className="mb-5 sm:mb-6 overflow-hidden">
-          <img 
-            src={RecipeImages.book} 
-            alt="Livre de recettes Chef Amélie Dupont"
-            className="w-full h-auto rounded-xl shadow-lg"
-            style={{ 
-              border: "1px solid #f0f0f0",
-              maxWidth: "100%",
-              display: "block",
-              margin: "0 auto"
-            }}
-          />
-        </div>
+
 
         {/* Ce que vous allez recevoir section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
