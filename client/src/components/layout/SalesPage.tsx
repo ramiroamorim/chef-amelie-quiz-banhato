@@ -3,6 +3,7 @@ import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
 // Importando as imagens diretamente para garantir que o Vite processe corretamente
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
+import recipeBookNewImage from '@/assets/images/recipes/recipe-book-new.png'; // Imagem nova para a segunda ocorrência
 import recipesMainImage from '@/assets/images/recipes/recipes-main.png';
 import recipesGridCollageImage from '@/assets/images/recipes/recipes-grid-collage.png';
 
@@ -291,7 +292,7 @@ export default function SalesPage() {
         {/* Imagem do livro de receitas após o texto */}
         <div className="mb-5 sm:mb-6 overflow-hidden">
           <img 
-            src={RecipeImages.book} 
+            src={recipeBookNewImage} 
             alt="Livre de recettes Chef Amélie Dupont"
             className="w-full h-auto rounded-xl shadow-lg"
             style={{ 
