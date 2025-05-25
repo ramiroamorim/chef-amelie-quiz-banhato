@@ -50,7 +50,7 @@ export default function QuizStep({
 
         {/* Image - Food images grid com otimização */}
         {step.image && (
-          <div className="my-5 sm:my-6 md:my-8 max-w-md mx-auto">
+          <div className="my-3 sm:my-4 md:my-5 max-w-md mx-auto">
             <img 
               src={step.image} 
               alt={step.imageAlt || ""} 
@@ -58,7 +58,7 @@ export default function QuizStep({
               loading="eager"
               decoding="async"
               style={{ 
-                maxHeight: "400px",
+                maxHeight: "300px",
                 objectFit: "contain"
               }}
             />
@@ -165,7 +165,7 @@ export default function QuizStep({
               loading="eager"
               decoding="async"
               style={{ 
-                maxHeight: "400px",
+                maxHeight: "280px",
                 objectFit: "contain"
               }}
             />
@@ -175,11 +175,11 @@ export default function QuizStep({
 
       {/* Text Blocks */}
       {step.textBlocks && (
-        <div className="space-y-3 sm:space-y-4 text-[#555555]">
+        <div className="space-y-2 sm:space-y-3 text-[#555555]">
           {step.textBlocks.map((text, i) => (
             <p 
               key={i} 
-              className={text.highlight ? "text-primary font-medium text-sm sm:text-base" : "text-sm sm:text-base"}
+              className={text.highlight ? "text-primary font-medium text-xs sm:text-sm" : "text-xs sm:text-sm"}
               dangerouslySetInnerHTML={{ __html: text.content }}
             />
           ))}
