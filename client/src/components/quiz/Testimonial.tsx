@@ -74,6 +74,15 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
     }
   };
 
+  // Pré-carregamento de imagens para melhorar performance
+  useEffect(() => {
+    // Pré-carregar todas as imagens do carrossel
+    testimonialImages.forEach(imageSrc => {
+      const img = new Image();
+      img.src = imageSrc;
+    });
+  }, []);
+
   // Auto-avança o carrossel a cada 5 segundos (desativado se o usuário interagir)
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -130,6 +139,13 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
                     className="w-full h-auto rounded-lg shadow-sm"
+                    loading="eager"
+                    decoding="async"
+                    style={{ 
+                      maxHeight: "300px",
+                      objectFit: "contain",
+                      aspectRatio: "4/3"
+                    }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;

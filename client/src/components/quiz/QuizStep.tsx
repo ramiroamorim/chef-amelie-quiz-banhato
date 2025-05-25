@@ -48,13 +48,19 @@ export default function QuizStep({
           </div>
         )}
 
-        {/* Image - Food images grid */}
+        {/* Image - Food images grid com otimização */}
         {step.image && (
           <div className="my-5 sm:my-6 md:my-8 max-w-md mx-auto">
             <img 
               src={step.image} 
               alt={step.imageAlt || ""} 
               className="w-full h-auto"
+              loading="eager"
+              decoding="async"
+              style={{ 
+                maxHeight: "400px",
+                objectFit: "contain"
+              }}
             />
           </div>
         )}
@@ -132,16 +138,22 @@ export default function QuizStep({
         />
       )}
 
-      {/* Image */}
+      {/* Image com otimização */}
       {step.image && (
         <img 
           src={step.image} 
           alt={step.imageAlt || ""} 
           className="w-full h-auto rounded-xl mb-3 sm:mb-4"
+          loading="eager"
+          decoding="async"
+          style={{ 
+            maxHeight: "400px",
+            objectFit: "contain"
+          }}
         />
       )}
 
-      {/* Image Grid */}
+      {/* Image Grid com otimização */}
       {step.imageGrid && (
         <div className="flex justify-center my-4 sm:my-6">
           {step.imageGrid.map((img, i) => (
@@ -149,7 +161,13 @@ export default function QuizStep({
               key={i}
               src={img.src} 
               alt={img.alt} 
-              className="w-full max-w-2xl h-auto rounded-lg" 
+              className="w-full max-w-2xl h-auto rounded-lg"
+              loading="eager"
+              decoding="async"
+              style={{ 
+                maxHeight: "400px",
+                objectFit: "contain"
+              }}
             />
           ))}
         </div>
