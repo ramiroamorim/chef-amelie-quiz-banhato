@@ -157,15 +157,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
         </AnimatePresence>
       </div>
 
-      <div className="flex justify-between items-center gap-2 my-3 sm:my-4 px-0 sm:px-2">
-        <button 
-          onClick={handlePrev}
-          className="bg-black hover:bg-gray-800 transition-colors text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-md"
-          aria-label="Témoignage précédent"
-        >
-          <ChevronLeft />
-        </button>
-        
+      <div className="flex justify-center items-center gap-2 my-3 sm:my-4 px-0 sm:px-2">
         <div className="flex gap-1 sm:gap-1.5 items-center">
           {testimonials.map((_, index) => (
             <span 
@@ -174,14 +166,6 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             />
           ))}
         </div>
-        
-        <button 
-          onClick={handleNext}
-          className={`${currentIndex === testimonials.length - 1 ? 'bg-primary hover:bg-primary/90' : 'bg-black hover:bg-gray-800'} transition-colors text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-md`}
-          aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
-        >
-          <ChevronRight />
-        </button>
       </div>
 
       <div className="text-center mt-5 sm:mt-8">
