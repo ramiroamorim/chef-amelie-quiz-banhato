@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Definição do caminho do arquivo de áudio
-const AUDIO_SRC = "/audio/message.wav";
+// Definição do caminho do arquivo de áudio - usando caminho relativo para melhor compatibilidade
+const AUDIO_SRC = "./audio/message.wav";
 
 // Componente de áudio simplificado
 const SimpleAudioPlayer = () => {
@@ -81,12 +81,11 @@ export default function ThankYou() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressTimerRef = useRef<number | null>(null);
   
-  // Timer para mostrar o botão após 2 minutos (120000ms)
-  // Reduzido para 10 segundos (10000ms) em desenvolvimento para teste
+  // Timer para mostrar o botão após exatamente 2 minutos (120000ms)
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowButton(true);
-    }, 10000); // Em produção: 120000
+    }, 120000); // 2 minutos exatos
     
     return () => clearTimeout(timer);
   }, []);
@@ -195,8 +194,15 @@ export default function ThankYou() {
     console.log("Usando simulação visual de progresso");
     let progress = progressPosition || 0;
     
+    // Duração total da simulação: 3 minutos (180 segundos)
+    const totalDuration = 180;  
+    const updateInterval = 100; // milissegundos
+    
+    // Calcula o incremento por intervalo para completar em ~3 minutos
+    const increment = (100 / (totalDuration * 1000 / updateInterval));
+    
     progressTimerRef.current = window.setInterval(() => {
-      progress += 0.33; // Mais lento para simular um áudio real
+      progress += increment;
       setProgressPosition(progress);
       
       if (progress >= 100) {
@@ -204,9 +210,10 @@ export default function ThankYou() {
           clearInterval(progressTimerRef.current);
           progressTimerRef.current = null;
         }
+        setProgressPosition(100);
         setAudioPlaying(false);
       }
-    }, 100);
+    }, updateInterval);
   };
 
   return (
@@ -238,16 +245,30 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio nativo com controles nativos do navegador */}
-            <div className="w-full mb-4">
+            {/* Elemento de áudio oculto sem controles nativos para evitar problemas */}
+            <div className="w-full mb-4" style={{ display: 'none' }}>
               <audio 
                 ref={audioRef}
                 src={AUDIO_SRC}
-                preload="auto"
-                controls
-                controlsList="nodownload"
-                className="w-full"
+                preload="metadata"
+                onError={(e) => {
+                  console.error("Erro ao carregar áudio:", e);
+                  // Usar simulação quando houver erro
+                  setTimeout(() => {
+                    if (audioPlaying) {
+                      simulateAudioProgress();
+                    }
+                  }, 500);
+                }}
               />
+            </div>
+            
+            {/* Barra de progresso personalizada (sempre visível) */}
+            <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+              <div 
+                className="h-full bg-[#2476c7] rounded-full transition-all duration-100"
+                style={{ width: `${progressPosition}%` }}
+              ></div>
             </div>
             
             <div className="flex justify-between items-center mb-4">
@@ -362,8 +383,27 @@ export default function ThankYou() {
         {showButton && (
           <div className="w-full flex flex-col items-center mt-4">
             <Button 
-              className="bg-[#57C084] hover:bg-[#45A871] text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg mb-4 transition-all transform hover:scale-105"
               onClick={() => window.location.href = "https://pay.hotmart.com/V99272097O?off=kz99x2py&checkoutMode=10&bid=1748014910797"}
+              style={{
+                backgroundColor: "#57C084",
+                color: "white",
+                fontWeight: "bold",
+                padding: "1rem 2rem",
+                borderRadius: "9999px",
+                fontSize: "1.125rem",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                marginBottom: "1rem",
+                transition: "all 0.3s ease",
+                transform: "scale(1)",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = "#45A26C";
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = "#57C084";
+                e.currentTarget.style.transform = "scale(1)";
+              }}
             >
               JE VEUX UN PLAN CHAQUE DIMANCHE !
             </Button>
