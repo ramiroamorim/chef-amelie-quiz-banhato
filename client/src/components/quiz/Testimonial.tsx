@@ -120,8 +120,8 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             <div className="testimonial-content p-2 sm:p-4 bg-white rounded-2xl shadow-lg flex flex-col"
                  style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '320px', height: '100%' }}>
               
-              <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative">
-                <div className="max-w-[400px] w-full mx-auto p-1 sm:p-2 bg-white rounded-xl border border-gray-200 shadow-sm">
+              <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative flex-grow flex justify-center items-center">
+                <div className="max-w-full w-full h-[250px] mx-auto p-1 sm:p-2 bg-white rounded-xl border border-gray-200 shadow-sm">
                   {/* Botões de navegação laterais */}
                   <button 
                     onClick={handlePrev}
@@ -134,13 +134,14 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                   <img 
                     src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
-                    className="w-full h-auto rounded-lg shadow-sm"
+                    className="w-full rounded-lg shadow-sm"
                     loading="eager"
                     decoding="async"
                     style={{ 
-                      maxHeight: "200px",
-                      objectFit: "contain",
-                      aspectRatio: "4/3"
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center"
                     }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
