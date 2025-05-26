@@ -142,20 +142,18 @@ export default function ThankYou() {
     };
   }, []);
   
-  // Função para controlar a reprodução do áudio
+  // Função simplificada para controlar a reprodução do áudio/vídeo
   const toggleAudio = async () => {
-    console.log("Toggle áudio clicado - Estado atual:", audioPlaying);
-    
     const audio = audioRef.current;
     
     if (!audio) {
-      console.error("Elemento de áudio não encontrado");
+      console.error("Elemento de mídia não encontrado");
       return;
     }
     
     try {
       if (audioPlaying) {
-        // Pausar áudio
+        // Pausar
         audio.pause();
         setAudioPlaying(false);
         if (progressTimerRef.current) {
@@ -163,33 +161,21 @@ export default function ThankYou() {
           progressTimerRef.current = null;
         }
       } else {
-        // Reproduzir áudio
-        console.log("Tentando reproduzir áudio...");
-        
-        // Definir volume máximo
+        // Reproduzir
         audio.volume = 1.0;
         
-        // Se o áudio terminou, reiniciar do início
         if (audio.ended) {
           audio.currentTime = 0;
         }
         
-        // Tentar reproduzir
-        const playPromise = audio.play();
-        
-        if (playPromise !== undefined) {
-          await playPromise;
-          console.log("Áudio reproduzindo com sucesso!");
-          setAudioPlaying(true);
-        }
+        await audio.play();
+        setAudioPlaying(true);
       }
     } catch (error) {
-      console.error("Erro ao reproduzir áudio:", error);
-      // Se falhar, usar simulação visual apenas
-      if (!audioPlaying) {
-        setAudioPlaying(true);
-        simulateAudioProgress();
-      }
+      console.error("Erro ao reproduzir mídia:", error);
+      // Usar apenas simulação visual se falhar
+      setAudioPlaying(true);
+      simulateAudioProgress();
     }
   };
   
@@ -300,17 +286,21 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio oculto - configurado para reprodução real */}
-            <audio 
+            {/* Elemento de vídeo oculto para reprodução de áudio */}
+            <video 
               ref={audioRef}
               preload="auto"
-              onCanPlayThrough={() => console.log("Áudio carregado e pronto")}
-              onError={(e) => console.error("Erro no áudio:", e)}
+              style={{ display: 'none' }}
+              onCanPlayThrough={() => console.log("Mídia carregada e pronta")}
+              onError={(e) => console.error("Erro na mídia:", e)}
+              onPlay={() => setAudioPlaying(true)}
+              onPause={() => setAudioPlaying(false)}
+              onEnded={() => setAudioPlaying(false)}
             >
+              <source src="/audio/Segundos.mp4" type="video/mp4" />
               <source src="/audio/Segundos.mp3" type="audio/mpeg" />
               <source src="/audio/segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/message.mp3" type="audio/mpeg" />
-            </audio>
+            </video>
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
