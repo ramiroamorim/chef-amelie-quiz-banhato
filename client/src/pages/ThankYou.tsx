@@ -1,10 +1,30 @@
 import { FacebookPixel } from '@/lib/fbPixel';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ThankYou() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
     FacebookPixel.trackThankYouPage();
   }, []);
+
+  const handleAudioToggle = () => {
+    const audio = document.getElementById('hidden-audio') as HTMLAudioElement;
+    
+    if (audio) {
+      if (audio.paused) {
+        audio.play();
+        setIsPlaying(true);
+      } else {
+        audio.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setIsPlaying(false);
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
@@ -53,29 +73,18 @@ export default function ThankYou() {
           </div>
           
           <div className="flex items-center space-x-6">
-            {/* Botão triangular azul */}
+            {/* Botão triangular azul com controle de estado */}
             <button 
-              id="audio-play-button"
               className="flex-shrink-0 hover:opacity-80 transition-opacity"
-              onClick={() => {
-                const audio = document.getElementById('hidden-audio') as HTMLAudioElement;
-                const button = document.getElementById('audio-play-button');
-                
-                if (audio && button) {
-                  if (audio.paused) {
-                    audio.play();
-                    // Mudar para círculo azul quando tocando
-                    button.innerHTML = '<div class="w-6 h-6 bg-blue-500 rounded-full"></div>';
-                  } else {
-                    audio.pause();
-                    // Voltar para triângulo quando pausado
-                    button.innerHTML = '<div class="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>';
-                  }
-                }
-              }}
+              onClick={handleAudioToggle}
             >
-              {/* Triângulo de play inicial */}
-              <div className="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>
+              {isPlaying ? (
+                // Círculo azul quando tocando
+                <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
+              ) : (
+                // Triângulo de play quando pausado
+                <div className="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>
+              )}
             </button>
             
             {/* Ondas sonoras mais realistas */}
@@ -93,12 +102,7 @@ export default function ThankYou() {
           <audio 
             id="hidden-audio"
             preload="metadata"
-            onEnded={() => {
-              const button = document.getElementById('audio-play-button');
-              if (button) {
-                button.innerHTML = '<div class="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>';
-              }
-            }}
+            onEnded={handleAudioEnded}
           >
             <source src="/audio/Segundos.mp4" type="audio/mp4" />
             <source src="/audio/Segundos.mp3" type="audio/mpeg" />
