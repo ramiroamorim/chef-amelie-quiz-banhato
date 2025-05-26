@@ -127,15 +127,15 @@ export default function QuizStep({
         <div className="w-full max-w-lg mx-auto">
           {/* Image no topo */}
           {step.image && (
-            <div className="w-full mb-6">
+            <div className="w-full mb-3">
               <img 
                 src={step.image} 
                 alt={step.imageAlt || ""} 
-                className="w-full h-auto rounded-xl shadow-lg"
+                className="w-full h-auto rounded-lg shadow-md"
                 loading="eager"
                 decoding="async"
                 style={{ 
-                  maxHeight: "280px",
+                  maxHeight: "180px",
                   objectFit: "cover",
                   aspectRatio: "16/9"
                 }}
@@ -146,7 +146,7 @@ export default function QuizStep({
           {/* Title */}
           {step.title && (
             <h2 
-              className="text-xl font-medium mb-2 text-left text-[#333333]"
+              className="text-lg font-medium mb-2 text-left text-[#333333]"
               style={{
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
               }}
@@ -157,7 +157,7 @@ export default function QuizStep({
           {/* Description */}
           {step.description && (
             <p 
-              className="text-sm text-left mb-6 text-[#666666] italic"
+              className="text-xs text-left mb-3 text-[#666666] italic"
               style={{
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
               }}
@@ -170,14 +170,14 @@ export default function QuizStep({
       {/* Title padrão para outros steps */}
       {step.title && step.name !== 'chef_profile' && (
         <h2 
-          className="sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 text-center text-[16px]"
+          className="text-sm sm:text-lg font-medium mb-2 sm:mb-3 text-center"
           dangerouslySetInnerHTML={{ __html: step.title }}
         />
       )}
       {/* Description padrão */}
       {step.description && step.name !== 'chef_profile' && (
         <p 
-          className="text-sm sm:text-base text-center mb-4 sm:mb-6" 
+          className="text-xs sm:text-sm text-center mb-2 sm:mb-3" 
           dangerouslySetInnerHTML={{ __html: step.description }}
         />
       )}
@@ -186,18 +186,18 @@ export default function QuizStep({
         <img 
           src={step.image} 
           alt={step.imageAlt || ""} 
-          className="w-full h-auto rounded-xl mb-3 sm:mb-4"
+          className="w-full h-auto rounded-lg mb-2 sm:mb-3"
           loading="eager"
           decoding="async"
           style={{ 
-            maxHeight: "400px",
+            maxHeight: "200px",
             objectFit: "contain"
           }}
         />
       )}
       {/* Image Grid com otimização */}
       {step.imageGrid && (
-        <div className="flex justify-center my-4 sm:my-6">
+        <div className="flex justify-center my-2 sm:my-3">
           {step.imageGrid.map((img, i) => (
             <img 
               key={i}
@@ -207,7 +207,7 @@ export default function QuizStep({
               loading="eager"
               decoding="async"
               style={{ 
-                maxHeight: "280px",
+                maxHeight: "180px",
                 objectFit: "contain"
               }}
             />
@@ -216,17 +216,17 @@ export default function QuizStep({
       )}
       {/* Text Blocks - Layout especial para Chef Profile */}
       {step.textBlocks && step.name === 'chef_profile' && (
-        <div className="w-full max-w-lg mx-auto space-y-4 text-left">
+        <div className="w-full max-w-lg mx-auto space-y-2 text-left">
           {step.textBlocks.map((text, i) => (
             <p 
               key={i} 
               className={text.highlight ? 
-                "text-[#E07260] font-medium text-base leading-relaxed" : 
-                "text-[#333333] text-base leading-relaxed"
+                "text-[#E07260] font-medium text-sm leading-snug" : 
+                "text-[#333333] text-sm leading-snug"
               }
               style={{
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-                lineHeight: "1.6"
+                lineHeight: "1.4"
               }}
               dangerouslySetInnerHTML={{ __html: text.content }}
             />
@@ -247,7 +247,7 @@ export default function QuizStep({
       )}
       {/* Options */}
       {step.options && (
-        <div className="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
+        <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
           {step.options.map((option, i) => (
             <RadioOption 
               key={i}
@@ -261,7 +261,7 @@ export default function QuizStep({
       )}
       {/* Button for steps without options - Layout especial para Chef Profile */}
       {step.buttonText && !step.options && step.name === 'chef_profile' && (
-        <div className="relative w-full mt-8 flex justify-center">
+        <div className="relative w-full mt-4 flex justify-center">
           <div className="absolute inset-0 rounded-full opacity-30 flex justify-center items-center" 
             style={{
               background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
@@ -271,10 +271,10 @@ export default function QuizStep({
             }}
           ></div>
           <button 
-            className="btn-pulse bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-6 py-3 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
+            className="btn-pulse bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-4 py-2 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
             style={{
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-              fontSize: "16px"
+              fontSize: "14px"
             }}
             onClick={onNextStep}
           >
@@ -285,7 +285,7 @@ export default function QuizStep({
       )}
       {/* Button padrão para outros steps */}
       {step.buttonText && !step.options && step.name !== 'chef_profile' && (
-        <div className="relative w-full mt-4 sm:mt-6">
+        <div className="relative w-full mt-3 sm:mt-4">
           <div className="absolute inset-0 rounded-full opacity-30" 
             style={{
               background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
@@ -293,7 +293,7 @@ export default function QuizStep({
             }}
           ></div>
           <button 
-            className="btn-primary relative w-full py-3 sm:py-4 px-6 sm:px-8 flex items-center justify-center z-10 text-sm sm:text-base" 
+            className="btn-primary relative w-full py-2 sm:py-3 px-4 sm:px-6 flex items-center justify-center z-10 text-xs sm:text-sm" 
             onClick={onNextStep}
           >
             <span>{step.buttonText}</span>
