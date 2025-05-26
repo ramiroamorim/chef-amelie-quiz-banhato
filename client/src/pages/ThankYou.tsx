@@ -7,18 +7,18 @@ export default function ThankYou() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-2xl mx-auto text-center space-y-8">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-2xl mx-auto space-y-12">
         
         {/* Título principal */}
-        <div className="space-y-4">
+        <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-[#B34431] leading-tight">
             🎁 Merci infiniment pour votre confiance!
           </h1>
         </div>
 
         {/* Texto explicativo */}
-        <div className="space-y-4 text-gray-700 text-lg md:text-xl leading-relaxed max-w-xl mx-auto">
+        <div className="text-center space-y-6 text-gray-700 text-xl leading-relaxed max-w-3xl mx-auto">
           <p>
             Avant d'aller découvrir vos recettes dans votre boîte mail...
           </p>
@@ -28,19 +28,19 @@ export default function ThankYou() {
         </div>
 
         {/* Instrução do áudio */}
-        <div className="space-y-4 py-6">
-          <div className="flex items-center justify-center space-x-3 text-gray-700 text-lg">
-            <span className="text-blue-500 text-xl">▶️</span>
-            <span className="font-medium">Appuie sur lecture pour écouter l'audio</span>
-            <span className="text-xl">👆</span>
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center space-x-3 text-gray-800 text-xl font-medium">
+            <span className="text-blue-500 text-2xl">▶️</span>
+            <span>Appuie sur lecture pour écouter l'audio</span>
+            <span className="text-2xl">👆</span>
           </div>
-          <p className="text-gray-600 text-base">
+          <p className="text-gray-700 text-lg">
             Je vous explique tout, en moins de 3 minutes.
           </p>
         </div>
         
-        {/* Player de áudio estilo WhatsApp */}
-        <div className="bg-gray-50 rounded-2xl border border-gray-200 p-6 shadow-sm max-w-md mx-auto">
+        {/* Player de áudio */}
+        <div className="bg-gray-50 rounded-2xl border border-gray-300 p-6 shadow-sm max-w-lg mx-auto">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-[#B34431] font-medium text-lg">Chef Amélie Dupont</h3>
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200">
@@ -109,6 +109,19 @@ export default function ThankYou() {
             <source src="/audio/Segundos.mp4" type="audio/mp4" />
             <source src="/audio/Segundos.mp3" type="audio/mpeg" />
           </audio>
+        </div>
+
+        {/* Botão verde */}
+        <div className="text-center space-y-6">
+          <button className="bg-green-500 hover:bg-green-600 text-white font-bold text-xl py-4 px-12 rounded-full shadow-lg transition-colors">
+            JE VEUX UN PLAN CHAQUE DIMANCHE !
+          </button>
+          
+          <div>
+            <a href="#" className="text-[#B34431] text-lg hover:underline">
+              Non, merci !
+            </a>
+          </div>
         </div>
       </div>
     </div>
