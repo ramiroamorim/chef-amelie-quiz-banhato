@@ -33,22 +33,50 @@
     
     <!-- Utmify Tracking Script -->
     <script>
-      try {
-        window.pixelId = "6806519e78c04101b15c3342";
-        var a = document.createElement("script");
-        a.setAttribute("async", "");
-        a.setAttribute("defer", "");
-        a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-        a.onerror = function() {
-          console.warn('Utmify script failed to load, continuing without tracking');
-        };
-        a.onload = function() {
-          console.log('Utmify script loaded successfully');
-        };
-        document.head.appendChild(a);
-      } catch (error) {
-        console.warn('Utmify initialization failed:', error);
-      }
+      // Carregamento mais seguro do Utmify para evitar conflitos
+      (function() {
+        try {
+          if (typeof window !== 'undefined') {
+            window.pixelId = "6806519e78c04101b15c3342";
+            
+            // Aguardar o DOM estar pronto
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', loadUtmify);
+            } else {
+              loadUtmify();
+            }
+            
+            function loadUtmify() {
+              try {
+                var script = document.createElement("script");
+                script.async = true;
+                script.defer = true;
+                script.src = "https://cdn.utmify.com.br/scripts/pixel/pixel.js";
+                
+                script.onerror = function() {
+                  console.warn('Utmify script failed to load, continuing without tracking');
+                };
+                
+                script.onload = function() {
+                  console.log('Utmify script loaded successfully');
+                };
+                
+                // Adicionar ao head de forma segura
+                var firstScript = document.getElementsByTagName('script')[0];
+                if (firstScript && firstScript.parentNode) {
+                  firstScript.parentNode.insertBefore(script, firstScript);
+                } else {
+                  document.head.appendChild(script);
+                }
+              } catch (e) {
+                console.warn('Error inserting Utmify script:', e);
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('Utmify initialization completely failed:', error);
+        }
+      })();
     </script>
     <!-- End Utmify Tracking Script -->
   </head>
