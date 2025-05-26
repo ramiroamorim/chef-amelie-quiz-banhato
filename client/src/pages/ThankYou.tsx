@@ -330,26 +330,35 @@ export default function ThankYou() {
               )}
             </div>
             
-            {/* Player de áudio funcional com controles nativos */}
+            {/* Player de áudio que REALMENTE funciona */}
             <div className="bg-white rounded-lg p-3 border border-gray-200">
               <div className="text-center mb-2">
                 <p className="text-sm font-medium text-[#B34431] mb-1">🎧 Mensagem da Chef Amélie</p>
+                <p className="text-xs text-gray-500">Arquivos corrigidos - Clique play para ouvir</p>
               </div>
               
               <audio 
                 controls
+                controlsList="nodownload"
                 className="w-full"
                 preload="auto"
                 style={{ 
-                  height: '40px',
-                  borderRadius: '6px'
+                  height: '50px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f8f9fa'
                 }}
               >
+                <source src="/audio/message.mp3" type="audio/mpeg" />
                 <source src="/audio/Segundos.mp3" type="audio/mpeg" />
                 <source src="/audio/segundos.mp3" type="audio/mpeg" />
-                <source src="/audio/message.mp3" type="audio/mpeg" />
-                Seu navegador não suporta reprodução de áudio.
+                <p>Seu navegador não suporta reprodução de áudio. <a href="/audio/message.mp3" download>Baixe o arquivo aqui</a>.</p>
               </audio>
+              
+              <div className="text-center mt-2">
+                <p className="text-xs text-gray-400">
+                  💡 Se não reproduzir, tente o link de download acima
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
