@@ -1,10 +1,117 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Player de áudio definitivo que funciona
+// Player de áudio completamente funcional
+const AudioPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleLoadedData = () => {
+      setDuration(audio.duration);
+      setIsLoaded(true);
+    };
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener('loadeddata', handleLoadedData);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('loadeddata', handleLoadedData);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, []);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio || !isLoaded) return;
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(console.error);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return "0:00";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  return (
+    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+      <audio ref={audioRef} preload="auto">
+        <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+      </audio>
+      
+      <div className="flex items-center gap-4">
+        <button
+          onClick={togglePlay}
+          disabled={!isLoaded}
+          className="w-12 h-12 rounded-full bg-[#2476c7] hover:bg-[#1c64a9] disabled:bg-gray-300 text-white flex items-center justify-center transition-colors"
+        >
+          {isPlaying ? (
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="m7 4 10 6L7 16V4z"/>
+            </svg>
+          )}
+        </button>
+        
+        <div className="flex-1">
+          <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+            <div 
+              className="bg-[#2476c7] h-2 rounded-full transition-all duration-300" 
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="text-center mt-3">
+        <p className="text-sm font-medium text-[#B34431]">🎧 Mensagem da Chef Amélie</p>
+        {!isLoaded && <p className="text-xs text-gray-500">Carregando áudio...</p>}
+      </div>
+    </div>
+  );
+};
+
+// Player de áudio simples e funcional para header
 const SimpleAudioPlayer = () => {
   return (
     <div className="flex flex-col items-center w-full mb-5">
@@ -25,8 +132,6 @@ const SimpleAudioPlayer = () => {
             }}
           >
             <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-            <source src="/audio/segundos.mp3" type="audio/mpeg" />
-            <source src="/audio/message.mp3" type="audio/mpeg" />
             Seu navegador não suporta reprodução de áudio.
           </audio>
           
@@ -42,11 +147,7 @@ const SimpleAudioPlayer = () => {
 };
 
 export default function ThankYou() {
-  const [audioPlaying, setAudioPlaying] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [progressPosition, setProgressPosition] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const progressTimerRef = useRef<number | null>(null);
   
   // Timer para mostrar o botão após exatamente 2 minutos (120000ms)
   useEffect(() => {
@@ -56,235 +157,24 @@ export default function ThankYou() {
     
     return () => clearTimeout(timer);
   }, []);
-  
-  // Iniciar simulação do áudio automaticamente para melhorar a experiência do usuário
-  useEffect(() => {
-    // Iniciar simulação automaticamente após 1 segundo
-    const autoplayTimer = setTimeout(() => {
-      if (!audioPlaying) {
-        setAudioPlaying(true);
-        simulateAudioProgress();
-      }
-    }, 1000);
-    
-    return () => clearTimeout(autoplayTimer);
-  }, []);
-  
-  // Configurar eventos do áudio real
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleLoadedMetadata = () => {
-      console.log("Audio loaded successfully");
-    };
-
-    const handleError = (e: Event) => {
-      console.error("Error loading audio:", e);
-    };
-
-    const handleTimeUpdate = () => {
-      if (audio.duration > 0) {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        setProgressPosition(progress);
-      }
-    };
-
-    const handlePlay = () => {
-      setAudioPlaying(true);
-      // Iniciar timer para atualizar progresso
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-      }
-      progressTimerRef.current = window.setInterval(() => {
-        if (audio.duration > 0) {
-          const progress = (audio.currentTime / audio.duration) * 100;
-          setProgressPosition(progress);
-        }
-      }, 100);
-    };
-
-    const handlePause = () => {
-      setAudioPlaying(false);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-    };
-
-    const handleEnded = () => {
-      setAudioPlaying(false);
-      setProgressPosition(100);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-    };
-
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("ended", handleEnded);
-
-    return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("ended", handleEnded);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-    };
-  }, []);
-  
-  // Função para controlar a reprodução do áudio
-  const toggleAudio = async () => {
-    console.log("Toggle áudio clicado - Estado atual:", audioPlaying);
-    
-    const audio = audioRef.current;
-    
-    if (!audio) {
-      console.error("Elemento de áudio não encontrado");
-      return;
-    }
-    
-    try {
-      if (audioPlaying) {
-        // Pausar áudio
-        audio.pause();
-        setAudioPlaying(false);
-        if (progressTimerRef.current) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
-        }
-      } else {
-        // Reproduzir áudio
-        console.log("Tentando reproduzir áudio...");
-        
-        // Definir volume máximo
-        audio.volume = 1.0;
-        
-        // Se o áudio terminou, reiniciar do início
-        if (audio.ended) {
-          audio.currentTime = 0;
-        }
-        
-        // Tentar reproduzir
-        const playPromise = audio.play();
-        
-        if (playPromise !== undefined) {
-          await playPromise;
-          console.log("Áudio reproduzindo com sucesso!");
-          setAudioPlaying(true);
-        }
-      }
-    } catch (error) {
-      console.error("Erro ao reproduzir áudio:", error);
-      // Se falhar, usar simulação visual apenas
-      if (!audioPlaying) {
-        setAudioPlaying(true);
-        simulateAudioProgress();
-      }
-    }
-  };
-  
-  // Função para navegar no áudio
-  const seekAudio = (position: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    // Se o áudio tem duração, navegar para a posição
-    if (audio.duration > 0) {
-      const newTime = (position / 100) * audio.duration;
-      audio.currentTime = newTime;
-      setProgressPosition(position);
-    } else {
-      // Fallback para simulação se não há áudio real
-      setProgressPosition(position);
-      
-      if (audioPlaying && progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-        
-        let progress = position;
-        const totalDuration = 120;
-        const updateInterval = 200;
-        const increment = 100 / (totalDuration * 1000 / updateInterval);
-        
-        progressTimerRef.current = window.setInterval(() => {
-          progress += increment;
-          
-          if (progress >= 100) {
-            if (progressTimerRef.current) {
-              clearInterval(progressTimerRef.current);
-              progressTimerRef.current = null;
-            }
-            progress = 100;
-            setAudioPlaying(false);
-          }
-          
-          setProgressPosition(progress);
-        }, updateInterval);
-      }
-    }
-  };
-  
-  // Função simplificada para simular o progresso do áudio visualmente
-  const simulateAudioProgress = () => {
-    // Limpar timer existente antes de criar um novo
-    if (progressTimerRef.current) {
-      clearInterval(progressTimerRef.current);
-      progressTimerRef.current = null;
-    }
-    
-    // Reiniciar o progresso ao começar
-    setProgressPosition(0);
-    let progress = 0;
-    
-    // Duração total: 2 minutos (120 segundos)
-    const totalDuration = 120;  
-    const updateInterval = 200; // milissegundos (atualização mais suave)
-    
-    // Incremento por intervalo para completar na duração definida
-    const increment = 100 / (totalDuration * 1000 / updateInterval);
-    
-    // Iniciar o timer de atualização
-    progressTimerRef.current = window.setInterval(() => {
-      progress += increment;
-      
-      if (progress >= 100) {
-        // Finalizar quando chegar a 100%
-        if (progressTimerRef.current) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
-        }
-        progress = 100;
-        setAudioPlaying(false);
-      }
-      
-      setProgressPosition(progress);
-    }, updateInterval);
-  };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-white p-4">
-      <div className="w-full max-w-xl flex flex-col items-center">
-        {/* Título principal com ícone de presente */}
-        <h1 className="text-4xl font-bold text-[#B34431] text-center mb-8">
-          <span className="inline-block mr-2">🎁</span> Merci infiniment pour votre confiance!
-        </h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full space-y-6">
         
-        {/* Texto introdutório */}
-        <p className="text-lg text-center mb-8 max-w-lg">
-          Avant d'aller découvrir vos recettes dans votre boîte mail…
-          <br />j'ai préparé un message très spécial rien que pour vous.
-        </p>
-        
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-[#B34431] mb-4">
+            Merci pour votre commande ! 
+          </h1>
+          <p className="text-lg text-gray-700 mb-2">
+            Votre accès aux 500 recettes de la Chef Amélie Dupont est maintenant activé.
+          </p>
+        </div>
+
+        {/* Simple Audio Player */}
+        <SimpleAudioPlayer />
+
         {/* Botão de reprodução de áudio */}
         <div className="text-center mb-4">
           <p className="mb-2">
@@ -330,36 +220,7 @@ export default function ThankYou() {
               )}
             </div>
             
-            {/* Player de áudio que REALMENTE funciona */}
-            <div className="bg-white rounded-lg p-3 border border-gray-200">
-              <div className="text-center mb-2">
-                <p className="text-sm font-medium text-[#B34431] mb-1">🎧 Mensagem da Chef Amélie</p>
-                <p className="text-xs text-gray-500">Arquivos corrigidos - Clique play para ouvir</p>
-              </div>
-              
-              <audio 
-                controls
-                controlsList="nodownload"
-                className="w-full"
-                preload="auto"
-                style={{ 
-                  height: '50px',
-                  borderRadius: '8px',
-                  backgroundColor: '#f8f9fa'
-                }}
-              >
-                <source src="/audio/message.mp3" type="audio/mpeg" />
-                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-                <source src="/audio/segundos.mp3" type="audio/mpeg" />
-                <p>Seu navegador não suporta reprodução de áudio. <a href="/audio/message.mp3" download>Baixe o arquivo aqui</a>.</p>
-              </audio>
-              
-              <div className="text-center mt-2">
-                <p className="text-xs text-gray-400">
-                  💡 Se não reproduzir, tente o link de download acima
-                </p>
-              </div>
-            </div>
+            <AudioPlayer />
           </CardContent>
         </Card>
         
