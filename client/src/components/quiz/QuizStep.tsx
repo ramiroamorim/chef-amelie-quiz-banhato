@@ -136,8 +136,25 @@ export default function QuizStep({
           dangerouslySetInnerHTML={{ __html: step.description }}
         />
       )}
-      {/* Image com otimização */}
-      {step.image && (
+      {/* Image com otimização - Layout especial para Chef Profile */}
+      {step.image && step.name === 'chef_profile' && (
+        <div className="w-full max-w-md mx-auto mb-6">
+          <img 
+            src={step.image} 
+            alt={step.imageAlt || ""} 
+            className="w-full h-auto rounded-xl shadow-lg"
+            loading="eager"
+            decoding="async"
+            style={{ 
+              maxHeight: "300px",
+              objectFit: "cover",
+              aspectRatio: "16/9"
+            }}
+          />
+        </div>
+      )}
+      {/* Image padrão para outros steps */}
+      {step.image && step.name !== 'chef_profile' && (
         <img 
           src={step.image} 
           alt={step.imageAlt || ""} 
@@ -169,8 +186,27 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Text Blocks */}
-      {step.textBlocks && (
+      {/* Text Blocks - Layout especial para Chef Profile */}
+      {step.textBlocks && step.name === 'chef_profile' && (
+        <div className="w-full max-w-lg mx-auto space-y-4 text-left">
+          {step.textBlocks.map((text, i) => (
+            <p 
+              key={i} 
+              className={text.highlight ? 
+                "text-[#E07260] font-medium text-base leading-relaxed" : 
+                "text-[#333333] text-base leading-relaxed"
+              }
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+                lineHeight: "1.6"
+              }}
+              dangerouslySetInnerHTML={{ __html: text.content }}
+            />
+          ))}
+        </div>
+      )}
+      {/* Text Blocks padrão */}
+      {step.textBlocks && step.name !== 'chef_profile' && (
         <div className="space-y-2 sm:space-y-3 text-[#555555]">
           {step.textBlocks.map((text, i) => (
             <p 
@@ -195,8 +231,23 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Button for steps without options (like step 4) */}
-      {step.buttonText && !step.options && (
+      {/* Button for steps without options - Layout especial para Chef Profile */}
+      {step.buttonText && !step.options && step.name === 'chef_profile' && (
+        <div className="relative w-full mt-8 flex justify-center">
+          <button 
+            className="bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg"
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+              fontSize: "16px"
+            }}
+            onClick={onNextStep}
+          >
+            {step.buttonText}
+          </button>
+        </div>
+      )}
+      {/* Button padrão para outros steps */}
+      {step.buttonText && !step.options && step.name !== 'chef_profile' && (
         <div className="relative w-full mt-4 sm:mt-6">
           <div className="absolute inset-0 rounded-full opacity-30" 
             style={{
