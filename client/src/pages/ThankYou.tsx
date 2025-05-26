@@ -238,24 +238,43 @@ export default function ThankYou() {
     };
   }, []);
   
-  // Função para controlar a reprodução real do áudio
+  // Função para controlar a reprodução do áudio
   const toggleAudio = async () => {
+    console.log("Toggle áudio clicado - Estado atual:", audioPlaying);
+    
     const audio = audioRef.current;
-    if (!audio) return;
-
+    
     try {
       if (audioPlaying) {
-        audio.pause();
+        // Pausar áudio
+        if (audio && !audio.paused) {
+          audio.pause();
+        }
+        setAudioPlaying(false);
+        if (progressTimerRef.current) {
+          clearInterval(progressTimerRef.current);
+          progressTimerRef.current = null;
+        }
       } else {
-        await audio.play();
+        // Reproduzir áudio
+        if (audio) {
+          try {
+            await audio.play();
+            setAudioPlaying(true);
+          } catch (e) {
+            console.log("Áudio real falhou, usando simulação:", e);
+            // Usar simulação se áudio real falhar
+            setAudioPlaying(true);
+            simulateAudioProgress();
+          }
+        } else {
+          // Usar simulação se não há elemento de áudio
+          setAudioPlaying(true);
+          simulateAudioProgress();
+        }
       }
     } catch (error) {
-      console.error("Error playing audio:", error);
-      // Fallback para simulação se o áudio real falhar
-      if (!audioPlaying) {
-        setAudioPlaying(true);
-        simulateAudioProgress();
-      }
+      console.error("Erro ao controlar áudio:", error);
     }
   };
   
