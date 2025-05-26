@@ -286,21 +286,9 @@ export default function ThankYou() {
           </p>
         </div>
         
-        {/* Player de áudio - design moderno similar à referência */}
+        {/* Player de áudio funcional */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio oculto - configurado para reprodução real */}
-            <div style={{ display: 'none' }}>
-              <audio 
-                ref={audioRef}
-                preload="metadata"
-                crossOrigin="anonymous"
-              >
-                <source src="/attached_assets/Segundos.mp3" type="audio/mpeg" />
-                <source src="/audio/segundos.mp3" type="audio/mpeg" />
-              </audio>
-            </div>
-            
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
               {ChefImages && ChefImages.amelie ? (
@@ -320,7 +308,6 @@ export default function ThankYou() {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
-                      // Fallback para as iniciais quando a imagem não carregar
                       const fallbackDiv = document.createElement('div');
                       fallbackDiv.className = "h-full w-full flex items-center justify-center bg-[#B34431] text-white text-sm font-bold";
                       fallbackDiv.textContent = "AD";
@@ -332,78 +319,32 @@ export default function ThankYou() {
               )}
             </div>
             
-            <div className="flex items-center">
-              {/* Botão de play/pause estilizado */}
-              <button 
-                onClick={toggleAudio}
-                className="h-12 w-12 rounded-full bg-[#2476c7] hover:bg-[#1c64a9] transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-[#2476c7] focus:ring-opacity-50"
-                aria-label={audioPlaying ? "Pause" : "Play"}
-              >
-                <svg 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`${audioPlaying ? "hidden" : "block"}`}
-                >
-                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-                </svg>
-                <svg 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`${audioPlaying ? "block" : "hidden"}`}
-                >
-                  <path d="M6 4H10V20H6V4ZM14 4H18V20H14V4Z" fill="currentColor" />
-                </svg>
-              </button>
+            {/* Player de áudio nativo com controles customizados */}
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="text-center mb-3">
+                <p className="text-sm font-medium text-gray-700 mb-1">🎧 Mensagem especial da Chef Amélie</p>
+                <p className="text-xs text-gray-500">Clique no play para ouvir a mensagem</p>
+              </div>
               
-              {/* Container para visualização de onda e progresso */}
-              <div className="flex-1 h-10 relative">
-                {/* Visualização de onda de áudio (estático, decorativo) */}
-                <div className="absolute inset-0 w-full h-full flex items-center justify-between">
-                  {/* Linhas verticais que simulam uma forma de onda de áudio */}
-                  {Array.from({ length: 50 }).map((_, index) => {
-                    // Altura variada para simular forma de onda de áudio, com padrão mais realista
-                    const height = Math.abs(Math.sin((index * 0.3) % Math.PI) * 70 + 
-                                    Math.cos((index * 0.2) % Math.PI) * 20) + 5;
-                    
-                    // Determina se este segmento está na parte "reproduzida" do áudio
-                    const isPlayed = index < (progressPosition / 100 * 50);
-                    
-                    return (
-                      <div 
-                        key={index}
-                        className={`mx-[1px] ${isPlayed ? 'bg-[#2476c7]' : 'bg-[#e9ecef]'}`}
-                        style={{ 
-                          height: `${height}%`, 
-                          width: '2px',
-                          opacity: isPlayed ? 0.7 : 0.5,
-                          transition: 'background-color 0.3s, opacity 0.3s'
-                        }}
-                      ></div>
-                    );
-                  })}
-                </div>
-                
-                {/* Área clicável para controle de progresso */}
-                <div 
-                  className="absolute inset-0 cursor-pointer"
-                  onClick={(e) => {
-                    const container = e.currentTarget;
-                    const rect = container.getBoundingClientRect();
-                    const clickPosition = (e.clientX - rect.left) / rect.width;
-                    
-                    // Calcular a nova posição como porcentagem
-                    const newPositionPercent = clickPosition * 100;
-                    
-                    // Atualizar o áudio e a visualização
-                    seekAudio(newPositionPercent);
-                  }}
-                ></div>
+              <audio 
+                controls
+                className="w-full"
+                preload="auto"
+                style={{ 
+                  height: '40px',
+                  borderRadius: '8px'
+                }}
+              >
+                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+                <source src="/audio/segundos.mp3" type="audio/mpeg" />
+                <source src="/audio/message.mp3" type="audio/mpeg" />
+                Seu navegador não suporta reprodução de áudio.
+              </audio>
+              
+              <div className="text-center mt-2">
+                <p className="text-xs text-gray-400">
+                  ⚠️ Se o áudio não reproduzir, verifique se o volume está ligado
+                </p>
               </div>
             </div>
           </CardContent>
