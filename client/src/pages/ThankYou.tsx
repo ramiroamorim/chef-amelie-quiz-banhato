@@ -7,7 +7,7 @@ import { ChefImages } from "@/assets/imageExports";
 // Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
 // Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
 // Tentamos diferentes formatos para garantir compatibilidade
-const AUDIO_SRC = "/audio/message.wav";
+const AUDIO_SRC = "/audio/message.mp3";
 
 // Componente de áudio simplificado
 const SimpleAudioPlayer = () => {
@@ -18,12 +18,13 @@ const SimpleAudioPlayer = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
         audioRef.current.play().catch(e => {
-          console.log("Erro ao reproduzir: reprodução automática bloqueada ou arquivo não disponível");
+          console.error("Error loading audio:", e);
+          setIsPlaying(false);
         });
       }
-      setIsPlaying(!isPlaying);
     }
   };
   
@@ -50,10 +51,15 @@ const SimpleAudioPlayer = () => {
     <div className="flex flex-col items-center w-full mb-5">
       <audio 
         ref={audioRef} 
-        src={AUDIO_SRC} 
         preload="auto"
-        style={{ display: 'none' }} 
-      />
+        style={{ display: 'none' }}
+        onLoadedData={() => console.log("Áudio carregado com sucesso")}
+        onError={(e) => console.error("Erro ao carregar áudio:", e)}
+      >
+        <source src="/audio/message.mp3" type="audio/mpeg" />
+        <source src="/audio/message.wav" type="audio/wav" />
+        Seu navegador não suporta áudio HTML5.
+      </audio>
       <button 
         onClick={togglePlay}
         className="bg-[#2476c7] hover:bg-[#1c64a9] text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
