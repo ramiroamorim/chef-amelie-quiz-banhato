@@ -232,45 +232,40 @@ export default function ThankYou() {
               )}
             </div>
             
-            {/* Player de áudio com novo arquivo MP4 */}
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="text-center mb-3">
-                <p className="text-sm font-medium text-[#B34431] mb-2">🎧 Mensagem da Chef Amélie</p>
-                <p className="text-xs text-gray-600">Arquivo de áudio atualizado</p>
-              </div>
-              
-              {/* Player principal com MP4 */}
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs font-medium mb-1">Player Principal: Segundos.mp4</p>
-                  <audio 
-                    controls 
-                    className="w-full" 
-                    style={{ height: '50px' }}
-                    preload="metadata"
-                  >
-                    <source src="/audio/Segundos.mp4" type="audio/mp4" />
-                    <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-                    <p>Seu navegador não suporta reprodução de áudio.</p>
-                  </audio>
+            {/* Player de áudio elegante */}
+            <div className="relative bg-gradient-to-br from-[#B34431] to-[#8B1F1F] rounded-xl p-6 text-white shadow-lg">
+              <div className="absolute inset-0 bg-black/10 rounded-xl"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold">🎧 Mensagem Especial</h3>
+                    <p className="text-white/80 text-sm">Chef Amélie Dupont</p>
+                  </div>
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.768l-4.146-3.146a1 1 0 00-.664-.252H2a1 1 0 01-1-1V8a1 1 0 011-1h1.573a1 1 0 00.664-.252l4.146-3.146a1 1 0 011.617.768zM14.657 2.343a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 11-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.895-4.21-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.414A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.829 1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
                 </div>
                 
-                {/* Link de verificação */}
-                <div className="text-center">
-                  <a 
-                    href="/audio/Segundos.mp4" 
-                    target="_blank"
-                    className="text-blue-600 hover:underline text-sm"
-                  >
-                    🔗 Testar arquivo direto (Segundos.mp4)
-                  </a>
+                <audio 
+                  controls 
+                  className="w-full h-12 rounded-lg bg-white/20 backdrop-blur-sm"
+                  style={{
+                    filter: 'brightness(1.1) contrast(1.1)',
+                  }}
+                  preload="metadata"
+                >
+                  <source src="/audio/Segundos.mp4" type="audio/mp4" />
+                  <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+                  <p>Seu navegador não suporta reprodução de áudio.</p>
+                </audio>
+                
+                <div className="mt-3 text-center">
+                  <p className="text-white/70 text-xs">
+                    ✨ Uma mensagem pessoal da Chef para você
+                  </p>
                 </div>
-              </div>
-              
-              <div className="text-center mt-3 p-2 bg-green-50 rounded">
-                <p className="text-xs text-green-700">
-                  ✅ Arquivo atualizado! Teste o player acima
-                </p>
               </div>
             </div>
           </CardContent>
