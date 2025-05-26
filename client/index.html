@@ -28,12 +28,22 @@
     
     <!-- Utmify Tracking Script -->
     <script>
-      window.pixelId = "6806519e78c04101b15c3342";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-      document.head.appendChild(a);
+      try {
+        window.pixelId = "6806519e78c04101b15c3342";
+        var a = document.createElement("script");
+        a.setAttribute("async", "");
+        a.setAttribute("defer", "");
+        a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+        a.onerror = function() {
+          console.warn('Utmify script failed to load, continuing without tracking');
+        };
+        a.onload = function() {
+          console.log('Utmify script loaded successfully');
+        };
+        document.head.appendChild(a);
+      } catch (error) {
+        console.warn('Utmify initialization failed:', error);
+      }
     </script>
     <!-- End Utmify Tracking Script -->
   </head>

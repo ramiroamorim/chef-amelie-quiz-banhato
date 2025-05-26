@@ -44,14 +44,30 @@ export const getQueryFn: <T>(options: {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-      retry: false,
+      retry: (failureCount, error) => {
+        console.log(`Query retry attempt ${failureCount}:`, error);
+        // Não tentar novamente se for erro de rede ou scripts de terceiros
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          console.warn('Network error detected, possibly due to third-party scripts');
+          return failureCount < 1;
+        }
+        return failureCount < 3;
+      },
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      networkMode: 'always', // Tentar mesmo se detectar problemas de rede
     },
     mutations: {
-      retry: false,
+      retry: (failureCount, error) => {
+        console.log(`Mutation retry attempt ${failureCount}:`, error);
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          return false; // Não retry para erros de fetch em mutations
+        }
+        return failureCount < 2;
+      },
+      networkMode: 'always',
     },
   },
 });
