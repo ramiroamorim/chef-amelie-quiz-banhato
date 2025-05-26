@@ -232,41 +232,81 @@ export default function ThankYou() {
               )}
             </div>
             
-            {/* Player de áudio elegante */}
-            <div className="relative bg-gradient-to-br from-[#B34431] to-[#8B1F1F] rounded-xl p-6 text-white shadow-lg">
-              <div className="absolute inset-0 bg-black/10 rounded-xl"></div>
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold">🎧 Mensagem Especial</h3>
-                    <p className="text-white/80 text-sm">Chef Amélie Dupont</p>
-                  </div>
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.768l-4.146-3.146a1 1 0 00-.664-.252H2a1 1 0 01-1-1V8a1 1 0 011-1h1.573a1 1 0 00.664-.252l4.146-3.146a1 1 0 011.617.768zM14.657 2.343a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 11-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.895-4.21-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.414A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.829 1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </div>
+            {/* Player de áudio estilo WhatsApp */}
+            <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <h3 className="text-[#B34431] font-medium text-base">Chef Amélie Dupont</h3>
                 </div>
                 
-                <audio 
-                  controls 
-                  className="w-full h-12 rounded-lg bg-white/20 backdrop-blur-sm"
-                  style={{
-                    filter: 'brightness(1.1) contrast(1.1)',
-                  }}
-                  preload="metadata"
-                >
-                  <source src="/audio/Segundos.mp4" type="audio/mp4" />
-                  <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-                  <p>Seu navegador não suporta reprodução de áudio.</p>
-                </audio>
-                
-                <div className="mt-3 text-center">
-                  <p className="text-white/70 text-xs">
-                    ✨ Uma mensagem pessoal da Chef para você
-                  </p>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
+                  <img 
+                    src="https://images.unsplash.com/photo-1559847844-5315695dadae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                    alt="Chef Amélie Dupont"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
+              
+              <div className="mt-3 flex items-center space-x-3">
+                <button 
+                  id="audio-play-button"
+                  className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors"
+                  onClick={() => {
+                    const audio = document.getElementById('hidden-audio') as HTMLAudioElement;
+                    const button = document.getElementById('audio-play-button');
+                    if (audio.paused) {
+                      audio.play();
+                      button!.innerHTML = `
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                      `;
+                    } else {
+                      audio.pause();
+                      button!.innerHTML = `
+                        <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                        </svg>
+                      `;
+                    }
+                  }}
+                >
+                  <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                
+                <div className="flex-1 h-8 bg-gray-100 rounded-full flex items-center px-3">
+                  <div className="flex space-x-1">
+                    {[...Array(20)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="w-1 bg-gray-400 rounded-full"
+                        style={{ height: `${Math.random() * 16 + 8}px` }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <span className="text-xs text-gray-500 font-mono">0:00</span>
+              </div>
+              
+              <audio 
+                id="hidden-audio"
+                preload="metadata"
+                onEnded={() => {
+                  const button = document.getElementById('audio-play-button');
+                  button!.innerHTML = `
+                    <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                  `;
+                }}
+              >
+                <source src="/audio/Segundos.mp4" type="audio/mp4" />
+                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+              </audio>
             </div>
           </CardContent>
         </Card>
