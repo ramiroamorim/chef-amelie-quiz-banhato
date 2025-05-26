@@ -122,35 +122,35 @@ export default function QuizStep({
       transition={{ duration: 0.3 }}
       className="quiz-step px-2 sm:px-4"
     >
-      {/* Layout padrão aplicado também para Chef Profile */}
+      {/* Layout otimizado para Chef Profile */}
       {step.name === 'chef_profile' && (
         <div className="w-full">
-          {/* Title centralizado como outras páginas */}
+          {/* Title maior para melhor legibilidade */}
           {step.title && (
             <h2 
-              className="text-sm sm:text-lg font-medium mb-2 sm:mb-3 text-center"
+              className="text-base sm:text-xl font-medium mb-1 sm:mb-2 text-center"
               dangerouslySetInnerHTML={{ __html: step.title }}
             />
           )}
           
-          {/* Description centralizada */}
+          {/* Description com tamanho aumentado */}
           {step.description && (
             <p 
-              className="text-xs sm:text-sm text-center mb-2 sm:mb-3" 
+              className="text-sm sm:text-base text-center mb-1 sm:mb-2" 
               dangerouslySetInnerHTML={{ __html: step.description }}
             />
           )}
           
-          {/* Image com mesmo estilo das outras páginas */}
+          {/* Image reduzida para mobile para economizar espaço */}
           {step.image && (
             <img 
               src={step.image} 
               alt={step.imageAlt || ""} 
-              className="w-full h-auto rounded-lg mb-2 sm:mb-3"
+              className="w-full h-auto rounded-lg mb-1 sm:mb-2"
               loading="eager"
               decoding="async"
               style={{ 
-                maxHeight: "200px",
+                maxHeight: "140px",
                 objectFit: "contain"
               }}
             />
@@ -205,8 +205,20 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Text Blocks com padrão unificado */}
-      {step.textBlocks && (
+      {/* Text Blocks com tamanho otimizado para Chef Profile */}
+      {step.textBlocks && step.name === 'chef_profile' && (
+        <div className="space-y-1 sm:space-y-2 text-[#555555]">
+          {step.textBlocks.map((text, i) => (
+            <p 
+              key={i} 
+              className={text.highlight ? "text-primary font-medium text-sm sm:text-base" : "text-sm sm:text-base"}
+              dangerouslySetInnerHTML={{ __html: text.content }}
+            />
+          ))}
+        </div>
+      )}
+      {/* Text Blocks padrão para outros steps */}
+      {step.textBlocks && step.name !== 'chef_profile' && (
         <div className="space-y-2 sm:space-y-3 text-[#555555]">
           {step.textBlocks.map((text, i) => (
             <p 
@@ -231,8 +243,25 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Button com padrão unificado */}
-      {step.buttonText && !step.options && (
+      {/* Button otimizado para Chef Profile */}
+      {step.buttonText && !step.options && step.name === 'chef_profile' && (
+        <div className="relative w-full mt-2 sm:mt-3">
+          <div className="absolute inset-0 rounded-full opacity-30" 
+            style={{
+              background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
+              animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
+            }}
+          ></div>
+          <button 
+            className="btn-primary relative w-full py-3 sm:py-4 px-6 sm:px-8 flex items-center justify-center z-10 text-sm sm:text-base font-medium" 
+            onClick={onNextStep}
+          >
+            <span>{step.buttonText}</span>
+          </button>
+        </div>
+      )}
+      {/* Button padrão para outros steps */}
+      {step.buttonText && !step.options && step.name !== 'chef_profile' && (
         <div className="relative w-full mt-3 sm:mt-4">
           <div className="absolute inset-0 rounded-full opacity-30" 
             style={{
