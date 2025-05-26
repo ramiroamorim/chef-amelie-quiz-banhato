@@ -367,7 +367,7 @@ export default function ThankYou() {
             <div style={{ display: 'none' }}>
               <audio 
                 ref={audioRef}
-                src={AUDIO_SRC}
+                src="/audio/segundos.mp3"
                 preload="metadata"
                 crossOrigin="anonymous"
               />
