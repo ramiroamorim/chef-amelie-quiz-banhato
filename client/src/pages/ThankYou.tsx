@@ -73,7 +73,7 @@ export default function ThankYou() {
     };
   }, []);
   
-  // Função para controlar a reprodução do áudio - versão simplificada
+  // Função para controlar a reprodução do áudio
   const toggleAudio = async () => {
     const audio = audioRef.current;
     
@@ -86,23 +86,67 @@ export default function ThankYou() {
       if (audioPlaying) {
         // Pausar áudio
         audio.pause();
-        setAudioPlaying(false);
       } else {
-        // Reproduzir áudio diretamente
+        // Configurar áudio para reprodução
         audio.volume = 1.0;
         
-        if (audio.ended) {
+        // Resetar se chegou ao fim
+        if (audio.ended || audio.currentTime === audio.duration) {
           audio.currentTime = 0;
           setProgressPosition(0);
         }
         
-        // Tentar reproduzir imediatamente
-        await audio.play();
-        setAudioPlaying(true);
-        console.log("Áudio reproduzindo!");
+        // Garantir que o áudio está carregado
+        if (audio.readyState === 0) {
+          console.log("Carregando áudio...");
+          audio.load();
+          
+          // Aguardar carregamento
+          await new Promise((resolve, reject) => {
+            const handleCanPlay = () => {
+              console.log("Áudio carregado e pronto");
+              audio.removeEventListener('canplay', handleCanPlay);
+              audio.removeEventListener('error', handleError);
+              resolve(true);
+            };
+            
+            const handleError = (e: Event) => {
+              console.error("Erro no carregamento:", e);
+              audio.removeEventListener('canplay', handleCanPlay);
+              audio.removeEventListener('error', handleError);
+              reject(e);
+            };
+            
+            audio.addEventListener('canplay', handleCanPlay);
+            audio.addEventListener('error', handleError);
+            
+            // Timeout de segurança
+            setTimeout(() => {
+              audio.removeEventListener('canplay', handleCanPlay);
+              audio.removeEventListener('error', handleError);
+              resolve(true); // Prosseguir mesmo sem carregamento completo
+            }, 2000);
+          });
+        }
+        
+        // Tentar reproduzir
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Reprodução iniciada com sucesso");
+            })
+            .catch((error) => {
+              console.error("Erro na reprodução:", error);
+              // Tentar novamente após breve pausa
+              setTimeout(() => {
+                audio.play().catch(console.error);
+              }, 100);
+            });
+        }
       }
     } catch (error) {
-      console.error("Erro ao reproduzir áudio:", error);
+      console.error("Erro geral no player:", error);
       setAudioPlaying(false);
     }
   };
@@ -150,16 +194,34 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
-            {/* Player de áudio HTML5 simples e funcional */}
+            {/* Player de áudio funcional com fallbacks */}
             <audio 
               ref={audioRef}
-              preload="auto"
+              preload="metadata"
               controls={false}
               style={{ display: 'none' }}
-              src="/audio/Segundos.mp3"
-              onPlay={() => setAudioPlaying(true)}
-              onPause={() => setAudioPlaying(false)}
+              crossOrigin="anonymous"
+              onLoadedMetadata={() => {
+                console.log("Metadata carregada com sucesso");
+                setAudioLoaded(true);
+                if (audioRef.current) {
+                  setAudioDuration(audioRef.current.duration);
+                }
+              }}
+              onCanPlay={() => {
+                console.log("Áudio pronto para reprodução");
+                setAudioLoaded(true);
+              }}
+              onPlay={() => {
+                console.log("Áudio iniciado");
+                setAudioPlaying(true);
+              }}
+              onPause={() => {
+                console.log("Áudio pausado");
+                setAudioPlaying(false);
+              }}
               onEnded={() => {
+                console.log("Áudio finalizado");
                 setAudioPlaying(false);
                 setProgressPosition(0);
               }}
@@ -170,7 +232,16 @@ export default function ThankYou() {
                   setProgressPosition(progress);
                 }
               }}
-            />
+              onError={(e) => {
+                console.error("Erro no elemento de áudio:", e);
+                setAudioLoaded(false);
+              }}
+            >
+              <source src="/audio/Segundos.mp4" type="video/mp4" />
+              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+              <source src="/audio/message.mp3" type="audio/mpeg" />
+              Seu navegador não suporta reprodução de áudio.
+            </audio>
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
