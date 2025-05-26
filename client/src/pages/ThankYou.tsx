@@ -7,7 +7,7 @@ import { ChefImages } from "@/assets/imageExports";
 // Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
 // Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
 // Tentamos diferentes formatos para garantir compatibilidade
-const AUDIO_SRC = "/audio/message.wav";
+const AUDIO_SRC = "/audio/segundos.mp3";
 
 // Player de áudio funcional
 const SimpleAudioPlayer = () => {
@@ -22,10 +22,14 @@ const SimpleAudioPlayer = () => {
       if (isPlaying) {
         audio.pause();
       } else {
+        // Definir volume máximo
+        audio.volume = 1.0;
         if (audio.ended) {
           audio.currentTime = 0;
         }
+        console.log("Tentando reproduzir áudio com volume:", audio.volume);
         await audio.play();
+        console.log("Áudio iniciado - Duration:", audio.duration, "Volume:", audio.volume);
       }
     } catch (error) {
       console.error("Erro ao reproduzir áudio:", error);
