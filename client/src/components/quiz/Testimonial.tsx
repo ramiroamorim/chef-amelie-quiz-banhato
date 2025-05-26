@@ -148,10 +148,9 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     style={{ 
                       width: "100%",
                       height: "100%",
-                      objectFit: "contain",
+                      objectFit: "cover",
                       objectPosition: "center",
-                      display: "block",
-                      backgroundColor: "#f8f9fa"
+                      display: "block"
                     }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
