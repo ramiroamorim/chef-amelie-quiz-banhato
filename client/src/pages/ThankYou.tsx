@@ -9,7 +9,7 @@ import { ChefImages } from "@/assets/imageExports";
 // Tentamos diferentes formatos para garantir compatibilidade
 const AUDIO_SRC = "/audio/message.mp3";
 
-// Player de áudio simplificado e funcional
+// Player de áudio funcional
 const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -21,18 +21,14 @@ const SimpleAudioPlayer = () => {
     try {
       if (isPlaying) {
         audio.pause();
-        setIsPlaying(false);
       } else {
-        // Resetar o áudio para o início se já terminou
         if (audio.ended) {
           audio.currentTime = 0;
         }
         await audio.play();
-        setIsPlaying(true);
       }
     } catch (error) {
       console.error("Erro ao reproduzir áudio:", error);
-      setIsPlaying(false);
     }
   };
   
@@ -59,39 +55,32 @@ const SimpleAudioPlayer = () => {
     <div className="flex flex-col items-center w-full mb-5">
       <audio 
         ref={audioRef} 
-        preload="metadata"
+        preload="auto"
+        src={AUDIO_SRC}
         style={{ display: 'none' }}
-      >
-        <source src="/audio/message.mp3" type="audio/mpeg" />
-        Seu navegador não suporta áudio HTML5.
-      </audio>
+      />
       
-      <button 
-        onClick={togglePlay}
-        disabled={error}
-        className={`${
-          error 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-[#2476c7] hover:bg-[#1c64a9]'
-        } text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
-      >
-        {isPlaying ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="4" width="4" height="16" fill="white"/>
-            <rect x="14" y="4" width="4" height="16" fill="white"/>
-          </svg>
-        ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 5V19L19 12L8 5Z" fill="white"/>
-          </svg>
-        )}
-      </button>
-      
-      <p className="text-sm text-gray-500 text-center">
-        {error ? "Erreur de chargement audio" :
-         isPlaying ? "Lecture en cours..." : 
-         isLoaded ? "Cliquez pour écouter le message d'Amélie" : "Chargement..."}
-      </p>
+      <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
+        <button
+          onClick={togglePlay}
+          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold transition-all duration-200 ${
+            isPlaying 
+              ? 'bg-red-500 hover:bg-red-600' 
+              : 'bg-green-500 hover:bg-green-600'
+          }`}
+        >
+          {isPlaying ? '⏸' : '▶'}
+        </button>
+        
+        <div className="flex-1">
+          <div className="text-sm font-medium text-gray-800">
+            {isPlaying ? 'Reproduzindo mensagem...' : 'Clique para ouvir a mensagem'}
+          </div>
+          <div className="text-xs text-gray-500">
+            Mensagem especial da Chef Amélie
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
