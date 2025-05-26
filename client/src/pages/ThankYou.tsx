@@ -45,7 +45,7 @@ export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [progressPosition, setProgressPosition] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const progressTimerRef = useRef<number | null>(null);
   
   // Timer para mostrar o botão após exatamente 2 minutos (120000ms)
@@ -142,82 +142,45 @@ export default function ThankYou() {
     };
   }, []);
   
-  // Função simplificada para controlar a reprodução do áudio/vídeo
+  // Função para controlar a reprodução do áudio
   const toggleAudio = async () => {
     const audio = audioRef.current;
     
     if (!audio) {
-      console.error("Elemento de mídia não encontrado");
+      console.error("Elemento de áudio não encontrado");
       return;
     }
     
     try {
       if (audioPlaying) {
-        // Pausar
+        // Pausar áudio
         audio.pause();
-        setAudioPlaying(false);
-        if (progressTimerRef.current) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
-        }
       } else {
-        // Reproduzir
+        // Reproduzir áudio
         audio.volume = 1.0;
         
         if (audio.ended) {
           audio.currentTime = 0;
         }
         
+        // Tentar reproduzir
         await audio.play();
-        setAudioPlaying(true);
+        console.log("Áudio reproduzindo com sucesso!");
       }
     } catch (error) {
-      console.error("Erro ao reproduzir mídia:", error);
-      // Usar apenas simulação visual se falhar
-      setAudioPlaying(true);
-      simulateAudioProgress();
+      console.error("Erro ao reproduzir áudio:", error);
     }
   };
   
   // Função para navegar no áudio
   const seekAudio = (position: number) => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !audio.duration) return;
 
-    // Se o áudio tem duração, navegar para a posição
-    if (audio.duration > 0) {
-      const newTime = (position / 100) * audio.duration;
-      audio.currentTime = newTime;
-      setProgressPosition(position);
-    } else {
-      // Fallback para simulação se não há áudio real
-      setProgressPosition(position);
-      
-      if (audioPlaying && progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-        
-        let progress = position;
-        const totalDuration = 120;
-        const updateInterval = 200;
-        const increment = 100 / (totalDuration * 1000 / updateInterval);
-        
-        progressTimerRef.current = window.setInterval(() => {
-          progress += increment;
-          
-          if (progress >= 100) {
-            if (progressTimerRef.current) {
-              clearInterval(progressTimerRef.current);
-              progressTimerRef.current = null;
-            }
-            progress = 100;
-            setAudioPlaying(false);
-          }
-          
-          setProgressPosition(progress);
-        }, updateInterval);
-      }
-    }
+    // Navegar para a posição no áudio real
+    const newTime = (position / 100) * audio.duration;
+    audio.currentTime = newTime;
+    setProgressPosition(position);
   };
   
   // Função simplificada para simular o progresso do áudio visualmente
@@ -286,27 +249,32 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de áudio com controles nativos visíveis */}
-            <div className="mb-4 p-4 bg-white rounded-lg border">
-              <div className="text-center mb-2">
-                <p className="text-sm font-medium text-gray-700">🎧 Mensagem da Chef Amélie</p>
-              </div>
-              <audio 
-                ref={audioRef}
-                controls
-                className="w-full"
-                preload="auto"
-                onPlay={() => setAudioPlaying(true)}
-                onPause={() => setAudioPlaying(false)}
-                onEnded={() => setAudioPlaying(false)}
-                style={{ height: '40px' }}
-              >
-                <source src="/audio/Segundos.mp4" type="audio/mp4" />
-                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-                <source src="/audio/segundos.mp3" type="audio/mpeg" />
-                Seu navegador não suporta reprodução de áudio.
-              </audio>
-            </div>
+            {/* Elemento de áudio oculto para controles customizados */}
+            <audio 
+              ref={audioRef}
+              preload="auto"
+              style={{ display: 'none' }}
+              onPlay={() => setAudioPlaying(true)}
+              onPause={() => setAudioPlaying(false)}
+              onEnded={() => setAudioPlaying(false)}
+              onTimeUpdate={() => {
+                const audio = audioRef.current;
+                if (audio && audio.duration > 0) {
+                  const progress = (audio.currentTime / audio.duration) * 100;
+                  setProgressPosition(progress);
+                }
+              }}
+              onLoadedMetadata={() => {
+                console.log("Áudio carregado com sucesso");
+              }}
+              onError={(e) => {
+                console.error("Erro ao carregar áudio:", e);
+              }}
+            >
+              <source src="/audio/Segundos.mp4" type="audio/mp4" />
+              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+              <source src="/audio/segundos.mp3" type="audio/mpeg" />
+            </audio>
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
