@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
+import { FacebookPixel } from "../../lib/fbPixel";
 
 // Componente de botão pulsante coral
 const CoralPulseButton = ({ onClick, children }: { onClick: () => void; children: React.ReactNode }) => {

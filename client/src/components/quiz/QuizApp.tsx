@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuiz } from "@/hooks/useQuiz";
 import ProgressDots from "@/components/quiz/ProgressDots";
 import QuizStep from "@/components/quiz/QuizStep";
 import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
+import { FacebookPixel } from "@/lib/fbPixel";
 
 export default function QuizApp() {
   const { 
@@ -16,6 +17,11 @@ export default function QuizApp() {
     showResult, 
     showSalesPage
   } = useQuiz(quizSteps.length);
+
+  // Rastrear início do quiz quando o componente é montado
+  useEffect(() => {
+    FacebookPixel.trackQuizStart();
+  }, []);
 
   return (
     <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-6 md:py-8 flex flex-col">
