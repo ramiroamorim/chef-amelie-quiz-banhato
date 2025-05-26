@@ -154,31 +154,30 @@ export default function ThankYou() {
           </p>
         </div>
         
-        {/* Player de áudio simples e funcional */}
+        {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Player de áudio nativo do navegador */}
+            {/* Elemento de áudio oculto para controles customizados */}
+            {/* Elemento de áudio simplificado */}
             <audio 
               ref={audioRef}
-              controls
-              className="w-full"
               preload="auto"
-              style={{
-                height: '54px',
-                borderRadius: '8px'
-              }}
+              style={{ display: 'none' }}
+              src="/audio/Segundos.mp3"
               onPlay={() => setAudioPlaying(true)}
               onPause={() => setAudioPlaying(false)}
-              onLoadedData={() => {
-                setAudioLoaded(true);
-                console.log("Áudio carregado com sucesso");
+              onEnded={() => {
+                setAudioPlaying(false);
+                setProgressPosition(0);
               }}
-            >
-              <source src="/audio/message.mp3" type="audio/mpeg" />
-              <source src="/audio/segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-              Seu navegador não suporta reprodução de áudio.
-            </audio>
+              onTimeUpdate={() => {
+                const audio = audioRef.current;
+                if (audio && audio.duration > 0) {
+                  const progress = (audio.currentTime / audio.duration) * 100;
+                  setProgressPosition(progress);
+                }
+              }}
+            />
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
