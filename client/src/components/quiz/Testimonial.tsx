@@ -26,11 +26,7 @@ interface TestimonialProps {
 
 export default function Testimonial({ testimonials, onComplete }: TestimonialProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  // Configuração mínima de deslize para mudar o depoimento
-  const minSwipeDistance = 50;
+  const [isLoading, setIsLoading] = useState(false);
 
   // Pré-carregar todas as imagens do carrossel
   useEffect(() => {
@@ -41,78 +37,38 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
   }, []);
 
   const handlePrev = () => {
+    if (isLoading) return;
+    setIsLoading(true);
     setCurrentIndex(prev => (prev === 0 ? testimonials.length - 1 : prev - 1));
+    setTimeout(() => setIsLoading(false), 300);
   };
 
   const handleNext = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    
     if (currentIndex === testimonials.length - 1) {
-      // If we're on the last testimonial, call onComplete to proceed to the next step
       onComplete();
-    } else {
-      setCurrentIndex(prev => prev + 1);
+      return;
     }
+    
+    setCurrentIndex(prev => prev + 1);
+    setTimeout(() => setIsLoading(false), 300);
   };
 
   const handleViewProfile = () => {
-    // Call onComplete directly to proceed to the next step
     onComplete();
   };
 
-  // Handlers de toque para deslizar na tela
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
+  const current = testimonials[currentIndex] || testimonials[0];
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-    
-    if (isLeftSwipe) {
-      handleNext();
-    } else if (isRightSwipe) {
-      handlePrev();
-    }
-  };
-
-  // Pré-carregamento de imagens para melhorar performance
-  useEffect(() => {
-    // Pré-carregar todas as imagens do carrossel
-    testimonialImages.forEach(imageSrc => {
-      const img = new Image();
-      img.src = imageSrc;
-    });
-  }, []);
-
-  // Auto-avança o carrossel a cada 5 segundos (desativado se o usuário interagir)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentIndex < testimonials.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-      }
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [currentIndex, testimonials.length]);
-
-  if (testimonials.length === 0) return null;
-
-  const current = testimonials[currentIndex];
+  if (!current) {
+    return null;
+  }
 
   return (
-    <div className="testimonial-wrapper max-w-md mx-auto px-2 sm:px-4">
-      <div className="mb-3 sm:mb-4 text-center text-primary font-medium text-sm sm:text-base">
-        Faites glisser ➤ pour voir ce qu'elles disent.
-      </div>
-      
-      <div className="h-auto min-h-[350px] sm:min-h-[400px] md:min-h-[450px] overflow-hidden mb-3 sm:mb-4 relative">
+    <div className="flex flex-col justify-center min-h-[400px] w-full px-2 sm:px-4">
+      <div className="relative w-full max-w-md mx-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -121,9 +77,6 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
             className="testimonial h-full w-full"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
           >
             <div className="testimonial-content bg-white rounded-2xl shadow-lg flex flex-col overflow-hidden"
                  style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.08)', minHeight: '300px', height: '100%' }}>
@@ -133,7 +86,8 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                   {/* Botões de navegação laterais */}
                   <button 
                     onClick={handlePrev}
-                    className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-black/80 hover:bg-black transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10"
+                    disabled={isLoading}
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-black/80 hover:bg-black transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10 disabled:opacity-50"
                     aria-label="Témoignage précédent"
                   >
                     <ChevronLeft />
@@ -161,7 +115,8 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                   
                   <button 
                     onClick={handleNext}
-                    className={`absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 ${currentIndex === testimonials.length - 1 ? 'bg-primary/90 hover:bg-primary' : 'bg-black/80 hover:bg-black'} transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10`}
+                    disabled={isLoading}
+                    className={`absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 ${currentIndex === testimonials.length - 1 ? 'bg-primary/90 hover:bg-primary' : 'bg-black/80 hover:bg-black'} transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10 disabled:opacity-50`}
                     aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
                   >
                     <ChevronRight />
