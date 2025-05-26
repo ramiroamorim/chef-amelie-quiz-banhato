@@ -9,22 +9,39 @@ import { ChefImages } from "@/assets/imageExports";
 // Tentamos diferentes formatos para garantir compatibilidade
 const AUDIO_SRC = "/audio/message.mp3";
 
-// Componente de áudio simplificado
+// Componente de áudio robusto
 const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   
-  const togglePlay = () => {
+  const handlePlay = async () => {
+    if (!audioRef.current) return;
+    
+    try {
+      setError(false);
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } catch (e) {
+      console.error("Erro ao reproduzir áudio:", e);
+      setError(true);
+      setIsPlaying(false);
+    }
+  };
+  
+  const handlePause = () => {
     if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.play().catch(e => {
-          console.error("Error loading audio:", e);
-          setIsPlaying(false);
-        });
-      }
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  
+  const togglePlay = () => {
+    if (isPlaying) {
+      handlePause();
+    } else {
+      handlePlay();
     }
   };
   
@@ -32,15 +49,43 @@ const SimpleAudioPlayer = () => {
     const audio = audioRef.current;
     if (!audio) return;
     
-    const handleEnded = () => setIsPlaying(false);
-    const handlePause = () => setIsPlaying(false);
-    const handlePlay = () => setIsPlaying(true);
+    const handleLoadedData = () => {
+      setIsLoaded(true);
+      setError(false);
+      console.log("Áudio carregado com sucesso");
+    };
     
+    const handleError = (e: any) => {
+      console.error("Erro ao carregar áudio:", e);
+      setError(true);
+      setIsLoaded(false);
+    };
+    
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
+    
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+    
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+    
+    // Adicionar event listeners
+    audio.addEventListener("loadeddata", handleLoadedData);
+    audio.addEventListener("error", handleError);
     audio.addEventListener("ended", handleEnded);
     audio.addEventListener("pause", handlePause);
     audio.addEventListener("play", handlePlay);
     
+    // Forçar carregamento
+    audio.load();
+    
     return () => {
+      audio.removeEventListener("loadeddata", handleLoadedData);
+      audio.removeEventListener("error", handleError);
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("play", handlePlay);
@@ -51,18 +96,21 @@ const SimpleAudioPlayer = () => {
     <div className="flex flex-col items-center w-full mb-5">
       <audio 
         ref={audioRef} 
-        preload="auto"
+        preload="metadata"
         style={{ display: 'none' }}
-        onLoadedData={() => console.log("Áudio carregado com sucesso")}
-        onError={(e) => console.error("Erro ao carregar áudio:", e)}
       >
         <source src="/audio/message.mp3" type="audio/mpeg" />
-        <source src="/audio/message.wav" type="audio/wav" />
         Seu navegador não suporta áudio HTML5.
       </audio>
+      
       <button 
         onClick={togglePlay}
-        className="bg-[#2476c7] hover:bg-[#1c64a9] text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        disabled={error}
+        className={`${
+          error 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-[#2476c7] hover:bg-[#1c64a9]'
+        } text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
       >
         {isPlaying ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,8 +123,11 @@ const SimpleAudioPlayer = () => {
           </svg>
         )}
       </button>
-      <p className="text-sm text-gray-500">
-        {isPlaying ? "Lecture en cours..." : "Cliquez pour écouter le message d'Amélie"}
+      
+      <p className="text-sm text-gray-500 text-center">
+        {error ? "Erreur de chargement audio" :
+         isPlaying ? "Lecture en cours..." : 
+         isLoaded ? "Cliquez pour écouter le message d'Amélie" : "Chargement..."}
       </p>
     </div>
   );
