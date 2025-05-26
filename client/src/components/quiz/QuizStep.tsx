@@ -271,7 +271,7 @@ export default function QuizStep({
             }}
           ></div>
           <button 
-            className="bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-6 py-3 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
+            className="btn-pulse bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-6 py-3 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
             style={{
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
               fontSize: "16px"
