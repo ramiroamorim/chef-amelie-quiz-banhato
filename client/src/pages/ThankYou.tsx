@@ -45,6 +45,8 @@ export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [progressPosition, setProgressPosition] = useState(0);
+  const [audioLoaded, setAudioLoaded] = useState(false);
+  const [audioDuration, setAudioDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressTimerRef = useRef<number | null>(null);
   
@@ -57,88 +59,36 @@ export default function ThankYou() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Iniciar simulação do áudio automaticamente para melhorar a experiência do usuário
+  // Pré-carregar o áudio para melhor experiência do usuário
   useEffect(() => {
-    // Iniciar simulação automaticamente após 1 segundo
-    const autoplayTimer = setTimeout(() => {
-      if (!audioPlaying) {
-        setAudioPlaying(true);
-        simulateAudioProgress();
-      }
-    }, 1000);
-    
-    return () => clearTimeout(autoplayTimer);
+    const audio = audioRef.current;
+    if (audio) {
+      audio.load(); // Força o carregamento do áudio
+    }
   }, []);
   
-  // Configurar eventos do áudio real
+  // Configurar eventos do áudio
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const handleLoadedMetadata = () => {
-      console.log("Audio loaded successfully");
+      setAudioLoaded(true);
+      setAudioDuration(audio.duration);
+      console.log("Áudio carregado com sucesso, duração:", audio.duration);
     };
 
     const handleError = (e: Event) => {
-      console.error("Error loading audio:", e);
-    };
-
-    const handleTimeUpdate = () => {
-      if (audio.duration > 0) {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        setProgressPosition(progress);
-      }
-    };
-
-    const handlePlay = () => {
-      setAudioPlaying(true);
-      // Iniciar timer para atualizar progresso
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-      }
-      progressTimerRef.current = window.setInterval(() => {
-        if (audio.duration > 0) {
-          const progress = (audio.currentTime / audio.duration) * 100;
-          setProgressPosition(progress);
-        }
-      }, 100);
-    };
-
-    const handlePause = () => {
-      setAudioPlaying(false);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
-    };
-
-    const handleEnded = () => {
-      setAudioPlaying(false);
-      setProgressPosition(100);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
+      console.error("Erro ao carregar áudio:", e);
+      setAudioLoaded(false);
     };
 
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
     audio.addEventListener("error", handleError);
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("ended", handleEnded);
 
     return () => {
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
       audio.removeEventListener("error", handleError);
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("ended", handleEnded);
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
     };
   }, []);
   
@@ -183,42 +133,7 @@ export default function ThankYou() {
     setProgressPosition(position);
   };
   
-  // Função simplificada para simular o progresso do áudio visualmente
-  const simulateAudioProgress = () => {
-    // Limpar timer existente antes de criar um novo
-    if (progressTimerRef.current) {
-      clearInterval(progressTimerRef.current);
-      progressTimerRef.current = null;
-    }
-    
-    // Reiniciar o progresso ao começar
-    setProgressPosition(0);
-    let progress = 0;
-    
-    // Duração total: 2 minutos (120 segundos)
-    const totalDuration = 120;  
-    const updateInterval = 200; // milissegundos (atualização mais suave)
-    
-    // Incremento por intervalo para completar na duração definida
-    const increment = 100 / (totalDuration * 1000 / updateInterval);
-    
-    // Iniciar o timer de atualização
-    progressTimerRef.current = window.setInterval(() => {
-      progress += increment;
-      
-      if (progress >= 100) {
-        // Finalizar quando chegar a 100%
-        if (progressTimerRef.current) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
-        }
-        progress = 100;
-        setAudioPlaying(false);
-      }
-      
-      setProgressPosition(progress);
-    }, updateInterval);
-  };
+
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-white p-4">
