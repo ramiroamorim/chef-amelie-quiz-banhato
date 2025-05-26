@@ -46,108 +46,26 @@ export default function ThankYou() {
     }
   }, []);
   
-  // Configurar eventos do áudio - versão simplificada
+  // Configurar player de áudio simples
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    // Marcar como carregado imediatamente para permitir tentativas de reprodução
+    // Marcar como sempre carregado para evitar loading infinito
     setAudioLoaded(true);
-
-    const handleLoadedMetadata = () => {
-      setAudioDuration(audio.duration);
-      console.log("Metadata carregada, duração:", audio.duration);
-    };
-
-    const handleError = (e: Event) => {
-      console.error("Erro no áudio:", e);
-      // Manter como carregado para permitir tentativas
-    };
-
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("error", handleError);
-
-    return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("error", handleError);
-    };
+    setAudioDuration(180); // Duração aproximada de 3 minutos
   }, []);
   
-  // Função para controlar a reprodução do áudio
-  const toggleAudio = async () => {
+  // Função para controlar a reprodução do áudio - versão ultra simplificada
+  const toggleAudio = () => {
     const audio = audioRef.current;
     
-    if (!audio) {
-      console.error("Elemento de áudio não encontrado");
-      return;
-    }
+    if (!audio) return;
     
-    try {
-      if (audioPlaying) {
-        // Pausar áudio
-        audio.pause();
-      } else {
-        // Configurar áudio para reprodução
-        audio.volume = 1.0;
-        
-        // Resetar se chegou ao fim
-        if (audio.ended || audio.currentTime === audio.duration) {
-          audio.currentTime = 0;
-          setProgressPosition(0);
-        }
-        
-        // Garantir que o áudio está carregado
-        if (audio.readyState === 0) {
-          console.log("Carregando áudio...");
-          audio.load();
-          
-          // Aguardar carregamento
-          await new Promise((resolve, reject) => {
-            const handleCanPlay = () => {
-              console.log("Áudio carregado e pronto");
-              audio.removeEventListener('canplay', handleCanPlay);
-              audio.removeEventListener('error', handleError);
-              resolve(true);
-            };
-            
-            const handleError = (e: Event) => {
-              console.error("Erro no carregamento:", e);
-              audio.removeEventListener('canplay', handleCanPlay);
-              audio.removeEventListener('error', handleError);
-              reject(e);
-            };
-            
-            audio.addEventListener('canplay', handleCanPlay);
-            audio.addEventListener('error', handleError);
-            
-            // Timeout de segurança
-            setTimeout(() => {
-              audio.removeEventListener('canplay', handleCanPlay);
-              audio.removeEventListener('error', handleError);
-              resolve(true); // Prosseguir mesmo sem carregamento completo
-            }, 2000);
-          });
-        }
-        
-        // Tentar reproduzir
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Reprodução iniciada com sucesso");
-            })
-            .catch((error) => {
-              console.error("Erro na reprodução:", error);
-              // Tentar novamente após breve pausa
-              setTimeout(() => {
-                audio.play().catch(console.error);
-              }, 100);
-            });
-        }
-      }
-    } catch (error) {
-      console.error("Erro geral no player:", error);
-      setAudioPlaying(false);
+    if (audioPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {
+        // Tentar novamente se houver erro
+        setTimeout(() => audio.play().catch(console.error), 100);
+      });
     }
   };
   
