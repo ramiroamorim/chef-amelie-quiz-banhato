@@ -195,18 +195,10 @@ export default function ThankYou() {
               {/* Botão de play/pause estilizado */}
               <button 
                 onClick={toggleAudio}
-                disabled={!audioLoaded}
-                className={`h-12 w-12 rounded-full ${
-                  audioLoaded 
-                    ? 'bg-[#2476c7] hover:bg-[#1c64a9] cursor-pointer' 
-                    : 'bg-gray-400 cursor-not-allowed'
-                } transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-[#2476c7] focus:ring-opacity-50`}
+                className="h-12 w-12 rounded-full bg-[#2476c7] hover:bg-[#1c64a9] cursor-pointer transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-[#2476c7] focus:ring-opacity-50"
                 aria-label={audioPlaying ? "Pause" : "Play"}
               >
-                {!audioLoaded ? (
-                  // Spinner de carregamento
-                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-                ) : audioPlaying ? (
+                {audioPlaying ? (
                   // Ícone de pause
                   <svg 
                     width="24" 
@@ -233,67 +225,55 @@ export default function ThankYou() {
               
               {/* Container para visualização de onda e progresso */}
               <div className="flex-1 h-10 relative">
-                {audioLoaded ? (
-                  <>
-                    {/* Visualização de onda de áudio (estático, decorativo) */}
-                    <div className="absolute inset-0 w-full h-full flex items-center justify-between">
-                      {/* Linhas verticais que simulam uma forma de onda de áudio */}
-                      {Array.from({ length: 50 }).map((_, index) => {
-                        // Altura variada para simular forma de onda de áudio, com padrão mais realista
-                        const height = Math.abs(Math.sin((index * 0.3) % Math.PI) * 70 + 
-                                        Math.cos((index * 0.2) % Math.PI) * 20) + 5;
-                        
-                        // Determina se este segmento está na parte "reproduzida" do áudio
-                        const isPlayed = index < (progressPosition / 100 * 50);
-                        
-                        return (
-                          <div 
-                            key={index}
-                            className={`mx-[1px] ${isPlayed ? 'bg-[#2476c7]' : 'bg-[#e9ecef]'}`}
-                            style={{ 
-                              height: `${height}%`, 
-                              width: '2px',
-                              opacity: isPlayed ? 0.7 : 0.5,
-                              transition: 'background-color 0.3s, opacity 0.3s'
-                            }}
-                          ></div>
-                        );
-                      })}
-                    </div>
+                {/* Visualização de onda de áudio (estático, decorativo) */}
+                <div className="absolute inset-0 w-full h-full flex items-center justify-between">
+                  {/* Linhas verticais que simulam uma forma de onda de áudio */}
+                  {Array.from({ length: 50 }).map((_, index) => {
+                    // Altura variada para simular forma de onda de áudio, com padrão mais realista
+                    const height = Math.abs(Math.sin((index * 0.3) % Math.PI) * 70 + 
+                                    Math.cos((index * 0.2) % Math.PI) * 20) + 5;
                     
-                    {/* Área clicável para controle de progresso */}
-                    <div 
-                      className="absolute inset-0 cursor-pointer"
-                      onClick={(e) => {
-                        if (!audioLoaded) return;
-                        const container = e.currentTarget;
-                        const rect = container.getBoundingClientRect();
-                        const clickPosition = (e.clientX - rect.left) / rect.width;
-                        
-                        // Calcular a nova posição como porcentagem
-                        const newPositionPercent = clickPosition * 100;
-                        
-                        // Atualizar o áudio e a visualização
-                        seekAudio(newPositionPercent);
-                      }}
-                    ></div>
-                  </>
-                ) : (
-                  /* Indicador de carregamento */
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm text-gray-500">Carregando áudio...</span>
-                  </div>
-                )}
+                    // Determina se este segmento está na parte "reproduzida" do áudio
+                    const isPlayed = index < (progressPosition / 100 * 50);
+                    
+                    return (
+                      <div 
+                        key={index}
+                        className={`mx-[1px] ${isPlayed ? 'bg-[#2476c7]' : 'bg-[#e9ecef]'}`}
+                        style={{ 
+                          height: `${height}%`, 
+                          width: '2px',
+                          opacity: isPlayed ? 0.7 : 0.5,
+                          transition: 'background-color 0.3s, opacity 0.3s'
+                        }}
+                      ></div>
+                    );
+                  })}
+                </div>
+                
+                {/* Área clicável para controle de progresso */}
+                <div 
+                  className="absolute inset-0 cursor-pointer"
+                  onClick={(e) => {
+                    const container = e.currentTarget;
+                    const rect = container.getBoundingClientRect();
+                    const clickPosition = (e.clientX - rect.left) / rect.width;
+                    
+                    // Calcular a nova posição como porcentagem
+                    const newPositionPercent = clickPosition * 100;
+                    
+                    // Atualizar o áudio e a visualização
+                    seekAudio(newPositionPercent);
+                  }}
+                ></div>
               </div>
               
               {/* Informações de duração */}
-              {audioLoaded && audioDuration > 0 && (
-                <div className="ml-4 text-sm text-gray-600 min-w-[60px] text-right">
-                  <span>{Math.floor(progressPosition * audioDuration / 100 / 60)}:{String(Math.floor((progressPosition * audioDuration / 100) % 60)).padStart(2, '0')}</span>
-                  <span className="text-gray-400"> / </span>
-                  <span>{Math.floor(audioDuration / 60)}:{String(Math.floor(audioDuration % 60)).padStart(2, '0')}</span>
-                </div>
-              )}
+              <div className="ml-4 text-sm text-gray-600 min-w-[60px] text-right">
+                <span>{Math.floor(progressPosition * audioDuration / 100 / 60)}:{String(Math.floor((progressPosition * audioDuration / 100) % 60)).padStart(2, '0')}</span>
+                <span className="text-gray-400"> / </span>
+                <span>{Math.floor(audioDuration / 60)}:{String(Math.floor(audioDuration % 60)).padStart(2, '0')}</span>
+              </div>
             </div>
           </CardContent>
         </Card>
