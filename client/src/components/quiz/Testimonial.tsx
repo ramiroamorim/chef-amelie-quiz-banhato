@@ -121,7 +121,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                  style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '320px', height: '100%' }}>
               
               <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative flex-grow flex justify-center items-center">
-                <div className="max-w-full w-full h-[270px] mx-auto p-1 sm:p-2 bg-white rounded-xl border border-gray-200 shadow-sm" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div className="max-w-full w-full h-[270px] mx-auto bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {/* Botões de navegação laterais */}
                   <button 
                     onClick={handlePrev}
