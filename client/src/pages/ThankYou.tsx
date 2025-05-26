@@ -14,6 +14,27 @@ const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   
+  const createTestAudio = () => {
+    // Criar um áudio de teste sintético de 1 segundo com frequência de 440Hz (nota Lá)
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const duration = 1; // 1 segundo
+    const sampleRate = audioContext.sampleRate;
+    const buffer = audioContext.createBuffer(1, duration * sampleRate, sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    // Gerar uma onda senoidal simples
+    for (let i = 0; i < buffer.length; i++) {
+      data[i] = Math.sin(2 * Math.PI * 440 * i / sampleRate) * 0.3;
+    }
+    
+    const source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+    
+    console.log("Tocando áudio de teste sintético");
+  };
+
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -28,8 +49,18 @@ const SimpleAudioPlayer = () => {
           audio.currentTime = 0;
         }
         console.log("Tentando reproduzir áudio com volume:", audio.volume);
-        await audio.play();
-        console.log("Áudio iniciado - Duration:", audio.duration, "Volume:", audio.volume);
+        
+        // Se o áudio falhar, tenta o áudio de teste
+        try {
+          await audio.play();
+          console.log("Áudio iniciado - Duration:", audio.duration, "Volume:", audio.volume);
+        } catch (playError) {
+          console.log("Áudio do arquivo falhou, tentando áudio de teste:", playError);
+          createTestAudio();
+          setIsPlaying(true);
+          // Simular duração de 1 segundo
+          setTimeout(() => setIsPlaying(false), 1000);
+        }
       }
     } catch (error) {
       console.error("Erro ao reproduzir áudio:", error);
