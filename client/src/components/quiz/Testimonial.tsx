@@ -125,11 +125,11 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <div className="testimonial-content p-2 sm:p-4 bg-white rounded-2xl shadow-lg flex flex-col"
-                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.05)', minHeight: '320px', height: '100%' }}>
+            <div className="testimonial-content bg-white rounded-2xl shadow-lg flex flex-col overflow-hidden"
+                 style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.08)', minHeight: '300px', height: '100%' }}>
               
-              <div className="mt-2 sm:mt-3 mb-2 sm:mb-3 relative flex-grow">
-                <div className="relative w-full h-[270px] mx-auto rounded-xl overflow-hidden">
+              <div className="relative flex-grow">
+                <div className="relative w-full h-[280px] overflow-hidden">
                   {/* Botões de navegação laterais */}
                   <button 
                     onClick={handlePrev}
@@ -142,7 +142,7 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                   <img 
                     src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
-                    className="w-full h-full rounded-xl"
+                    className="w-full h-full"
                     loading="eager"
                     decoding="async"
                     style={{ 
@@ -170,11 +170,12 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
               </div>
               
               {current.time && (
-                <div className="text-right mt-2 sm:mt-3">
+                <div className="text-right px-3 py-2 bg-white/95">
                   <span style={{ 
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-                    fontSize: "1.05rem",
-                    color: "#333333"
+                    fontSize: "0.9rem",
+                    color: "#666666",
+                    fontWeight: "500"
                   }}>{current.time}</span>
                 </div>
               )}
