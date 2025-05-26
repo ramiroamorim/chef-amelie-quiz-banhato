@@ -278,7 +278,7 @@ export default function QuizStep({
             }}
             onClick={onNextStep}
           >
-            <span>👁️</span>
+            <span>👉</span>
             {step.buttonText}
           </button>
         </div>
