@@ -41,7 +41,7 @@ export default function ThankYou() {
         
         {/* Player de áudio */}
         <div className="bg-gray-50 rounded-2xl border border-gray-300 p-6 shadow-sm max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-6">
             <h3 className="text-[#B34431] font-medium text-lg">Chef Amélie Dupont</h3>
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200">
               <img 
@@ -52,45 +52,41 @@ export default function ThankYou() {
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
+            {/* Botão triangular azul */}
             <button 
               id="audio-play-button"
-              className="w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors flex-shrink-0"
+              className="flex-shrink-0"
               onClick={() => {
                 const audio = document.getElementById('hidden-audio') as HTMLAudioElement;
-                const button = document.getElementById('audio-play-button');
+                const playIcon = document.getElementById('play-icon');
+                const pauseIcon = document.getElementById('pause-icon');
                 if (audio.paused) {
                   audio.play();
-                  button!.innerHTML = `
-                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                    </svg>
-                  `;
+                  playIcon!.style.display = 'none';
+                  pauseIcon!.style.display = 'block';
                 } else {
                   audio.pause();
-                  button!.innerHTML = `
-                    <svg class="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                    </svg>
-                  `;
+                  playIcon!.style.display = 'block';
+                  pauseIcon!.style.display = 'none';
                 }
               }}
             >
-              <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-              </svg>
+              {/* Triângulo de play */}
+              <div id="play-icon" className="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>
+              {/* Círculo azul para pause (oculto inicialmente) */}
+              <div id="pause-icon" className="w-6 h-6 bg-blue-500 rounded-full" style={{ display: 'none' }}></div>
             </button>
             
-            <div className="flex-1 h-10 bg-gray-200 rounded-full flex items-center px-4">
-              <div className="flex space-x-1">
-                {[...Array(25)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className="w-1 bg-gray-500 rounded-full"
-                    style={{ height: `${Math.random() * 20 + 10}px` }}
-                  />
-                ))}
-              </div>
+            {/* Ondas sonoras mais realistas */}
+            <div className="flex-1 flex items-center space-x-1 px-2">
+              {[14, 8, 16, 12, 18, 10, 20, 6, 22, 14, 16, 8, 24, 12, 18, 10, 20, 14, 16, 12].map((height, i) => (
+                <div 
+                  key={i} 
+                  className="w-1 bg-blue-400 rounded-full"
+                  style={{ height: `${height}px` }}
+                />
+              ))}
             </div>
           </div>
           
@@ -98,12 +94,10 @@ export default function ThankYou() {
             id="hidden-audio"
             preload="metadata"
             onEnded={() => {
-              const button = document.getElementById('audio-play-button');
-              button!.innerHTML = `
-                <svg class="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                </svg>
-              `;
+              const playIcon = document.getElementById('play-icon');
+              const pauseIcon = document.getElementById('pause-icon');
+              playIcon!.style.display = 'block';
+              pauseIcon!.style.display = 'none';
             }}
           >
             <source src="/audio/Segundos.mp4" type="audio/mp4" />
