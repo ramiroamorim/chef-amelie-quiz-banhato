@@ -46,46 +46,34 @@ export default function ThankYou() {
     }
   }, []);
   
-  // Configurar eventos do áudio
+  // Configurar eventos do áudio - versão simplificada
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleCanPlay = () => {
-      setAudioLoaded(true);
-      setAudioDuration(audio.duration);
-      console.log("Áudio pronto para reprodução, duração:", audio.duration);
-    };
+    // Marcar como carregado imediatamente para permitir tentativas de reprodução
+    setAudioLoaded(true);
 
-    const handleLoadedData = () => {
-      setAudioLoaded(true);
+    const handleLoadedMetadata = () => {
       setAudioDuration(audio.duration);
-      console.log("Dados do áudio carregados com sucesso");
+      console.log("Metadata carregada, duração:", audio.duration);
     };
 
     const handleError = (e: Event) => {
-      console.error("Erro ao carregar áudio:", e);
-      setAudioLoaded(false);
+      console.error("Erro no áudio:", e);
+      // Manter como carregado para permitir tentativas
     };
 
-    // Verificar se o áudio já está carregado
-    if (audio.readyState >= 3) { // HAVE_FUTURE_DATA ou HAVE_ENOUGH_DATA
-      setAudioLoaded(true);
-      setAudioDuration(audio.duration);
-    }
-
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("loadeddata", handleLoadedData);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
     audio.addEventListener("error", handleError);
 
     return () => {
-      audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("loadeddata", handleLoadedData);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
       audio.removeEventListener("error", handleError);
     };
   }, []);
   
-  // Função para controlar a reprodução do áudio
+  // Função para controlar a reprodução do áudio - versão simplificada
   const toggleAudio = async () => {
     const audio = audioRef.current;
     
@@ -98,55 +86,24 @@ export default function ThankYou() {
       if (audioPlaying) {
         // Pausar áudio
         audio.pause();
+        setAudioPlaying(false);
       } else {
-        // Garantir que o áudio está pronto para reprodução
-        if (audio.readyState < 2) {
-          console.log("Carregando áudio...");
-          audio.load();
-          
-          // Aguardar o carregamento
-          await new Promise((resolve, reject) => {
-            const timeout = setTimeout(() => {
-              reject(new Error("Timeout no carregamento do áudio"));
-            }, 5000);
-            
-            const onLoadedData = () => {
-              clearTimeout(timeout);
-              audio.removeEventListener('loadeddata', onLoadedData);
-              audio.removeEventListener('error', onError);
-              resolve(true);
-            };
-            
-            const onError = (e: Event) => {
-              clearTimeout(timeout);
-              audio.removeEventListener('loadeddata', onLoadedData);
-              audio.removeEventListener('error', onError);
-              reject(e);
-            };
-            
-            audio.addEventListener('loadeddata', onLoadedData);
-            audio.addEventListener('error', onError);
-          });
-        }
-        
-        // Configurar e reproduzir áudio
+        // Reproduzir áudio diretamente
         audio.volume = 1.0;
         
         if (audio.ended) {
           audio.currentTime = 0;
+          setProgressPosition(0);
         }
         
-        // Tentar reproduzir com interação do usuário
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          console.log("Áudio reproduzindo com sucesso!");
-        }
+        // Tentar reproduzir imediatamente
+        await audio.play();
+        setAudioPlaying(true);
+        console.log("Áudio reproduzindo!");
       }
     } catch (error) {
       console.error("Erro ao reproduzir áudio:", error);
-      // Tentar recarregar se houver erro
-      audio.load();
+      setAudioPlaying(false);
     }
   };
   
@@ -193,11 +150,13 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
-            {/* Elemento de áudio com múltiplas fontes */}
+            {/* Player de áudio HTML5 simples e funcional */}
             <audio 
               ref={audioRef}
               preload="auto"
+              controls={false}
               style={{ display: 'none' }}
+              src="/audio/Segundos.mp3"
               onPlay={() => setAudioPlaying(true)}
               onPause={() => setAudioPlaying(false)}
               onEnded={() => {
@@ -211,15 +170,7 @@ export default function ThankYou() {
                   setProgressPosition(progress);
                 }
               }}
-              onLoadStart={() => console.log("Iniciando carregamento do áudio")}
-              onCanPlay={() => console.log("Áudio pode ser reproduzido")}
-              onError={(e) => console.error("Erro específico do áudio:", e)}
-            >
-              <source src="/audio/Segundos.mp4" type="audio/mp4" />
-              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/message.mp3" type="audio/mpeg" />
-              Seu navegador não suporta reprodução de áudio.
-            </audio>
+            />
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
