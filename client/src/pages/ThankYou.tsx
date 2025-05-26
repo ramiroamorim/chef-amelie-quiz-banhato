@@ -45,7 +45,7 @@ export default function ThankYou() {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [progressPosition, setProgressPosition] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | HTMLVideoElement>(null);
   const progressTimerRef = useRef<number | null>(null);
   
   // Timer para mostrar o botão após exatamente 2 minutos (120000ms)
@@ -286,21 +286,27 @@ export default function ThankYou() {
         {/* Player de áudio - design moderno similar à referência */}
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
-            {/* Elemento de vídeo oculto para reprodução de áudio */}
-            <video 
-              ref={audioRef}
-              preload="auto"
-              style={{ display: 'none' }}
-              onCanPlayThrough={() => console.log("Mídia carregada e pronta")}
-              onError={(e) => console.error("Erro na mídia:", e)}
-              onPlay={() => setAudioPlaying(true)}
-              onPause={() => setAudioPlaying(false)}
-              onEnded={() => setAudioPlaying(false)}
-            >
-              <source src="/audio/Segundos.mp4" type="video/mp4" />
-              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/segundos.mp3" type="audio/mpeg" />
-            </video>
+            {/* Elemento de áudio com controles nativos visíveis */}
+            <div className="mb-4 p-4 bg-white rounded-lg border">
+              <div className="text-center mb-2">
+                <p className="text-sm font-medium text-gray-700">🎧 Mensagem da Chef Amélie</p>
+              </div>
+              <audio 
+                ref={audioRef}
+                controls
+                className="w-full"
+                preload="auto"
+                onPlay={() => setAudioPlaying(true)}
+                onPause={() => setAudioPlaying(false)}
+                onEnded={() => setAudioPlaying(false)}
+                style={{ height: '40px' }}
+              >
+                <source src="/audio/Segundos.mp4" type="audio/mp4" />
+                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+                <source src="/audio/segundos.mp3" type="audio/mpeg" />
+                Seu navegador não suporta reprodução de áudio.
+              </audio>
+            </div>
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
