@@ -122,46 +122,37 @@ export default function QuizStep({
       transition={{ duration: 0.3 }}
       className="quiz-step px-2 sm:px-4"
     >
-      {/* Layout especial para Chef Profile */}
+      {/* Layout padrão aplicado também para Chef Profile */}
       {step.name === 'chef_profile' && (
-        <div className="w-full max-w-lg mx-auto">
-          {/* Image no topo */}
-          {step.image && (
-            <div className="w-full mb-3">
-              <img 
-                src={step.image} 
-                alt={step.imageAlt || ""} 
-                className="w-full h-auto rounded-lg shadow-md"
-                loading="eager"
-                decoding="async"
-                style={{ 
-                  maxHeight: "180px",
-                  objectFit: "cover",
-                  aspectRatio: "16/9"
-                }}
-              />
-            </div>
-          )}
-          
-          {/* Title */}
+        <div className="w-full">
+          {/* Title centralizado como outras páginas */}
           {step.title && (
             <h2 
-              className="text-lg font-medium mb-2 text-left text-[#333333]"
-              style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
-              }}
+              className="text-sm sm:text-lg font-medium mb-2 sm:mb-3 text-center"
               dangerouslySetInnerHTML={{ __html: step.title }}
             />
           )}
           
-          {/* Description */}
+          {/* Description centralizada */}
           {step.description && (
             <p 
-              className="text-xs text-left mb-3 text-[#666666] italic"
-              style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
-              }}
+              className="text-xs sm:text-sm text-center mb-2 sm:mb-3" 
               dangerouslySetInnerHTML={{ __html: step.description }}
+            />
+          )}
+          
+          {/* Image com mesmo estilo das outras páginas */}
+          {step.image && (
+            <img 
+              src={step.image} 
+              alt={step.imageAlt || ""} 
+              className="w-full h-auto rounded-lg mb-2 sm:mb-3"
+              loading="eager"
+              decoding="async"
+              style={{ 
+                maxHeight: "200px",
+                objectFit: "contain"
+              }}
             />
           )}
         </div>
@@ -214,27 +205,8 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Text Blocks - Layout especial para Chef Profile */}
-      {step.textBlocks && step.name === 'chef_profile' && (
-        <div className="w-full max-w-lg mx-auto space-y-2 text-left">
-          {step.textBlocks.map((text, i) => (
-            <p 
-              key={i} 
-              className={text.highlight ? 
-                "text-[#E07260] font-medium text-sm leading-snug" : 
-                "text-[#333333] text-sm leading-snug"
-              }
-              style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-                lineHeight: "1.4"
-              }}
-              dangerouslySetInnerHTML={{ __html: text.content }}
-            />
-          ))}
-        </div>
-      )}
-      {/* Text Blocks padrão */}
-      {step.textBlocks && step.name !== 'chef_profile' && (
+      {/* Text Blocks com padrão unificado */}
+      {step.textBlocks && (
         <div className="space-y-2 sm:space-y-3 text-[#555555]">
           {step.textBlocks.map((text, i) => (
             <p 
@@ -259,32 +231,8 @@ export default function QuizStep({
           ))}
         </div>
       )}
-      {/* Button for steps without options - Layout especial para Chef Profile */}
-      {step.buttonText && !step.options && step.name === 'chef_profile' && (
-        <div className="relative w-full mt-4 flex justify-center">
-          <div className="absolute inset-0 rounded-full opacity-30 flex justify-center items-center" 
-            style={{
-              background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
-              animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite",
-              width: "fit-content",
-              margin: "0 auto"
-            }}
-          ></div>
-          <button 
-            className="btn-pulse bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-4 py-2 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
-            style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-              fontSize: "14px"
-            }}
-            onClick={onNextStep}
-          >
-            <span>👉</span>
-            {step.buttonText}
-          </button>
-        </div>
-      )}
-      {/* Button padrão para outros steps */}
-      {step.buttonText && !step.options && step.name !== 'chef_profile' && (
+      {/* Button com padrão unificado */}
+      {step.buttonText && !step.options && (
         <div className="relative w-full mt-3 sm:mt-4">
           <div className="absolute inset-0 rounded-full opacity-30" 
             style={{
