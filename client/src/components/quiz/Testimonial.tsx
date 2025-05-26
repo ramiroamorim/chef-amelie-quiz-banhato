@@ -82,30 +82,13 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                  style={{ boxShadow: '0 10px 25px rgba(0,0,0,0.08)', minHeight: '300px', height: '100%' }}>
               
               <div className="relative flex-grow">
-                <div className="relative w-full h-[280px] overflow-hidden">
-                  {/* Botões de navegação laterais */}
-                  <button 
-                    onClick={handlePrev}
-                    disabled={isLoading}
-                    className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-black/80 hover:bg-black transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10 disabled:opacity-50"
-                    aria-label="Témoignage précédent"
-                  >
-                    <ChevronLeft />
-                  </button>
-                  
+                <div className="relative w-full h-[280px] rounded-xl overflow-hidden">
                   <img 
                     src={testimonialImages[currentIndex % testimonialImages.length]}
                     alt={current.imageAlt || "Recettes Chef Amélie Dupont"} 
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                     loading="eager"
                     decoding="async"
-                    style={{ 
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      display: "block"
-                    }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
@@ -113,10 +96,20 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     }}
                   />
                   
+                  {/* Botões de navegação sobre a imagem */}
+                  <button 
+                    onClick={handlePrev}
+                    disabled={isLoading}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/60 hover:bg-black/80 transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-lg z-10 disabled:opacity-50"
+                    aria-label="Témoignage précédent"
+                  >
+                    <ChevronLeft />
+                  </button>
+                  
                   <button 
                     onClick={handleNext}
                     disabled={isLoading}
-                    className={`absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 ${currentIndex === testimonials.length - 1 ? 'bg-primary/90 hover:bg-primary' : 'bg-black/80 hover:bg-black'} transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md z-10 disabled:opacity-50`}
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 ${currentIndex === testimonials.length - 1 ? 'bg-primary/80 hover:bg-primary' : 'bg-black/60 hover:bg-black/80'} transition-colors text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-lg z-10 disabled:opacity-50`}
                     aria-label={currentIndex === testimonials.length - 1 ? "Voir mon profil" : "Témoignage suivant"}
                   >
                     <ChevronRight />
