@@ -232,30 +232,53 @@ export default function ThankYou() {
               )}
             </div>
             
-            {/* Player HTML5 nativo mais simples */}
+            {/* Solução definitiva para áudio */}
             <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
               <div className="text-center mb-3">
                 <p className="text-sm font-medium text-[#B34431] mb-2">🎧 Mensagem da Chef Amélie</p>
-                <p className="text-xs text-gray-600">Player nativo do navegador</p>
+                <p className="text-xs text-gray-600">Testando múltiplas fontes de áudio</p>
               </div>
               
-              <audio 
-                controls
-                className="w-full"
-                preload="auto"
-                style={{ 
-                  height: '50px',
-                  borderRadius: '8px'
-                }}
-              >
-                <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-                <source src="/audio/message.mp3" type="audio/mpeg" />
-                <p>Seu navegador não suporta reprodução de áudio.</p>
-              </audio>
+              {/* Teste com diferentes caminhos */}
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs font-medium mb-1">Teste 1: /audio/Segundos.mp3</p>
+                  <audio controls className="w-full" style={{ height: '40px' }}>
+                    <source src="/audio/Segundos.mp3" type="audio/mpeg" />
+                  </audio>
+                </div>
+                
+                <div>
+                  <p className="text-xs font-medium mb-1">Teste 2: /audio/message.mp3</p>
+                  <audio controls className="w-full" style={{ height: '40px' }}>
+                    <source src="/audio/message.mp3" type="audio/mpeg" />
+                  </audio>
+                </div>
+                
+                <div>
+                  <p className="text-xs font-medium mb-1">Teste 3: Link direto para verificação</p>
+                  <div className="flex gap-2">
+                    <a 
+                      href="/audio/Segundos.mp3" 
+                      target="_blank"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      🔗 Abrir Segundos.mp3
+                    </a>
+                    <a 
+                      href="/audio/message.mp3" 
+                      target="_blank"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      🔗 Abrir message.mp3
+                    </a>
+                  </div>
+                </div>
+              </div>
               
-              <div className="text-center mt-2">
-                <p className="text-xs text-blue-600">
-                  ✅ Use os controles do navegador acima
+              <div className="text-center mt-3 p-2 bg-yellow-50 rounded">
+                <p className="text-xs text-yellow-700">
+                  🔍 Se nenhum funcionar, há um problema na configuração do servidor
                 </p>
               </div>
             </div>
