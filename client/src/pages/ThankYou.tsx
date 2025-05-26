@@ -14,28 +14,7 @@ const SimpleAudioPlayer = () => {
           <p className="text-sm text-gray-600">Ouça a mensagem especial sobre suas receitas</p>
         </div>
         
-        <div className="bg-gradient-to-r from-primary/10 to-primary/20 rounded-lg p-4">
-          <audio 
-            controls
-            className="w-full h-12"
-            preload="auto"
-            style={{
-              borderRadius: '8px',
-              outline: 'none'
-            }}
-          >
-            <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-            <source src="/audio/segundos.mp3" type="audio/mpeg" />
-            <source src="/audio/message.mp3" type="audio/mpeg" />
-            Seu navegador não suporta reprodução de áudio.
-          </audio>
-          
-          <div className="text-center mt-3">
-            <p className="text-xs text-gray-500">
-              🔊 Use os controles acima para reproduzir o áudio
-            </p>
-          </div>
-        </div>
+
       </div>
     </div>
   );
@@ -165,13 +144,18 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
+            {/* Elemento de áudio simplificado */}
             <audio 
               ref={audioRef}
               preload="auto"
               style={{ display: 'none' }}
+              src="/audio/Segundos.mp3"
               onPlay={() => setAudioPlaying(true)}
               onPause={() => setAudioPlaying(false)}
-              onEnded={() => setAudioPlaying(false)}
+              onEnded={() => {
+                setAudioPlaying(false);
+                setProgressPosition(0);
+              }}
               onTimeUpdate={() => {
                 const audio = audioRef.current;
                 if (audio && audio.duration > 0) {
@@ -179,17 +163,7 @@ export default function ThankYou() {
                   setProgressPosition(progress);
                 }
               }}
-              onLoadedMetadata={() => {
-                console.log("Áudio carregado com sucesso");
-              }}
-              onError={(e) => {
-                console.error("Erro ao carregar áudio:", e);
-              }}
-            >
-              <source src="/audio/Segundos.mp4" type="audio/mp4" />
-              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/segundos.mp3" type="audio/mpeg" />
-            </audio>
+            />
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
