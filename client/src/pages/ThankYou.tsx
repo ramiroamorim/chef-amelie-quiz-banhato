@@ -4,112 +4,26 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Player de áudio funcional
+// Player de áudio simples e funcional
 const SimpleAudioPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    
-    const handleCanPlay = () => {
-      setIsLoaded(true);
-      setError(null);
-    };
-    
-    const handleError = (e: any) => {
-      console.error("Erro ao carregar áudio:", e);
-      setError("Erro ao carregar o áudio");
-      setIsLoaded(false);
-    };
-    
-    const handleEnded = () => setIsPlaying(false);
-    const handlePause = () => setIsPlaying(false);
-    const handlePlay = () => setIsPlaying(true);
-    
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("play", handlePlay);
-    
-    // Force load
-    audio.load();
-    
-    return () => {
-      audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("play", handlePlay);
-    };
-  }, []);
-  
-  const togglePlay = async () => {
-    const audio = audioRef.current;
-    if (!audio || !isLoaded) return;
-    
-    try {
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.volume = 1.0;
-        if (audio.ended) {
-          audio.currentTime = 0;
-        }
-        await audio.play();
-      }
-    } catch (error) {
-      console.error("Erro ao reproduzir áudio:", error);
-      setError("Erro ao reproduzir o áudio");
-    }
-  };
-  
   return (
     <div className="flex flex-col items-center w-full mb-5">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4">
         <div className="text-center mb-3">
           <h3 className="text-sm font-medium text-gray-800">Mensagem especial da Chef Amélie</h3>
-          <p className="text-xs text-gray-500">Clique para reproduzir a mensagem de áudio</p>
+          <p className="text-xs text-gray-500">Player de áudio nativo do navegador</p>
         </div>
         
         <audio 
-          ref={audioRef}
+          controls
+          className="w-full"
           preload="auto"
-          className="hidden"
+          style={{ height: '40px' }}
         >
+          <source src="/attached_assets/Segundos.mp3" type="audio/mpeg" />
           <source src="/audio/segundos.mp3" type="audio/mpeg" />
-          <source src="/audio/message.mp3" type="audio/mpeg" />
+          Seu navegador não suporta a reprodução de áudio.
         </audio>
-        
-        <div className="flex flex-col items-center gap-3">
-          <button
-            onClick={togglePlay}
-            disabled={!isLoaded || !!error}
-            className="flex items-center justify-center w-16 h-16 bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white rounded-full transition-colors shadow-lg"
-          >
-            {isPlaying ? (
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-              </svg>
-            ) : (
-              <svg className="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                <path d="m7 4 10 6L7 16V4z"/>
-              </svg>
-            )}
-          </button>
-          
-          {error && (
-            <p className="text-xs text-red-500 text-center">{error}</p>
-          )}
-          
-          {!isLoaded && !error && (
-            <p className="text-xs text-gray-500 text-center">Carregando áudio...</p>
-          )}
-        </div>
       </div>
     </div>
   );
@@ -367,10 +281,12 @@ export default function ThankYou() {
             <div style={{ display: 'none' }}>
               <audio 
                 ref={audioRef}
-                src="/audio/segundos.mp3"
                 preload="metadata"
                 crossOrigin="anonymous"
-              />
+              >
+                <source src="/attached_assets/Segundos.mp3" type="audio/mpeg" />
+                <source src="/audio/segundos.mp3" type="audio/mpeg" />
+              </audio>
             </div>
             
             <div className="flex justify-between items-center mb-4">
