@@ -4,114 +4,106 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
-// Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
-// Tentamos diferentes formatos para garantir compatibilidade
-const AUDIO_SRC = "/audio/message.mp3";
-
-// Componente de áudio robusto
+// Player de áudio completamente reescrito para funcionar corretamente
 const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  const handlePlay = async () => {
-    if (!audioRef.current) return;
-    
-    try {
-      setError(false);
-      console.log("Tentando reproduzir áudio...");
-      await audioRef.current.play();
-      console.log("Áudio reproduzindo");
-    } catch (e) {
-      console.error("Erro ao reproduzir áudio:", e);
-      setError(true);
-      setIsPlaying(false);
-    }
-  };
-  
-  const handlePause = () => {
-    if (audioRef.current && !audioRef.current.paused) {
-      console.log("Pausando áudio...");
-      audioRef.current.pause();
-    }
-  };
-  
-  const togglePlay = () => {
-    console.log("Toggle play - Estado atual:", isPlaying);
-    if (isPlaying) {
-      handlePause();
-    } else {
-      handlePlay();
-    }
-  };
-  
+  // Inicializar o áudio
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    // Criar elemento de áudio
+    const audio = new Audio('/audio/message.mp3');
+    audioRef.current = audio;
     
-    const handleLoadedData = () => {
-      setIsLoaded(true);
-      setError(false);
-      console.log("Áudio carregado com sucesso");
+    // Configurações do áudio
+    audio.preload = 'auto';
+    audio.volume = 1.0;
+    
+    // Event listeners
+    const onLoadedMetadata = () => {
+      console.log('Áudio carregado - duração:', audio.duration);
+      setDuration(audio.duration);
+      setIsReady(true);
     };
     
-    const handleError = (e: any) => {
-      console.error("Erro ao carregar áudio:", e);
-      setError(true);
-      setIsLoaded(false);
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
     };
     
-    const handleEnded = () => {
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPause = () => {
-      console.log("Evento pause do áudio");
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPlay = () => {
-      console.log("Evento play do áudio");
+    const onPlay = () => {
+      console.log('Áudio iniciado');
       setIsPlaying(true);
     };
     
-    // Adicionar event listeners
-    audio.addEventListener("loadeddata", handleLoadedData);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("pause", handleAudioPause);
-    audio.addEventListener("play", handleAudioPlay);
+    const onPause = () => {
+      console.log('Áudio pausado');
+      setIsPlaying(false);
+    };
+    
+    const onEnded = () => {
+      console.log('Áudio finalizado');
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+    
+    const onError = (e: any) => {
+      console.error('Erro no áudio:', e);
+      setIsReady(false);
+    };
+    
+    // Adicionar listeners
+    audio.addEventListener('loadedmetadata', onLoadedMetadata);
+    audio.addEventListener('timeupdate', onTimeUpdate);
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+    audio.addEventListener('ended', onEnded);
+    audio.addEventListener('error', onError);
     
     // Forçar carregamento
     audio.load();
     
+    // Cleanup
     return () => {
-      audio.removeEventListener("loadeddata", handleLoadedData);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("pause", handleAudioPause);
-      audio.removeEventListener("play", handleAudioPlay);
+      audio.removeEventListener('loadedmetadata', onLoadedMetadata);
+      audio.removeEventListener('timeupdate', onTimeUpdate);
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('ended', onEnded);
+      audio.removeEventListener('error', onError);
+      audio.pause();
+      audioRef.current = null;
     };
   }, []);
   
+  // Função para controlar play/pause
+  const togglePlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio || !isReady) {
+      console.log('Áudio não está pronto');
+      return;
+    }
+    
+    try {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        await audio.play();
+      }
+    } catch (error) {
+      console.error('Erro ao controlar áudio:', error);
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center w-full mb-5">
-      <audio 
-        ref={audioRef} 
-        preload="metadata"
-        style={{ display: 'none' }}
-      >
-        <source src="/audio/message.mp3" type="audio/mpeg" />
-        Seu navegador não suporta áudio HTML5.
-      </audio>
-      
       <button 
-        onClick={togglePlay}
-        disabled={error}
+        onClick={togglePlayback}
+        disabled={!isReady}
         className={`${
-          error 
+          !isReady 
             ? 'bg-gray-400 cursor-not-allowed' 
             : 'bg-[#2476c7] hover:bg-[#1c64a9]'
         } text-white rounded-full w-16 h-16 flex items-center justify-center mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
@@ -129,9 +121,9 @@ const SimpleAudioPlayer = () => {
       </button>
       
       <p className="text-sm text-gray-500 text-center">
-        {error ? "Erreur de chargement audio" :
-         isPlaying ? "Lecture en cours..." : 
-         isLoaded ? "Cliquez pour écouter le message d'Amélie" : "Chargement..."}
+        {!isReady ? "Chargement..." :
+         isPlaying ? `Lecture en cours... ${Math.floor(currentTime)}s/${Math.floor(duration)}s` : 
+         "Cliquez pour écouter le message d'Amélie"}
       </p>
     </div>
   );
