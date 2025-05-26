@@ -32,6 +32,14 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
   // Configuração mínima de deslize para mudar o depoimento
   const minSwipeDistance = 50;
 
+  // Pré-carregar todas as imagens do carrossel
+  useEffect(() => {
+    testimonialImages.forEach(imageSrc => {
+      const img = new Image();
+      img.src = imageSrc;
+    });
+  }, []);
+
   const handlePrev = () => {
     setCurrentIndex(prev => (prev === 0 ? testimonials.length - 1 : prev - 1));
   };

@@ -18,8 +18,24 @@ export default function QuizApp() {
     showSalesPage
   } = useQuiz(quizSteps.length);
 
-  // Rastrear início do quiz quando o componente é montado
+  // Pré-carregar todas as imagens do quiz
   useEffect(() => {
+    const preloadImages = () => {
+      quizSteps.forEach(step => {
+        if (step.image) {
+          const img = new Image();
+          img.src = step.image;
+        }
+        if (step.imageGrid) {
+          step.imageGrid.forEach(gridImg => {
+            const img = new Image();
+            img.src = gridImg.src;
+          });
+        }
+      });
+    };
+
+    preloadImages();
     FacebookPixel.trackQuizStart();
   }, []);
 
