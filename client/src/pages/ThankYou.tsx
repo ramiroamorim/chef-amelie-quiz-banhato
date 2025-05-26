@@ -14,27 +14,6 @@ const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   
-  const createTestAudio = () => {
-    // Criar um áudio de teste sintético de 1 segundo com frequência de 440Hz (nota Lá)
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const duration = 1; // 1 segundo
-    const sampleRate = audioContext.sampleRate;
-    const buffer = audioContext.createBuffer(1, duration * sampleRate, sampleRate);
-    const data = buffer.getChannelData(0);
-    
-    // Gerar uma onda senoidal simples
-    for (let i = 0; i < buffer.length; i++) {
-      data[i] = Math.sin(2 * Math.PI * 440 * i / sampleRate) * 0.3;
-    }
-    
-    const source = audioContext.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioContext.destination);
-    source.start(0);
-    
-    console.log("Tocando áudio de teste sintético");
-  };
-
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -43,24 +22,11 @@ const SimpleAudioPlayer = () => {
       if (isPlaying) {
         audio.pause();
       } else {
-        // Definir volume máximo
         audio.volume = 1.0;
         if (audio.ended) {
           audio.currentTime = 0;
         }
-        console.log("Tentando reproduzir áudio com volume:", audio.volume);
-        
-        // Se o áudio falhar, tenta o áudio de teste
-        try {
-          await audio.play();
-          console.log("Áudio iniciado - Duration:", audio.duration, "Volume:", audio.volume);
-        } catch (playError) {
-          console.log("Áudio do arquivo falhou, tentando áudio de teste:", playError);
-          createTestAudio();
-          setIsPlaying(true);
-          // Simular duração de 1 segundo
-          setTimeout(() => setIsPlaying(false), 1000);
-        }
+        await audio.play();
       }
     } catch (error) {
       console.error("Erro ao reproduzir áudio:", error);
@@ -88,34 +54,21 @@ const SimpleAudioPlayer = () => {
   
   return (
     <div className="flex flex-col items-center w-full mb-5">
-      <audio 
-        ref={audioRef} 
-        preload="auto"
-        src={AUDIO_SRC}
-        controls
-        className="mb-4"
-      />
-      
-      <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
-        <button
-          onClick={togglePlay}
-          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold transition-all duration-200 ${
-            isPlaying 
-              ? 'bg-red-500 hover:bg-red-600' 
-              : 'bg-green-500 hover:bg-green-600'
-          }`}
-        >
-          {isPlaying ? '⏸' : '▶'}
-        </button>
-        
-        <div className="flex-1">
-          <div className="text-sm font-medium text-gray-800">
-            {isPlaying ? 'Reproduzindo mensagem...' : 'Clique para ouvir a mensagem'}
-          </div>
-          <div className="text-xs text-gray-500">
-            Mensagem especial da Chef Amélie
-          </div>
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4">
+        <div className="text-center mb-3">
+          <h3 className="text-sm font-medium text-gray-800">Mensagem especial da Chef Amélie</h3>
+          <p className="text-xs text-gray-500">Use os controles abaixo para reproduzir o áudio</p>
         </div>
+        
+        <audio 
+          controls
+          className="w-full"
+          preload="auto"
+        >
+          <source src="/audio/segundos.mp3" type="audio/mpeg" />
+          <source src="/audio/message.mp3" type="audio/mpeg" />
+          Seu navegador não suporta a reprodução de áudio.
+        </audio>
       </div>
     </div>
   );
