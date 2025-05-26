@@ -21,8 +21,9 @@ const SimpleAudioPlayer = () => {
     
     try {
       setError(false);
+      console.log("Tentando reproduzir áudio...");
       await audioRef.current.play();
-      setIsPlaying(true);
+      console.log("Áudio reproduzindo");
     } catch (e) {
       console.error("Erro ao reproduzir áudio:", e);
       setError(true);
@@ -31,13 +32,14 @@ const SimpleAudioPlayer = () => {
   };
   
   const handlePause = () => {
-    if (audioRef.current) {
+    if (audioRef.current && !audioRef.current.paused) {
+      console.log("Pausando áudio...");
       audioRef.current.pause();
-      setIsPlaying(false);
     }
   };
   
   const togglePlay = () => {
+    console.log("Toggle play - Estado atual:", isPlaying);
     if (isPlaying) {
       handlePause();
     } else {
@@ -65,11 +67,13 @@ const SimpleAudioPlayer = () => {
       setIsPlaying(false);
     };
     
-    const handlePause = () => {
+    const handleAudioPause = () => {
+      console.log("Evento pause do áudio");
       setIsPlaying(false);
     };
     
-    const handlePlay = () => {
+    const handleAudioPlay = () => {
+      console.log("Evento play do áudio");
       setIsPlaying(true);
     };
     
@@ -77,8 +81,8 @@ const SimpleAudioPlayer = () => {
     audio.addEventListener("loadeddata", handleLoadedData);
     audio.addEventListener("error", handleError);
     audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handleAudioPause);
+    audio.addEventListener("play", handleAudioPlay);
     
     // Forçar carregamento
     audio.load();
@@ -87,8 +91,8 @@ const SimpleAudioPlayer = () => {
       audio.removeEventListener("loadeddata", handleLoadedData);
       audio.removeEventListener("error", handleError);
       audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handleAudioPause);
+      audio.removeEventListener("play", handleAudioPlay);
     };
   }, []);
   
