@@ -105,8 +105,21 @@ export default function SalesPage() {
 
         {/* Pour qui c'est: section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F1F9F1] border-[#57C084]">
-          <h3 className="text-base sm:text-lg font-bold text-[#57C084] mb-1.5 sm:mb-2">💚 Pour qui c'est:</h3>
-          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+          <h3 style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: "700",
+            color: "#57C084",
+            marginBottom: "10px"
+          }}>💚 Pour qui c'est:</h3>
+          <ul style={{
+            listStyle: "none",
+            padding: "0 0 0 4px",
+            margin: "0",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8"
+          }}>
             <li>🌿 Femmes avec intolérances (gluten, lactose, sucre)</li>
             <li>🥗 Celles qui veulent mincir sans frustration</li>
             <li>😩 Celles fatiguées des plats tristes et sans goût</li>
@@ -212,14 +225,32 @@ export default function SalesPage() {
 
         {/* Ce que vous allez recevoir section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F5F9FF] border-[#2196F3]">
-          <h2 style={{ fontSize: "1.15rem", fontWeight: "bold", color: "#2196F3", marginBottom: "0.75rem" }}>📦 Ce que vous allez recevoir :</h2>
-          <p style={{ fontSize: "1.05rem", marginBottom: "0.75rem" }}>Un accès à <span style={{ color: "#B34431", fontWeight: "bold" }}>500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
+          <h2 style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: "700",
+            color: "#2196F3",
+            marginBottom: "10px"
+          }}>📦 Ce que vous allez recevoir :</h2>
+          <p style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8",
+            marginBottom: "10px"
+          }}>Un accès à <span style={{ color: "#B34431", fontWeight: "bold" }}>500 recettes exclusives</span> créées et testées par la Cheffe Amélie — organisées pour nourrir, apaiser et régaler votre quotidien.</p>
           
-          <ul className="list-none pl-1 mb-2 space-y-2 sm:space-y-3">
-            <li style={{ fontSize: "1.05rem" }}>🍽️ <span style={{ color: "#B34431", fontWeight: "bold" }}>100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
-            <li style={{ fontSize: "1.05rem" }}>🥦 <span style={{ color: "#B34431", fontWeight: "bold" }}>300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
-            <li style={{ fontSize: "1.05rem" }}>🍫 <span style={{ color: "#B34431", fontWeight: "bold" }}>100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
-            <li style={{ fontSize: "1.05rem" }}>🧭 <span style={{ color: "#B34431", fontWeight: "bold" }}>Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
+          <ul style={{
+            listStyle: "none",
+            padding: "0 0 0 4px",
+            margin: "0",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8"
+          }}>
+            <li>🍽️ <span style={{ color: "#B34431", fontWeight: "bold" }}>100 petits-déjeuners & collations</span> — pour bien démarrer la journée, sans pic de sucre</li>
+            <li>🥦 <span style={{ color: "#B34431", fontWeight: "bold" }}>300 déjeuners & dîners</span> — faciles, nourrissants et équilibrés, pour tous les jours</li>
+            <li>🍫 <span style={{ color: "#B34431", fontWeight: "bold" }}>100 desserts gourmands</span> — sans sucre raffiné, mais pleins de plaisir</li>
+            <li>🧭 <span style={{ color: "#B34431", fontWeight: "bold" }}>Recettes classées par objectif</span> : digestion, satiété, inflammation, énergie</li>
           </ul>
         </div>
 
@@ -227,24 +258,37 @@ export default function SalesPage() {
 
         {/* Bonus exclusifs section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#FFF8E8] border-[#FF9800]">
-          <h2 style={{ fontSize: "1.15rem", fontWeight: "bold", color: "#FF9800", marginBottom: "0.75rem" }}>🎁 Bonus exclusifs inclus aujourd'hui :</h2>
+          <h2 style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: "700",
+            color: "#FF9800",
+            marginBottom: "10px"
+          }}>🎁 Bonus exclusifs inclus aujourd'hui :</h2>
           
-          <ul className="list-none pl-0 space-y-2 sm:space-y-3">
+          <ul style={{
+            listStyle: "none",
+            padding: "0 0 0 4px",
+            margin: "0",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8"
+          }}>
             <li>
-              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 1 : Guide de substitutions intelligentes</p>
-              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Remplacez sucre, farine ou lait sans perdre le goût.</p>
+              <p style={{ fontWeight: "bold", margin: "0 0 4px 0" }}>🎁 Bonus 1 : Guide de substitutions intelligentes</p>
+              <p style={{ marginLeft: "1rem", margin: "0 0 8px 1rem" }}>Remplacez sucre, farine ou lait sans perdre le goût.</p>
             </li>
             <li>
-              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 2 : Carte de satiété naturelle</p>
-              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Construisez des assiettes qui rassasient sans excès.</p>
+              <p style={{ fontWeight: "bold", margin: "0 0 4px 0" }}>🎁 Bonus 2 : Carte de satiété naturelle</p>
+              <p style={{ marginLeft: "1rem", margin: "0 0 8px 1rem" }}>Construisez des assiettes qui rassasient sans excès.</p>
             </li>
             <li>
-              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 3 : Protocole intestin + glycémie</p>
-              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Améliorez votre digestion et votre énergie au quotidien.</p>
+              <p style={{ fontWeight: "bold", margin: "0 0 4px 0" }}>🎁 Bonus 3 : Protocole intestin + glycémie</p>
+              <p style={{ marginLeft: "1rem", margin: "0 0 8px 1rem" }}>Améliorez votre digestion et votre énergie au quotidien.</p>
             </li>
             <li>
-              <p style={{ fontSize: "1.05rem", fontWeight: "bold" }}>🎁 Bonus 4 : Liste de courses intelligente</p>
-              <p style={{ fontSize: "1.05rem", marginLeft: "1rem" }}>Gagnez du temps avec des produits simples, testés, validés.</p>
+              <p style={{ fontWeight: "bold", margin: "0 0 4px 0" }}>🎁 Bonus 4 : Liste de courses intelligente</p>
+              <p style={{ marginLeft: "1rem", margin: "0 0 8px 1rem" }}>Gagnez du temps avec des produits simples, testés, validés.</p>
             </li>
           </ul>
         </div>
@@ -260,28 +304,28 @@ export default function SalesPage() {
         }}>
           <p style={{ 
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
+            fontSize: "0.95rem",
+            lineHeight: "1.8",
             color: "#333333",
-            marginBottom: "18px",
+            marginBottom: "10px",
             fontWeight: "normal"
           }}>
             Ce n'est pas un régime. Ce n'est pas une promesse vide.
           </p>
           <p style={{ 
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
+            fontSize: "0.95rem",
+            lineHeight: "1.8",
             color: "#333333",
-            marginBottom: "18px",
+            marginBottom: "10px",
             fontWeight: "normal"
           }}>
             C'est un raccourci vers ce que vous vouliez depuis des années : <span style={{ color: "#B34431", fontWeight: "600" }}>manger avec plaisir, sans douleur.</span>
           </p>
           <p style={{ 
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-            fontSize: "1.05rem",
-            lineHeight: "1.6",
+            fontSize: "0.95rem",
+            lineHeight: "1.8",
             color: "#333333",
             marginBottom: "0",
             fontWeight: "normal"
@@ -342,15 +386,17 @@ export default function SalesPage() {
         {/* Assinatura da Chef */}
         <div className="text-center mb-6 mt-12 pt-4 pb-2" style={{ maxWidth: "800px", margin: "0 auto" }}>
           <p style={{ 
-            fontSize: "1.05rem", 
-            marginBottom: "0.75rem", 
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem", 
+            marginBottom: "10px", 
             color: "#666666", 
-            lineHeight: "1.5"
+            lineHeight: "1.8"
           }}>
             Avec tout mon cœur — pour que vous puissiez enfin manger avec liberté et plaisir.
           </p>
           <p style={{ 
-            fontSize: "1.15rem", 
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem", 
             fontStyle: "italic", 
             fontWeight: "500", 
             color: "#B34431"
