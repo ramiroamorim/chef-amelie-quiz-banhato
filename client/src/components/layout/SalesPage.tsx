@@ -104,8 +104,21 @@ export default function SalesPage() {
 
         {/* Pour qui c'est: section */}
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-md border-l-4 bg-[#F1F9F1] border-[#57C084]">
-          <h3 className="text-base sm:text-lg font-bold text-[#57C084] mb-1.5 sm:mb-2">💚 Pour qui c'est:</h3>
-          <ul className="list-none pl-1 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+          <h3 style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: "700",
+            color: "#57C084",
+            marginBottom: "10px"
+          }}>💚 Pour qui c'est:</h3>
+          <ul style={{
+            listStyle: "none",
+            padding: "0 0 0 4px",
+            margin: "0",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+            fontSize: "0.95rem",
+            lineHeight: "1.8"
+          }}>
             <li>🌿 Femmes avec intolérances (gluten, lactose, sucre)</li>
             <li>🥗 Celles qui veulent mincir sans frustration</li>
             <li>😩 Celles fatiguées des plats tristes et sans goût</li>
