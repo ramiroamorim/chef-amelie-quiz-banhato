@@ -9,41 +9,30 @@ import { ChefImages } from "@/assets/imageExports";
 // Tentamos diferentes formatos para garantir compatibilidade
 const AUDIO_SRC = "/audio/message.mp3";
 
-// Componente de áudio robusto
+// Player de áudio simplificado e funcional
 const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   
-  const handlePlay = async () => {
-    if (!audioRef.current) return;
+  const togglePlay = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
     
     try {
-      setError(false);
-      console.log("Tentando reproduzir áudio...");
-      await audioRef.current.play();
-      console.log("Áudio reproduzindo");
-    } catch (e) {
-      console.error("Erro ao reproduzir áudio:", e);
-      setError(true);
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        // Resetar o áudio para o início se já terminou
+        if (audio.ended) {
+          audio.currentTime = 0;
+        }
+        await audio.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.error("Erro ao reproduzir áudio:", error);
       setIsPlaying(false);
-    }
-  };
-  
-  const handlePause = () => {
-    if (audioRef.current && !audioRef.current.paused) {
-      console.log("Pausando áudio...");
-      audioRef.current.pause();
-    }
-  };
-  
-  const togglePlay = () => {
-    console.log("Toggle play - Estado atual:", isPlaying);
-    if (isPlaying) {
-      handlePause();
-    } else {
-      handlePlay();
     }
   };
   
@@ -51,48 +40,18 @@ const SimpleAudioPlayer = () => {
     const audio = audioRef.current;
     if (!audio) return;
     
-    const handleLoadedData = () => {
-      setIsLoaded(true);
-      setError(false);
-      console.log("Áudio carregado com sucesso");
-    };
+    const handleEnded = () => setIsPlaying(false);
+    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => setIsPlaying(true);
     
-    const handleError = (e: any) => {
-      console.error("Erro ao carregar áudio:", e);
-      setError(true);
-      setIsLoaded(false);
-    };
-    
-    const handleEnded = () => {
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPause = () => {
-      console.log("Evento pause do áudio");
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPlay = () => {
-      console.log("Evento play do áudio");
-      setIsPlaying(true);
-    };
-    
-    // Adicionar event listeners
-    audio.addEventListener("loadeddata", handleLoadedData);
-    audio.addEventListener("error", handleError);
     audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("pause", handleAudioPause);
-    audio.addEventListener("play", handleAudioPlay);
-    
-    // Forçar carregamento
-    audio.load();
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("play", handlePlay);
     
     return () => {
-      audio.removeEventListener("loadeddata", handleLoadedData);
-      audio.removeEventListener("error", handleError);
       audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("pause", handleAudioPause);
-      audio.removeEventListener("play", handleAudioPlay);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("play", handlePlay);
     };
   }, []);
   
