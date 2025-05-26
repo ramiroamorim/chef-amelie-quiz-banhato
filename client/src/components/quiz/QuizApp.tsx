@@ -20,10 +20,7 @@ export default function QuizApp() {
 
   // Rastrear início do quiz quando o componente é montado
   useEffect(() => {
-    const timer = setTimeout(() => {
-      FacebookPixel.trackQuizStart();
-    }, 1000);
-    return () => clearTimeout(timer);
+    FacebookPixel.trackQuizStart();
   }, []);
 
   return (

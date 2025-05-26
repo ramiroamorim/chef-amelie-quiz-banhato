@@ -31,14 +31,6 @@ interface ProfileResultProps {
 }
 
 export default function ProfileResult({ onViewSuggestions }: ProfileResultProps) {
-  // Rastrear conclusão do quiz quando o resultado é exibido
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      FacebookPixel.trackQuizComplete();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
