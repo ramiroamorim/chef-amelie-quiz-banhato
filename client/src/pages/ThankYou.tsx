@@ -7,7 +7,7 @@ import { ChefImages } from "@/assets/imageExports";
 // Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
 // Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
 // Tentamos diferentes formatos para garantir compatibilidade
-const AUDIO_SRC = "/audio/message.mp3";
+const AUDIO_SRC = "/audio/message.wav";
 
 // Player de áudio funcional
 const SimpleAudioPlayer = () => {
@@ -57,7 +57,8 @@ const SimpleAudioPlayer = () => {
         ref={audioRef} 
         preload="auto"
         src={AUDIO_SRC}
-        style={{ display: 'none' }}
+        controls
+        className="mb-4"
       />
       
       <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
