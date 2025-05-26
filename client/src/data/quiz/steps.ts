@@ -123,7 +123,7 @@ export const quizSteps: QuizStepType[] = [
         content: "Aujourd'hui, elle partage plus de 500 recettes conçues pour transformer le quotidien de milliers de femmes."
       }
     ],
-    buttonText: "🍽️ Voir comment ses recettes peuvent m'aider"
+    buttonText: "Voir comment ses recettes peuvent m'aider"
   },
   
   // Step 5
