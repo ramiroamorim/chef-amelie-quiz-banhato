@@ -4,26 +4,109 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Player de áudio simples e funcional
+// Player de áudio robusto e funcional
 const SimpleAudioPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateProgress = () => {
+      setCurrentTime(audio.currentTime);
+      setDuration(audio.duration || 0);
+    };
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('loadedmetadata', updateProgress);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateProgress);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('loadedmetadata', updateProgress);
+    };
+  }, []);
+
+  const togglePlay = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    try {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        await audio.play();
+      }
+    } catch (error) {
+      console.error('Erro ao reproduzir áudio:', error);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className="flex flex-col items-center w-full mb-5">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4">
         <div className="text-center mb-3">
           <h3 className="text-sm font-medium text-gray-800">Mensagem especial da Chef Amélie</h3>
-          <p className="text-xs text-gray-500">Player de áudio nativo do navegador</p>
+          <p className="text-xs text-gray-500">Clique no botão para reproduzir</p>
         </div>
         
         <audio 
-          controls
-          className="w-full"
+          ref={audioRef}
           preload="auto"
-          style={{ height: '40px' }}
+          className="hidden"
         >
-          <source src="/attached_assets/Segundos.mp3" type="audio/mpeg" />
+          <source src="/audio/Segundos.mp3" type="audio/mpeg" />
           <source src="/audio/segundos.mp3" type="audio/mpeg" />
-          Seu navegador não suporta a reprodução de áudio.
+          <source src="/audio/message.mp3" type="audio/mpeg" />
         </audio>
+
+        <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+          <button
+            onClick={togglePlay}
+            className="flex items-center justify-center w-12 h-12 bg-primary hover:bg-primary/90 text-white rounded-full transition-colors shadow-md"
+          >
+            {isPlaying ? (
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="m7 4 10 6L7 16V4z"/>
+              </svg>
+            )}
+          </button>
+          
+          <div className="flex-1">
+            <div className="flex justify-between text-xs text-gray-500 mb-1">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all duration-300" 
+                style={{ width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
