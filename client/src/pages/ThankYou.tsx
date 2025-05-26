@@ -4,9 +4,7 @@ import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
 
-// Importação direta do arquivo de áudio - isso garante que o Vite otimize corretamente
-// Definição do caminho do arquivo de áudio com caminho absoluto para garantir compatibilidade
-// Tentamos diferentes formatos para garantir compatibilidade
+// Caminho correto para o arquivo de áudio
 const AUDIO_SRC = "/audio/segundos.mp3";
 
 // Player de áudio funcional
