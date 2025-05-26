@@ -9,104 +9,81 @@ import { ChefImages } from "@/assets/imageExports";
 // Tentamos diferentes formatos para garantir compatibilidade
 const AUDIO_SRC = "/audio/message.mp3";
 
-// Componente de áudio robusto
+// Componente de áudio com nova lógica
 const SimpleAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  
-  const handlePlay = async () => {
-    if (!audioRef.current) return;
-    
-    try {
-      setError(false);
-      console.log("Tentando reproduzir áudio...");
-      await audioRef.current.play();
-      console.log("Áudio reproduzindo");
-    } catch (e) {
-      console.error("Erro ao reproduzir áudio:", e);
-      setError(true);
-      setIsPlaying(false);
-    }
-  };
-  
-  const handlePause = () => {
-    if (audioRef.current && !audioRef.current.paused) {
-      console.log("Pausando áudio...");
-      audioRef.current.pause();
-    }
-  };
-  
-  const togglePlay = () => {
-    console.log("Toggle play - Estado atual:", isPlaying);
-    if (isPlaying) {
-      handlePause();
-    } else {
-      handlePlay();
-    }
-  };
+  const [audioInstance, setAudioInstance] = useState<HTMLAudioElement | null>(null);
   
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    // Criar nova instância de áudio
+    const audio = new Audio("/audio/message.mp3");
+    audio.preload = "auto";
     
-    const handleLoadedData = () => {
+    const onCanPlayThrough = () => {
+      console.log("Áudio pronto para reprodução");
       setIsLoaded(true);
       setError(false);
-      console.log("Áudio carregado com sucesso");
     };
     
-    const handleError = (e: any) => {
-      console.error("Erro ao carregar áudio:", e);
+    const onError = () => {
+      console.error("Erro ao carregar áudio");
       setError(true);
       setIsLoaded(false);
     };
     
-    const handleEnded = () => {
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPause = () => {
-      console.log("Evento pause do áudio");
-      setIsPlaying(false);
-    };
-    
-    const handleAudioPlay = () => {
-      console.log("Evento play do áudio");
+    const onPlay = () => {
+      console.log("Áudio começou a tocar");
       setIsPlaying(true);
     };
     
-    // Adicionar event listeners
-    audio.addEventListener("loadeddata", handleLoadedData);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("pause", handleAudioPause);
-    audio.addEventListener("play", handleAudioPlay);
+    const onPause = () => {
+      console.log("Áudio pausado");
+      setIsPlaying(false);
+    };
     
-    // Forçar carregamento
-    audio.load();
+    const onEnded = () => {
+      console.log("Áudio finalizado");
+      setIsPlaying(false);
+    };
+    
+    audio.addEventListener("canplaythrough", onCanPlayThrough);
+    audio.addEventListener("error", onError);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    audio.addEventListener("ended", onEnded);
+    
+    setAudioInstance(audio);
     
     return () => {
-      audio.removeEventListener("loadeddata", handleLoadedData);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("pause", handleAudioPause);
-      audio.removeEventListener("play", handleAudioPlay);
+      audio.removeEventListener("canplaythrough", onCanPlayThrough);
+      audio.removeEventListener("error", onError);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.removeEventListener("ended", onEnded);
+      audio.pause();
+      audio.src = "";
     };
   }, []);
   
+  const togglePlay = async () => {
+    if (!audioInstance || error) return;
+    
+    try {
+      if (isPlaying) {
+        audioInstance.pause();
+      } else {
+        await audioInstance.play();
+      }
+    } catch (e) {
+      console.error("Erro na reprodução:", e);
+      setError(true);
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center w-full mb-5">
-      <audio 
-        ref={audioRef} 
-        preload="metadata"
-        style={{ display: 'none' }}
-      >
-        <source src="/audio/message.mp3" type="audio/mpeg" />
-        Seu navegador não suporta áudio HTML5.
-      </audio>
-      
       <button 
         onClick={togglePlay}
         disabled={error}
