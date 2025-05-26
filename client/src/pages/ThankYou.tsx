@@ -51,10 +51,16 @@ export default function ThankYou() {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleLoadedMetadata = () => {
+    const handleCanPlay = () => {
       setAudioLoaded(true);
       setAudioDuration(audio.duration);
-      console.log("Áudio carregado com sucesso, duração:", audio.duration);
+      console.log("Áudio pronto para reprodução, duração:", audio.duration);
+    };
+
+    const handleLoadedData = () => {
+      setAudioLoaded(true);
+      setAudioDuration(audio.duration);
+      console.log("Dados do áudio carregados com sucesso");
     };
 
     const handleError = (e: Event) => {
@@ -62,11 +68,19 @@ export default function ThankYou() {
       setAudioLoaded(false);
     };
 
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    // Verificar se o áudio já está carregado
+    if (audio.readyState >= 3) { // HAVE_FUTURE_DATA ou HAVE_ENOUGH_DATA
+      setAudioLoaded(true);
+      setAudioDuration(audio.duration);
+    }
+
+    audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("loadeddata", handleLoadedData);
     audio.addEventListener("error", handleError);
 
     return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("loadeddata", handleLoadedData);
       audio.removeEventListener("error", handleError);
     };
   }, []);
