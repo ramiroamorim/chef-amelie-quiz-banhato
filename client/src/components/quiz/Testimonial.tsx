@@ -138,11 +138,10 @@ export default function Testimonial({ testimonials, onComplete }: TestimonialPro
                     loading="eager"
                     decoding="async"
                     style={{ 
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                       objectPosition: "center",
-                      margin: "0 auto",
                       display: "block"
                     }}
                     onError={(e) => {
