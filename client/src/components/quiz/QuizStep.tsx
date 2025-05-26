@@ -262,8 +262,16 @@ export default function QuizStep({
       {/* Button for steps without options - Layout especial para Chef Profile */}
       {step.buttonText && !step.options && step.name === 'chef_profile' && (
         <div className="relative w-full mt-8 flex justify-center">
+          <div className="absolute inset-0 rounded-full opacity-30 flex justify-center items-center" 
+            style={{
+              background: "linear-gradient(90deg, #E78D7B 0%, #E07260 100%)",
+              animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite",
+              width: "fit-content",
+              margin: "0 auto"
+            }}
+          ></div>
           <button 
-            className="bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-6 py-3 rounded-full transition-colors shadow-lg flex items-center gap-2"
+            className="bg-[#E07260] hover:bg-[#D66650] text-white font-medium px-6 py-3 rounded-full transition-colors shadow-lg flex items-center gap-2 relative z-10"
             style={{
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
               fontSize: "16px"
