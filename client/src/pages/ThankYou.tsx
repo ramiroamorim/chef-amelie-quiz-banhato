@@ -72,12 +72,19 @@ export default function ThankYou() {
   // Função para navegar no áudio
   const seekAudio = (position: number) => {
     const audio = audioRef.current;
-    if (!audio || !audio.duration) return;
+    if (!audio) return;
 
-    // Navegar para a posição no áudio real
-    const newTime = (position / 100) * audio.duration;
-    audio.currentTime = newTime;
-    setProgressPosition(position);
+    try {
+      // Usar a duração conhecida ou a duração real do áudio
+      const duration = audio.duration || audioDuration;
+      if (duration > 0) {
+        const newTime = (position / 100) * duration;
+        audio.currentTime = newTime;
+        setProgressPosition(position);
+      }
+    } catch (error) {
+      console.error("Erro ao navegar no áudio:", error);
+    }
   };
   
 
@@ -112,34 +119,22 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
-            {/* Player de áudio funcional com fallbacks */}
+            {/* Player de áudio otimizado */}
             <audio 
               ref={audioRef}
               preload="metadata"
               controls={false}
               style={{ display: 'none' }}
-              crossOrigin="anonymous"
               onLoadedMetadata={() => {
-                console.log("Metadata carregada com sucesso");
-                setAudioLoaded(true);
-                if (audioRef.current) {
-                  setAudioDuration(audioRef.current.duration);
+                const audio = audioRef.current;
+                if (audio && audio.duration) {
+                  setAudioDuration(audio.duration);
+                  console.log("Duração do áudio:", audio.duration);
                 }
               }}
-              onCanPlay={() => {
-                console.log("Áudio pronto para reprodução");
-                setAudioLoaded(true);
-              }}
-              onPlay={() => {
-                console.log("Áudio iniciado");
-                setAudioPlaying(true);
-              }}
-              onPause={() => {
-                console.log("Áudio pausado");
-                setAudioPlaying(false);
-              }}
+              onPlay={() => setAudioPlaying(true)}
+              onPause={() => setAudioPlaying(false)}
               onEnded={() => {
-                console.log("Áudio finalizado");
                 setAudioPlaying(false);
                 setProgressPosition(0);
               }}
@@ -150,15 +145,10 @@ export default function ThankYou() {
                   setProgressPosition(progress);
                 }
               }}
-              onError={(e) => {
-                console.error("Erro no elemento de áudio:", e);
-                setAudioLoaded(false);
-              }}
             >
               <source src="/audio/Segundos.mp4" type="video/mp4" />
               <source src="/audio/Segundos.mp3" type="audio/mpeg" />
               <source src="/audio/message.mp3" type="audio/mpeg" />
-              Seu navegador não suporta reprodução de áudio.
             </audio>
             
             <div className="flex justify-between items-center mb-4">
