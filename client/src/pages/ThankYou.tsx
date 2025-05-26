@@ -56,26 +56,26 @@ export default function ThankYou() {
             {/* Botão triangular azul */}
             <button 
               id="audio-play-button"
-              className="flex-shrink-0"
+              className="flex-shrink-0 hover:opacity-80 transition-opacity"
               onClick={() => {
                 const audio = document.getElementById('hidden-audio') as HTMLAudioElement;
-                const playIcon = document.getElementById('play-icon');
-                const pauseIcon = document.getElementById('pause-icon');
-                if (audio.paused) {
-                  audio.play();
-                  playIcon!.style.display = 'none';
-                  pauseIcon!.style.display = 'block';
-                } else {
-                  audio.pause();
-                  playIcon!.style.display = 'block';
-                  pauseIcon!.style.display = 'none';
+                const button = document.getElementById('audio-play-button');
+                
+                if (audio && button) {
+                  if (audio.paused) {
+                    audio.play();
+                    // Mudar para círculo azul quando tocando
+                    button.innerHTML = '<div class="w-6 h-6 bg-blue-500 rounded-full"></div>';
+                  } else {
+                    audio.pause();
+                    // Voltar para triângulo quando pausado
+                    button.innerHTML = '<div class="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>';
+                  }
                 }
               }}
             >
-              {/* Triângulo de play */}
-              <div id="play-icon" className="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>
-              {/* Círculo azul para pause (oculto inicialmente) */}
-              <div id="pause-icon" className="w-6 h-6 bg-blue-500 rounded-full" style={{ display: 'none' }}></div>
+              {/* Triângulo de play inicial */}
+              <div className="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>
             </button>
             
             {/* Ondas sonoras mais realistas */}
@@ -94,10 +94,10 @@ export default function ThankYou() {
             id="hidden-audio"
             preload="metadata"
             onEnded={() => {
-              const playIcon = document.getElementById('play-icon');
-              const pauseIcon = document.getElementById('pause-icon');
-              playIcon!.style.display = 'block';
-              pauseIcon!.style.display = 'none';
+              const button = document.getElementById('audio-play-button');
+              if (button) {
+                button.innerHTML = '<div class="w-0 h-0 border-l-[20px] border-l-blue-500 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent"></div>';
+              }
             }}
           >
             <source src="/audio/Segundos.mp4" type="audio/mp4" />
