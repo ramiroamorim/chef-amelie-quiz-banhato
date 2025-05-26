@@ -13,35 +13,49 @@
     
     <!-- Facebook Pixel Code -->
     <script>
-      try {
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '644431871463181');
-        fbq('track', 'PageView');
-      } catch(e) {
-        console.log('Facebook Pixel initialization error:', e);
-      }
+      window.addEventListener('load', function() {
+        try {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          
+          setTimeout(function() {
+            if (window.fbq) {
+              fbq('init', '644431871463181');
+              fbq('track', 'PageView');
+            }
+          }, 500);
+        } catch(e) {
+          console.log('Facebook Pixel initialization error:', e);
+        }
+      });
     </script>
     <!-- End Facebook Pixel Code -->
     
     <!-- Utmify Tracking Code -->
     <script>
-      try {
-        window.pixelId = "6806519e78c04101b15c3342";
-        var a = document.createElement("script");
-        a.setAttribute("async", "");
-        a.setAttribute("defer", "");
-        a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-        document.head.appendChild(a);
-      } catch(e) {
-        console.log('Utmify tracking initialization error:', e);
-      }
+      window.addEventListener('load', function() {
+        try {
+          window.pixelId = "6806519e78c04101b15c3342";
+          setTimeout(function() {
+            var a = document.createElement("script");
+            a.setAttribute("async", "");
+            a.setAttribute("defer", "");
+            a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+            a.onerror = function() {
+              console.log('Utmify script failed to load');
+            };
+            document.head.appendChild(a);
+          }, 1000);
+        } catch(e) {
+          console.log('Utmify tracking initialization error:', e);
+        }
+      });
     </script>
     <!-- End Utmify Tracking Code -->
   </head>
