@@ -62,15 +62,17 @@ export default function ThankYou() {
   // Função para navegar no áudio
   const seekAudio = (position: number) => {
     const audio = audioRef.current;
-    if (!audio || !audioLoaded) return;
+    if (!audio || !audioLoaded || !audio.duration) return;
 
     try {
-      if (audio.duration > 0) {
-        const newTime = (position / 100) * audio.duration;
-        audio.currentTime = newTime;
-        setProgressPosition(position);
-        console.log(`Navegando para ${Math.floor(newTime)}s`);
-      }
+      const newTime = (position / 100) * audio.duration;
+      const minutes = Math.floor(newTime / 60);
+      const seconds = Math.floor(newTime % 60);
+      
+      audio.currentTime = newTime;
+      setProgressPosition(position);
+      
+      console.log(`Navegando para ${minutes}:${seconds.toString().padStart(2, '0')}`);
     } catch (error) {
       console.error("Erro ao navegar no áudio:", error);
     }
@@ -121,11 +123,12 @@ export default function ThankYou() {
                   console.log("Áudio carregado, duração:", audio.duration);
                 }
               }}
-              onTimeUpdate={() => {
-                const audio = audioRef.current;
+              onTimeUpdate={(e) => {
+                const audio = e.currentTarget;
                 if (audio && audio.duration > 0) {
                   const progress = (audio.currentTime / audio.duration) * 100;
                   setProgressPosition(progress);
+                  console.log(`Progresso: ${Math.floor(progress)}%`);
                 }
               }}
               onPlay={() => {
@@ -252,29 +255,33 @@ export default function ThankYou() {
                 
                 {/* Área clicável para controle de progresso */}
                 <div 
-                  className="absolute inset-0 cursor-pointer"
+                  className="absolute inset-0 cursor-pointer hover:bg-black hover:bg-opacity-5 transition-colors"
                   onClick={(e) => {
+                    e.preventDefault();
+                    if (!audioLoaded) return;
+                    
                     const container = e.currentTarget;
                     const rect = container.getBoundingClientRect();
                     const clickPosition = (e.clientX - rect.left) / rect.width;
                     
-                    // Calcular a nova posição como porcentagem
-                    const newPositionPercent = clickPosition * 100;
+                    // Garantir que a posição está entre 0 e 100
+                    const newPositionPercent = Math.max(0, Math.min(100, clickPosition * 100));
                     
-                    // Atualizar o áudio e a visualização
+                    console.log(`Clique na posição: ${Math.floor(newPositionPercent)}%`);
                     seekAudio(newPositionPercent);
                   }}
+                  title="Clique para navegar no áudio"
                 ></div>
               </div>
               
               {/* Informações de duração */}
               {audioLoaded && audioDuration > 0 && (
-                <div className="ml-4 text-sm text-gray-600 min-w-[60px] text-right">
-                  <span>
+                <div className="ml-4 text-sm text-gray-600 min-w-[70px] text-right font-mono">
+                  <span className="text-[#2476c7] font-medium">
                     {Math.floor(progressPosition * audioDuration / 100 / 60)}:
                     {String(Math.floor((progressPosition * audioDuration / 100) % 60)).padStart(2, '0')}
                   </span>
-                  <span className="text-gray-400"> / </span>
+                  <span className="text-gray-400 mx-1">/</span>
                   <span>
                     {Math.floor(audioDuration / 60)}:
                     {String(Math.floor(audioDuration % 60)).padStart(2, '0')}
