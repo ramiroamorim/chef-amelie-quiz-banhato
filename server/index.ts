@@ -6,6 +6,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Configurar servir arquivos de mídia com tipos MIME corretos
+app.use('/audio', express.static('public/audio', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.mp4')) {
+      res.set('Content-Type', 'video/mp4');
+    } else if (path.endsWith('.mp3')) {
+      res.set('Content-Type', 'audio/mpeg');
+    } else if (path.endsWith('.wav')) {
+      res.set('Content-Type', 'audio/wav');
+    }
+    res.set('Accept-Ranges', 'bytes');
+  }
+}));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

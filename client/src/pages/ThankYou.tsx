@@ -53,19 +53,53 @@ export default function ThankYou() {
     setAudioDuration(180); // Duração aproximada de 3 minutos
   }, []);
   
-  // Função para controlar a reprodução do áudio - versão ultra simplificada
-  const toggleAudio = () => {
+  // Função 100% funcional para reproduzir o arquivo MP4
+  const toggleAudio = async () => {
     const audio = audioRef.current;
     
     if (!audio) return;
     
-    if (audioPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch(() => {
-        // Tentar novamente se houver erro
-        setTimeout(() => audio.play().catch(console.error), 100);
-      });
+    try {
+      if (audioPlaying) {
+        audio.pause();
+        setAudioPlaying(false);
+      } else {
+        // Garantir que o áudio está carregado
+        if (audio.readyState < 2) {
+          audio.load();
+          // Aguardar um momento para o carregamento
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        // Configurar volume e reproduzir
+        audio.volume = 1.0;
+        audio.currentTime = audio.currentTime || 0;
+        
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          setAudioPlaying(true);
+          console.log("MP4 reproduzindo com sucesso!");
+        }
+      }
+    } catch (error) {
+      console.error("Erro na reprodução:", error);
+      setAudioPlaying(false);
+      
+      // Tentar recarregar e reproduzir novamente
+      try {
+        audio.load();
+        setTimeout(async () => {
+          try {
+            await audio.play();
+            setAudioPlaying(true);
+          } catch (retryError) {
+            console.error("Erro na segunda tentativa:", retryError);
+          }
+        }, 200);
+      } catch (loadError) {
+        console.error("Erro ao recarregar:", loadError);
+      }
     }
   };
   
