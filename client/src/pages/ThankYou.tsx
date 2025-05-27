@@ -321,7 +321,7 @@ export default function ThankYou() {
         {showButton && (
           <div className="w-full flex flex-col items-center mt-4">
             <Button 
-              onClick={() => window.location.href = "https://pay.hotmart.com/V99272097O?off=kz99x2py&checkoutMode=10&bid=1748014910797"}
+              onClick={() => window.location.href = "https://pay.hotmart.com/V99272097O?checkoutMode=10"}
               style={{
                 backgroundColor: "#57C084",
                 color: "white",
