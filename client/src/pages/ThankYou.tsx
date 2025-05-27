@@ -38,34 +38,11 @@ export default function ThankYou() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Configuração única e simples do player
+  // Inicialização simples do player
   useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      // Eventos essenciais do áudio
-      const handleLoadedMetadata = () => {
-        setAudioLoaded(true);
-        setAudioDuration(audio.duration);
-      };
-      
-      const handleTimeUpdate = () => {
-        if (audio.duration > 0) {
-          const progress = (audio.currentTime / audio.duration) * 100;
-          setProgressPosition(progress);
-        }
-      };
-      
-      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.addEventListener('timeupdate', handleTimeUpdate);
-      
-      // Carregar o áudio
-      audio.load();
-      
-      return () => {
-        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        audio.removeEventListener('timeupdate', handleTimeUpdate);
-      };
-    }
+    // Estados iniciais
+    setAudioLoaded(false);
+    setProgressPosition(0);
   }, []);
   
   // Função simplificada para reproduzir o áudio
@@ -85,15 +62,14 @@ export default function ThankYou() {
   // Função para navegar no áudio
   const seekAudio = (position: number) => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !audioLoaded) return;
 
     try {
-      // Usar a duração conhecida ou a duração real do áudio
-      const duration = audio.duration || audioDuration;
-      if (duration > 0) {
-        const newTime = (position / 100) * duration;
+      if (audio.duration > 0) {
+        const newTime = (position / 100) * audio.duration;
         audio.currentTime = newTime;
         setProgressPosition(position);
+        console.log(`Navegando para ${Math.floor(newTime)}s`);
       }
     } catch (error) {
       console.error("Erro ao navegar no áudio:", error);
@@ -132,16 +108,46 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
-            {/* Elemento de áudio focado no MP4 */}
+            {/* Elemento de áudio com eventos completos */}
             <audio 
               ref={audioRef}
               preload="auto"
               src="/audio/Segundos.mp4"
-              onPlay={() => setAudioPlaying(true)}
-              onPause={() => setAudioPlaying(false)}
+              onLoadedMetadata={() => {
+                const audio = audioRef.current;
+                if (audio && audio.duration) {
+                  setAudioDuration(audio.duration);
+                  setAudioLoaded(true);
+                  console.log("Áudio carregado, duração:", audio.duration);
+                }
+              }}
+              onTimeUpdate={() => {
+                const audio = audioRef.current;
+                if (audio && audio.duration > 0) {
+                  const progress = (audio.currentTime / audio.duration) * 100;
+                  setProgressPosition(progress);
+                }
+              }}
+              onPlay={() => {
+                setAudioPlaying(true);
+                console.log("Reprodução iniciada");
+              }}
+              onPause={() => {
+                setAudioPlaying(false);
+                console.log("Reprodução pausada");
+              }}
               onEnded={() => {
                 setAudioPlaying(false);
-                setProgressPosition(0);
+                setProgressPosition(100);
+                console.log("Reprodução finalizada");
+              }}
+              onError={(e) => {
+                console.error("Erro no áudio:", e);
+                setAudioLoaded(false);
+              }}
+              onCanPlay={() => {
+                setAudioLoaded(true);
+                console.log("Áudio pronto para reprodução");
               }}
               style={{ display: 'none' }}
             />
@@ -180,10 +186,18 @@ export default function ThankYou() {
               {/* Botão de play/pause estilizado */}
               <button 
                 onClick={toggleAudio}
-                className="h-12 w-12 rounded-full bg-[#2476c7] hover:bg-[#1c64a9] cursor-pointer transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-[#2476c7] focus:ring-opacity-50"
-                aria-label={audioPlaying ? "Pause" : "Play"}
+                disabled={!audioLoaded}
+                className={`h-12 w-12 rounded-full transition-colors flex items-center justify-center text-white mr-4 shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50 ${
+                  audioLoaded 
+                    ? 'bg-[#2476c7] hover:bg-[#1c64a9] cursor-pointer focus:ring-[#2476c7]' 
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+                aria-label={audioPlaying ? "Pausar" : "Reproduzir"}
               >
-                {audioPlaying ? (
+                {!audioLoaded ? (
+                  // Spinner de carregamento
+                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
+                ) : audioPlaying ? (
                   // Ícone de pause
                   <svg 
                     width="24" 
@@ -254,11 +268,19 @@ export default function ThankYou() {
               </div>
               
               {/* Informações de duração */}
-              <div className="ml-4 text-sm text-gray-600 min-w-[60px] text-right">
-                <span>{Math.floor(progressPosition * audioDuration / 100 / 60)}:{String(Math.floor((progressPosition * audioDuration / 100) % 60)).padStart(2, '0')}</span>
-                <span className="text-gray-400"> / </span>
-                <span>{Math.floor(audioDuration / 60)}:{String(Math.floor(audioDuration % 60)).padStart(2, '0')}</span>
-              </div>
+              {audioLoaded && audioDuration > 0 && (
+                <div className="ml-4 text-sm text-gray-600 min-w-[60px] text-right">
+                  <span>
+                    {Math.floor(progressPosition * audioDuration / 100 / 60)}:
+                    {String(Math.floor((progressPosition * audioDuration / 100) % 60)).padStart(2, '0')}
+                  </span>
+                  <span className="text-gray-400"> / </span>
+                  <span>
+                    {Math.floor(audioDuration / 60)}:
+                    {String(Math.floor(audioDuration % 60)).padStart(2, '0')}
+                  </span>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
