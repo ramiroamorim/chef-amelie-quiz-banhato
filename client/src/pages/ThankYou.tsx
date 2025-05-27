@@ -38,68 +38,47 @@ export default function ThankYou() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Pré-carregar o áudio para melhor experiência do usuário
+  // Configuração única e simples do player
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
-      audio.load(); // Força o carregamento do áudio
+      // Eventos essenciais do áudio
+      const handleLoadedMetadata = () => {
+        setAudioLoaded(true);
+        setAudioDuration(audio.duration);
+      };
+      
+      const handleTimeUpdate = () => {
+        if (audio.duration > 0) {
+          const progress = (audio.currentTime / audio.duration) * 100;
+          setProgressPosition(progress);
+        }
+      };
+      
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      
+      // Carregar o áudio
+      audio.load();
+      
+      return () => {
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+      };
     }
   }, []);
   
-  // Configurar player de áudio simples
-  useEffect(() => {
-    // Marcar como sempre carregado para evitar loading infinito
-    setAudioLoaded(true);
-    setAudioDuration(180); // Duração aproximada de 3 minutos
-  }, []);
-  
-  // Função 100% funcional para reproduzir o arquivo MP4
-  const toggleAudio = async () => {
+  // Função simplificada para reproduzir o áudio
+  const toggleAudio = () => {
     const audio = audioRef.current;
-    
     if (!audio) return;
     
-    try {
-      if (audioPlaying) {
-        audio.pause();
-        setAudioPlaying(false);
-      } else {
-        // Garantir que o áudio está carregado
-        if (audio.readyState < 2) {
-          audio.load();
-          // Aguardar um momento para o carregamento
-          await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        // Configurar volume e reproduzir
-        audio.volume = 1.0;
-        audio.currentTime = audio.currentTime || 0;
-        
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          setAudioPlaying(true);
-          console.log("MP4 reproduzindo com sucesso!");
-        }
-      }
-    } catch (error) {
-      console.error("Erro na reprodução:", error);
-      setAudioPlaying(false);
-      
-      // Tentar recarregar e reproduzir novamente
-      try {
-        audio.load();
-        setTimeout(async () => {
-          try {
-            await audio.play();
-            setAudioPlaying(true);
-          } catch (retryError) {
-            console.error("Erro na segunda tentativa:", retryError);
-          }
-        }, 200);
-      } catch (loadError) {
-        console.error("Erro ao recarregar:", loadError);
-      }
+    if (audioPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(error => {
+        console.error("Erro ao reproduzir:", error);
+      });
     }
   };
   
@@ -153,37 +132,19 @@ export default function ThankYou() {
         <Card className="w-full mb-10 overflow-hidden bg-[#f8f9fa] border border-[#e9ecef] shadow-sm">
           <CardContent className="p-6">
             {/* Elemento de áudio oculto para controles customizados */}
-            {/* Player de áudio otimizado */}
+            {/* Elemento de áudio focado no MP4 */}
             <audio 
               ref={audioRef}
-              preload="metadata"
-              controls={false}
-              style={{ display: 'none' }}
-              onLoadedMetadata={() => {
-                const audio = audioRef.current;
-                if (audio && audio.duration) {
-                  setAudioDuration(audio.duration);
-                  console.log("Duração do áudio:", audio.duration);
-                }
-              }}
+              preload="auto"
+              src="/audio/Segundos.mp4"
               onPlay={() => setAudioPlaying(true)}
               onPause={() => setAudioPlaying(false)}
               onEnded={() => {
                 setAudioPlaying(false);
                 setProgressPosition(0);
               }}
-              onTimeUpdate={() => {
-                const audio = audioRef.current;
-                if (audio && audio.duration > 0) {
-                  const progress = (audio.currentTime / audio.duration) * 100;
-                  setProgressPosition(progress);
-                }
-              }}
-            >
-              <source src="/audio/Segundos.mp4" type="video/mp4" />
-              <source src="/audio/Segundos.mp3" type="audio/mpeg" />
-              <source src="/audio/message.mp3" type="audio/mpeg" />
-            </audio>
+              style={{ display: 'none' }}
+            />
             
             <div className="flex justify-between items-center mb-4">
               <p className="font-medium text-[#B34431] text-lg">Chef Amélie Dupont</p>
