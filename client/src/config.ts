@@ -6,7 +6,7 @@
 // Links externos
 export const LINKS = {
   SALES: {
-    BUY_URL: "https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&bid=1745004292326&utm_source=organic&utm_campaign=&utm_medium=&utm_content=&utm_term=&xcod=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR&sck=organichQwK21wXxRhQwK21wXxRhQwK21wXxRhQwK21wXxR"
+    BUY_URL: "https://pay.hotmart.com/D98080625O?checkoutMode=10"
   }
 };
 
