@@ -346,7 +346,9 @@ export default function ThankYou() {
               JE VEUX UN PLAN CHAQUE DIMANCHE !
             </Button>
             <a 
-              href="/" 
+              href="https://www.notion.so/Chef-Am-lie-Dupont-1d529766d17b80128475e56e60b5fbe8" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-[#B34431] text-sm hover:underline"
             >
               Non, merci !
