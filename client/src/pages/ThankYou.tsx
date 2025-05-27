@@ -151,6 +151,15 @@ export default function ThankYou() {
               onCanPlay={() => {
                 setAudioLoaded(true);
                 console.log("Áudio pronto para reprodução");
+                // Iniciar reprodução automaticamente
+                const audio = audioRef.current;
+                if (audio) {
+                  audio.play().then(() => {
+                    console.log("Reprodução automática iniciada");
+                  }).catch(error => {
+                    console.log("Reprodução automática bloqueada pelo navegador:", error);
+                  });
+                }
               }}
               style={{ display: 'none' }}
             />
