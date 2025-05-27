@@ -38,11 +38,26 @@ export default function ThankYou() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Inicialização simples do player
+  // Inicialização e autoplay do player
   useEffect(() => {
     // Estados iniciais
     setAudioLoaded(false);
     setProgressPosition(0);
+    
+    // Tentar reprodução automática após um breve delay
+    const autoplayTimer = setTimeout(() => {
+      const audio = audioRef.current;
+      if (audio) {
+        audio.play().then(() => {
+          console.log("Autoplay iniciado com sucesso!");
+          setAudioPlaying(true);
+        }).catch((error) => {
+          console.log("Autoplay foi bloqueado, aguardando interação do usuário");
+        });
+      }
+    }, 500);
+    
+    return () => clearTimeout(autoplayTimer);
   }, []);
   
   // Função simplificada para reproduzir o áudio
@@ -114,6 +129,7 @@ export default function ThankYou() {
             <audio 
               ref={audioRef}
               preload="auto"
+              autoPlay
               src="/audio/Segundos.mp4"
               onLoadedMetadata={() => {
                 const audio = audioRef.current;
