@@ -52,6 +52,7 @@ app.use((req, res, next) => {
 // Função para iniciar o servidor
 async function startServer() {
   try {
+    // Registrar rotas da API primeiro
     const server = await registerRoutes(app);
 
     // Tratamento de erros global
@@ -70,7 +71,7 @@ async function startServer() {
       serveStatic(app);
     }
 
-    const port = 5001;
+    const port = process.env.PORT || 5001;
     
     // Configuração do servidor com tratamento de erros
     server.on('error', (error: any) => {

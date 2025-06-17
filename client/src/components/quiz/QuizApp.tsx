@@ -18,25 +18,44 @@ export default function QuizApp() {
     showSalesPage
   } = useQuiz(quizSteps.length);
 
-  // Pré-carregar todas as imagens do quiz
+  // Pré-carregar todas as imagens do quiz e inicializar o pixel
   useEffect(() => {
-    const preloadImages = () => {
-      quizSteps.forEach(step => {
-        if (step.image) {
-          const img = new Image();
-          img.src = step.image;
-        }
-        if (step.imageGrid) {
-          step.imageGrid.forEach(gridImg => {
-            const img = new Image();
-            img.src = gridImg.src;
+    const initializeQuiz = async () => {
+      try {
+        // Iniciar o quiz e obter o ID da sessão
+        const response = await fetch('/api/quiz/start', {
+          method: 'POST'
+        });
+        const data = await response.json();
+        
+        if (data.success && data.sessionId) {
+          // Inicializar o pixel com o ID da sessão
+          FacebookPixel.initWithUserId(data.sessionId);
+          // Rastrear início do quiz
+          FacebookPixel.trackQuizStart({
+            session_id: data.sessionId
           });
         }
-      });
+
+        // Pré-carregar imagens
+        quizSteps.forEach(step => {
+          if (step.image) {
+            const img = new Image();
+            img.src = step.image;
+          }
+          if (step.imageGrid) {
+            step.imageGrid.forEach(gridImg => {
+              const img = new Image();
+              img.src = gridImg.src;
+            });
+          }
+        });
+      } catch (error) {
+        console.error('Erro ao inicializar quiz:', error);
+      }
     };
 
-    preloadImages();
-    FacebookPixel.trackQuizStart();
+    initializeQuiz();
   }, []);
 
   return (

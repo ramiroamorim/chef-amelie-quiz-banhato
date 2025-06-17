@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export interface UserLocation {
   state: string;
   city: string;
@@ -6,7 +8,7 @@ export interface UserLocation {
 }
 
 export interface UserSession {
-  id: string;           // External ID
+  id: string;           // UUID
   ip: string;           // IP do usuário
   location?: UserLocation; // Dados de localização
   createdAt: Date;      // Data de criação
@@ -26,7 +28,7 @@ export interface UserSession {
 // Função para criar uma nova sessão
 export function createUserSession(ip: string): UserSession {
   return {
-    id: generateExternalId(),
+    id: uuidv4(), // Gerando UUID v4
     ip,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -37,9 +39,4 @@ export function createUserSession(ip: string): UserSession {
       answers: {}
     }
   };
-}
-
-// Função para gerar um External ID único
-function generateExternalId(): string {
-  return `quiz_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 } 

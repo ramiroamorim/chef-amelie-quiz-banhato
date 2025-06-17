@@ -3,10 +3,13 @@ import { UserLocation } from '../models/user-session.model';
 export class GeolocationService {
   private static instance: GeolocationService;
   private apiKey: string;
+  private readonly API_URL = 'https://ipapi.co';
 
   private constructor() {
-    // Você precisará obter uma chave de API de um serviço de geolocalização
     this.apiKey = process.env.GEOLOCATION_API_KEY || '';
+    if (!this.apiKey) {
+      console.warn('GEOLOCATION_API_KEY não configurada. O serviço pode ter limitações de requisições.');
+    }
   }
 
   public static getInstance(): GeolocationService {
@@ -18,12 +21,31 @@ export class GeolocationService {
 
   public async getLocationFromIP(ip: string): Promise<UserLocation | null> {
     try {
-      // Exemplo usando ipapi.co (você pode trocar por outro serviço)
-      const response = await fetch(`https://ipapi.co/${ip}/json/`);
+      if (!ip || ip === '0.0.0.0') {
+        console.warn('IP inválido fornecido:', ip);
+        return null;
+      }
+
+      const url = this.apiKey 
+        ? `${this.API_URL}/${ip}/json/?key=${this.apiKey}`
+        : `${this.API_URL}/${ip}/json/`;
+
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.error) {
         console.error('Erro ao obter localização:', data.error);
+        return null;
+      }
+
+      // Validação dos dados recebidos
+      if (!data.region || !data.city || !data.postal || !data.country_name) {
+        console.warn('Dados de localização incompletos:', data);
         return null;
       }
 
