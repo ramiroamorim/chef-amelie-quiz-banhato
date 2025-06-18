@@ -1,10 +1,14 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import geolocationRoutes from "./routes/geolocation.routes";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Registrar rotas da API ANTES de qualquer outra coisa
+app.use('/api/geolocation', geolocationRoutes);
 
 // Configurar servir arquivos de mídia com tipos MIME corretos
 app.use('/audio', express.static('public/audio', {
@@ -52,7 +56,7 @@ app.use((req, res, next) => {
 // Função para iniciar o servidor
 async function startServer() {
   try {
-    // Registrar rotas da API primeiro
+    // Registrar outras rotas
     const server = await registerRoutes(app);
 
     // Tratamento de erros global
@@ -71,7 +75,7 @@ async function startServer() {
       serveStatic(app);
     }
 
-    const port = process.env.PORT || 5001;
+    const port = process.env.PORT || 3000;
     
     // Configuração do servidor com tratamento de erros
     server.on('error', (error: any) => {

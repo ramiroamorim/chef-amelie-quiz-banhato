@@ -20,6 +20,14 @@ export default function QuizApp() {
 
   // Pré-carregar todas as imagens do quiz e inicializar o pixel
   useEffect(() => {
+    function waitForFbq(callback: () => void) {
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        callback();
+      } else {
+        setTimeout(() => waitForFbq(callback), 200);
+      }
+    }
+
     const initializeQuiz = async () => {
       try {
         // Iniciar o quiz e obter o ID da sessão
@@ -31,9 +39,11 @@ export default function QuizApp() {
         if (data.success && data.sessionId) {
           // Inicializar o pixel com o ID da sessão
           FacebookPixel.initWithUserId(data.sessionId);
-          // Rastrear início do quiz
-          FacebookPixel.trackQuizStart({
-            session_id: data.sessionId
+          // Rastrear início do quiz somente quando fbq estiver pronto
+          waitForFbq(() => {
+            FacebookPixel.trackQuizStart({
+              session_id: data.sessionId
+            });
           });
         }
 

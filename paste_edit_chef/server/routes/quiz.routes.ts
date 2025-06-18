@@ -15,11 +15,7 @@ const getClientIP = (req: express.Request): string => {
 
 // Middleware de logging
 const logRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const start = Date.now();
-  res.on('finish', () => {
-    const duration = Date.now() - start;
-    console.log(`${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
-  });
+  console.log(`[Quiz] ${req.method} ${req.originalUrl}`);
   next();
 };
 
@@ -28,11 +24,12 @@ router.use(logRequest);
 // Iniciar quiz - captura IP e gera UUID
 router.post('/start', async (req, res) => {
   try {
+    console.log('[Quiz] Iniciando nova sessão...');
     const ip = getClientIP(req);
-    console.log('Iniciando nova sessão para IP:', ip);
+    console.log('[Quiz] IP do cliente:', ip);
 
     const session = createUserSession(ip);
-    console.log('Sessão criada com UUID:', session.id);
+    console.log('[Quiz] Sessão criada com UUID:', session.id);
     
     // Obter localização do IP
     const geolocationService = GeolocationService.getInstance();
@@ -40,9 +37,9 @@ router.post('/start', async (req, res) => {
     
     if (location) {
       session.location = location;
-      console.log('Localização obtida:', location);
+      console.log('[Quiz] Localização obtida:', location);
     } else {
-      console.warn('Não foi possível obter localização para o IP:', ip);
+      console.warn('[Quiz] Não foi possível obter localização para o IP:', ip);
     }
 
     // Aqui você pode salvar a sessão em um banco de dados
@@ -54,7 +51,7 @@ router.post('/start', async (req, res) => {
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Erro ao iniciar quiz:', error);
+    console.error('[Quiz] Erro ao iniciar quiz:', error);
     res.status(500).json({
       success: false,
       error: 'Erro ao iniciar quiz',
