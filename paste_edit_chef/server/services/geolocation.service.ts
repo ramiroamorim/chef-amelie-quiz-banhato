@@ -5,7 +5,7 @@ export class GeolocationService {
   private apiKey: string;
   private readonly API_URL = 'https://ipapi.co';
 
-  private constructor() {
+  constructor() {
     this.apiKey = process.env.GEOLOCATION_API_KEY || '';
     if (!this.apiKey) {
       console.warn('GEOLOCATION_API_KEY não configurada. O serviço pode ter limitações de requisições.');
@@ -17,6 +17,16 @@ export class GeolocationService {
       GeolocationService.instance = new GeolocationService();
     }
     return GeolocationService.instance;
+  }
+
+  // Método para reset da instância (útil para testes)
+  public static resetInstance(): void {
+    GeolocationService.instance = null as any;
+  }
+
+  // Método para criar nova instância (útil para testes)
+  public static createInstance(): GeolocationService {
+    return new GeolocationService();
   }
 
   public async getLocationFromIP(ip: string): Promise<UserLocation | null> {

@@ -104,7 +104,7 @@ async function startServer() {
     // Iniciar o servidor
     server.listen({
       port,
-      host: "0.0.0.0",
+      host: "127.0.0.1",
       reusePort: true,
     });
 
