@@ -27,7 +27,7 @@ router.use(logRequest);
 router.post('/start', async (req, res) => {
   try {
     console.log('[Quiz] Iniciando nova sessão...');
-    const ip = getClientIP(req);
+    const ip = "8.8.8.8"; // IP público para teste
     console.log('[Quiz] IP do cliente:', ip);
 
     const session = createUserSession(ip);
