@@ -1,13 +1,15 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import quizRoutes from "./routes/quiz.routes";
 import geolocationRoutes from "./routes/geolocation.routes";
+import { Server } from "http";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Registrar rotas da API ANTES de qualquer outra coisa
+// Registrar todas as rotas da API ANTES de qualquer outra coisa
+app.use('/api/quiz', quizRoutes);
 app.use('/api/geolocation', geolocationRoutes);
 
 // Configurar servir arquivos de mídia com tipos MIME corretos
@@ -56,8 +58,8 @@ app.use((req, res, next) => {
 // Função para iniciar o servidor
 async function startServer() {
   try {
-    // Registrar outras rotas
-    const server = await registerRoutes(app);
+    // Criar o servidor HTTP
+    const server = new Server(app);
 
     // Tratamento de erros global
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
