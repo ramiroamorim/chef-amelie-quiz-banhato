@@ -8,9 +8,30 @@ const app = express();
 
 // Configuração de CORS para permitir requisições de outros IPs
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  // Lista de origens permitidas
+  const allowedOrigins = [
+    'https://pay.hotmart.com',
+    'https://www.hotmart.com',
+    'https://hotmart.com',
+    'https://tracking-api.hotmart.com',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173'
+  ];
+  
+  const origin = req.headers.origin;
+  
+  // Permitir origem se estiver na lista ou se for undefined (requisições do mesmo domínio)
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+  
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
