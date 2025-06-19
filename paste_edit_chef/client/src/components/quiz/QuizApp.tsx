@@ -13,6 +13,21 @@ function setCookie(name: string, value: string, days = 7) {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 }
 
+// Função para montar a URL do checkout da Hotmart com parâmetros customizados
+function redirectToHotmartCheckout(params: any, eventId: string) {
+  const baseUrl = 'https://pay.hotmart.com/D98080625O'; // hotmart Checkout
+  const query = [
+    `client_ip_address=${encodeURIComponent(params.client_ip_address || '')}`,
+    `ct=${encodeURIComponent(params.ct || '')}`,
+    `st=${encodeURIComponent(params.st || '')}`,
+    `country=${encodeURIComponent(params.country || '')}`,
+    `zip=${encodeURIComponent(params.zip || '')}`,
+    `eventID=${encodeURIComponent(eventId)}`,
+    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`
+  ].join('&');
+  window.location.href = `${baseUrl}?${query}`;
+}
+
 export default function QuizApp() {
   const { 
     currentStep, 
