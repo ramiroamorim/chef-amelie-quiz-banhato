@@ -13,9 +13,25 @@ function setCookie(name: string, value: string, days = 7) {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 }
 
+// Função utilitária para extrair parâmetros UTM
+function getUtmParams() {
+  return {
+    utm_source: (window as any).utm_params?.utm_source || 'organic',
+    utm_campaign: (window as any).utm_params?.utm_campaign || '',
+    utm_medium: (window as any).utm_params?.utm_medium || '',
+    utm_content: (window as any).utm_params?.utm_content || '',
+    utm_term: (window as any).utm_params?.utm_term || '',
+    xcod: (window as any).utm_params?.xcod || 'organic'
+  };
+}
+
 // Função para montar a URL do checkout da Hotmart com parâmetros customizados
 function redirectToHotmartCheckout(params: any, eventId: string) {
   const baseUrl = 'https://pay.hotmart.com/D98080625O'; // hotmart Checkout
+  
+  // Obter parâmetros UTM
+  const utmParams = getUtmParams();
+  
   const query = [
     `client_ip_address=${encodeURIComponent(params.client_ip_address || '')}`,
     `ct=${encodeURIComponent(params.ct || '')}`,
@@ -23,8 +39,16 @@ function redirectToHotmartCheckout(params: any, eventId: string) {
     `country=${encodeURIComponent(params.country || '')}`,
     `zip=${encodeURIComponent(params.zip || '')}`,
     `eventID=${encodeURIComponent(eventId)}`,
-    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`
+    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`,
+    // Parâmetros UTM
+    `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
+    `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
+    `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
+    `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
+    `utm_term=${encodeURIComponent(utmParams.utm_term)}`,
+    `xcod=${encodeURIComponent(utmParams.xcod)}`
   ].join('&');
+  
   window.location.href = `${baseUrl}?${query}`;
 }
 
@@ -51,6 +75,17 @@ export default function QuizApp() {
       setCookie('country', params.country || '');
       setCookie('zip', params.zip || '');
       setCookie('eventID', eventId);
+      
+      // Criar cookies para parâmetros UTM
+      const utmParams = getUtmParams();
+      
+      setCookie('utm_source', utmParams.utm_source);
+      setCookie('utm_campaign', utmParams.utm_campaign);
+      setCookie('utm_medium', utmParams.utm_medium);
+      setCookie('utm_content', utmParams.utm_content);
+      setCookie('utm_term', utmParams.utm_term);
+      setCookie('xcod', utmParams.xcod);
+      
       FacebookPixel.trackPageView(params, eventId);
     });
     // Enviar para o backend (dados originais)
@@ -65,7 +100,9 @@ export default function QuizApp() {
           postal: info.postal,
           userAgent: navigator.userAgent,
           eventName: 'PageView',
-          eventID: eventId
+          eventID: eventId,
+          // Parâmetros UTM
+          ...getUtmParams()
         };
         fetch('/api/pixel-event', {
           method: 'POST',
@@ -106,6 +143,17 @@ export default function QuizApp() {
             setCookie('country', params.country || '');
             setCookie('zip', params.zip || '');
             setCookie('eventID', eventId);
+            
+            // Criar cookies para parâmetros UTM
+            const utmParams = getUtmParams();
+            
+            setCookie('utm_source', utmParams.utm_source);
+            setCookie('utm_campaign', utmParams.utm_campaign);
+            setCookie('utm_medium', utmParams.utm_medium);
+            setCookie('utm_content', utmParams.utm_content);
+            setCookie('utm_term', utmParams.utm_term);
+            setCookie('xcod', utmParams.xcod);
+            
             const customParams = {
               ...params,
               session_id: data.sessionId
@@ -127,7 +175,9 @@ export default function QuizApp() {
                 userAgent: navigator.userAgent,
                 eventName: 'StartQuiz',
                 eventID: eventId,
-                session_id: data.sessionId
+                session_id: data.sessionId,
+                // Parâmetros UTM
+                ...getUtmParams()
               };
               fetch('/api/pixel-event', {
                 method: 'POST',

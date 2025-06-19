@@ -1,6 +1,7 @@
 import React from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
+import { getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
 // Importando as imagens diretamente para garantir que o Vite processe corretamente
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 import recipeBookNewImage from '@/assets/images/recipes/recipe-book-new.png'; // Imagem nova para a segunda ocorrência
@@ -15,7 +16,13 @@ const RecipeImages = {
 };
 
 // Componente de botão pulsante verde
-const GreenPulseButton = ({ href, children }: { href: string; children: React.ReactNode }) => {
+const GreenPulseButton = ({ children }: { children: React.ReactNode }) => {
+  const handleClick = async () => {
+    const eventId = generateEventId();
+    const params = await getCommonPixelParams();
+    redirectToHotmartCheckout(params, eventId);
+  };
+
   return (
     <div className="relative inline-block w-full md:w-auto mb-4">
       <div className="absolute inset-0 rounded-full opacity-30" 
@@ -24,10 +31,8 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
           animation: "ping 3s cubic-bezier(0.66, 0, 0, 1) infinite"
         }}
       ></div>
-      <a 
-        href={href}
-        target="_blank" 
-        rel="noopener noreferrer"
+      <button 
+        onClick={handleClick}
         className="relative inline-block w-full py-3 sm:py-4 px-6 sm:px-10 text-base sm:text-lg font-bold rounded-full text-white"
         style={{ 
           backgroundColor: COLORS.SUCCESS,
@@ -38,13 +43,13 @@ const GreenPulseButton = ({ href, children }: { href: string; children: React.Re
         onMouseOut={(e) => e.currentTarget.style.backgroundColor = COLORS.SUCCESS}
       >
         {children}
-      </a>
+      </button>
     </div>
   );
 };
 
 // Componente para exibir a seção de preço e botão de compra
-const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
+const PriceSection = () => (
   <div className="py-5 sm:py-6 px-4 sm:px-6 text-center mb-6 sm:mb-8 rounded-lg border" 
     style={{ 
       backgroundColor: "#FFF5F5", 
@@ -54,7 +59,7 @@ const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
     <p style={{ fontSize: "1.35rem", fontWeight: "bold", color: COLORS.PRIMARY, marginBottom: "1rem" }}>Aujourd'hui : seulement 17€</p>
     <p style={{ fontSize: "1.05rem", fontWeight: "bold", color: COLORS.ERROR, marginBottom: "1.5rem" }}>⚠️ Dernières 20 unités disponibles à 17€ seulement !</p>
     
-    <GreenPulseButton href={buyUrl}>
+    <GreenPulseButton>
       JE VEUX LE PACK POUR 17€
     </GreenPulseButton>
     
@@ -62,10 +67,46 @@ const PriceSection = ({ buyUrl }: { buyUrl: string }) => (
   </div>
 );
 
-export default function SalesPage() {
-  // Usando a URL do botão de compra do arquivo centralizado de configurações
-  const buyUrl = LINKS.SALES.BUY_URL;
+// Função utilitária para extrair parâmetros UTM
+function getUtmParams() {
+  return {
+    utm_source: (window as any).utm_params?.utm_source || 'organic',
+    utm_campaign: (window as any).utm_params?.utm_campaign || '',
+    utm_medium: (window as any).utm_params?.utm_medium || '',
+    utm_content: (window as any).utm_params?.utm_content || '',
+    utm_term: (window as any).utm_params?.utm_term || '',
+    xcod: (window as any).utm_params?.xcod || 'organic'
+  };
+}
+
+// Função para montar a URL do checkout da Hotmart com parâmetros customizados
+function redirectToHotmartCheckout(params: any, eventId: string) {
+  const baseUrl = 'https://pay.hotmart.com/D98080625O'; // hotmart Checkout
   
+  // Obter parâmetros UTM
+  const utmParams = getUtmParams();
+  
+  const query = [
+    `client_ip_address=${encodeURIComponent(params.client_ip_address || '')}`,
+    `ct=${encodeURIComponent(params.ct || '')}`,
+    `st=${encodeURIComponent(params.st || '')}`,
+    `country=${encodeURIComponent(params.country || '')}`,
+    `zip=${encodeURIComponent(params.zip || '')}`,
+    `eventID=${encodeURIComponent(eventId)}`,
+    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`,
+    // Parâmetros UTM
+    `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
+    `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
+    `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
+    `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
+    `utm_term=${encodeURIComponent(utmParams.utm_term)}`,
+    `xcod=${encodeURIComponent(utmParams.xcod)}`
+  ].join('&');
+  
+  window.location.href = `${baseUrl}?${query}`;
+}
+
+export default function SalesPage() {
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-[500px] mx-auto px-3 sm:px-4 py-6 sm:py-8 text-[#333]">
@@ -356,7 +397,7 @@ export default function SalesPage() {
         </div>
 
         {/* Seção de preço e compra */}
-        <PriceSection buyUrl={buyUrl} />
+        <PriceSection />
 
         {/* Duas imagens de testemunhos/mensagens */}
         <div className="mb-5 sm:mb-6 space-y-3 sm:space-y-4">
@@ -378,7 +419,7 @@ export default function SalesPage() {
         </div>
 
         {/* Seção final de preço e compra */}
-        <PriceSection buyUrl={buyUrl} />
+        <PriceSection />
 
         {/* Assinatura da Chef */}
         <div className="text-center mb-6 mt-12 pt-4 pb-2" style={{ maxWidth: "800px", margin: "0 auto" }}>
