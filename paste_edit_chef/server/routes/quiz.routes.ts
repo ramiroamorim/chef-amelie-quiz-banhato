@@ -8,11 +8,42 @@ const router = express.Router();
 
 // Middleware para capturar IP do usuário
 const getClientIP = (req: express.Request): string => {
+  console.log('[IP Debug] Headers:', {
+    'x-forwarded-for': req.headers['x-forwarded-for'],
+    'x-real-ip': req.headers['x-real-ip'],
+    'x-client-ip': req.headers['x-client-ip'],
+    'cf-connecting-ip': req.headers['cf-connecting-ip'],
+    'true-client-ip': req.headers['true-client-ip']
+  });
+  
+  console.log('[IP Debug] Express IP:', req.ip);
+  console.log('[IP Debug] Socket remoteAddress:', req.socket.remoteAddress);
+  console.log('[IP Debug] Connection remoteAddress:', req.connection?.remoteAddress);
+  
   const forwardedFor = req.headers['x-forwarded-for'];
   if (typeof forwardedFor === 'string') {
-    return forwardedFor.split(',')[0];
+    const ip = forwardedFor.split(',')[0].trim();
+    console.log('[IP Debug] Using x-forwarded-for:', ip);
+    return ip;
   }
-  return req.ip || req.socket.remoteAddress || '0.0.0.0';
+  
+  if (req.headers['x-real-ip']) {
+    console.log('[IP Debug] Using x-real-ip:', req.headers['x-real-ip']);
+    return req.headers['x-real-ip'] as string;
+  }
+  
+  if (req.ip) {
+    console.log('[IP Debug] Using req.ip:', req.ip);
+    return req.ip;
+  }
+  
+  if (req.socket.remoteAddress) {
+    console.log('[IP Debug] Using socket.remoteAddress:', req.socket.remoteAddress);
+    return req.socket.remoteAddress;
+  }
+  
+  console.log('[IP Debug] Using fallback: 0.0.0.0');
+  return '0.0.0.0';
 };
 
 // Middleware de logging
@@ -176,6 +207,31 @@ router.post('/event', async (req, res) => {
   } catch (error) {
     console.error('[CAPI] Erro ao preparar evento:', error);
     res.status(500).json({ success: false, error: 'Erro ao preparar evento para o Facebook CAPI' });
+  }
+});
+
+// Endpoint de teste para geolocalização
+router.get('/test-geolocation', async (req, res) => {
+  try {
+    const ip = getClientIP(req);
+    console.log('[Test] Testando geolocalização para IP:', ip);
+    
+    const geolocationService = GeolocationService.getInstance();
+    const location = await geolocationService.getLocationFromIP(ip);
+    
+    res.json({
+      success: true,
+      ip,
+      location,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('[Test] Erro no teste de geolocalização:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro no teste de geolocalização',
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
