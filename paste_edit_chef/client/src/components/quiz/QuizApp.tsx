@@ -7,6 +7,12 @@ import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
 import { FacebookPixel, getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
 
+// Função utilitária para criar cookies
+function setCookie(name: string, value: string, days = 7) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
 export default function QuizApp() {
   const { 
     currentStep, 
@@ -21,9 +27,37 @@ export default function QuizApp() {
   // Disparar PageView com parâmetros customizados ao carregar a página
   useEffect(() => {
     const eventId = generateEventId();
+    // Enviar para o Pixel (com hash)
     getCommonPixelParams().then(params => {
+      // Criar cookies padronizados
+      setCookie('client_ip_address', params.client_ip_address || '');
+      setCookie('ct', params.ct || '');
+      setCookie('st', params.st || '');
+      setCookie('country', params.country || '');
+      setCookie('zip', params.zip || '');
+      setCookie('eventID', eventId);
       FacebookPixel.trackPageView(params, eventId);
     });
+    // Enviar para o backend (dados originais)
+    fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
+      .then(res => res.json())
+      .then(info => {
+        const rawData = {
+          ip: info.ip,
+          city: info.city,
+          region: info.region,
+          country: info.country,
+          postal: info.postal,
+          userAgent: navigator.userAgent,
+          eventName: 'PageView',
+          eventID: eventId
+        };
+        fetch('/api/pixel-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rawData)
+        });
+      });
   }, []);
 
   // Pré-carregar todas as imagens do quiz e inicializar o pixel
@@ -50,6 +84,13 @@ export default function QuizApp() {
           // Buscar parâmetros comuns e disparar evento StartQuiz
           const eventId = generateEventId();
           getCommonPixelParams().then(params => {
+            // Criar cookies padronizados
+            setCookie('client_ip_address', params.client_ip_address || '');
+            setCookie('ct', params.ct || '');
+            setCookie('st', params.st || '');
+            setCookie('country', params.country || '');
+            setCookie('zip', params.zip || '');
+            setCookie('eventID', eventId);
             const customParams = {
               ...params,
               session_id: data.sessionId
@@ -58,6 +99,27 @@ export default function QuizApp() {
               FacebookPixel.trackQuizStart(customParams, eventId);
             });
           });
+          // Enviar para o backend (dados originais)
+          fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
+            .then(res => res.json())
+            .then(info => {
+              const rawData = {
+                ip: info.ip,
+                city: info.city,
+                region: info.region,
+                country: info.country,
+                postal: info.postal,
+                userAgent: navigator.userAgent,
+                eventName: 'StartQuiz',
+                eventID: eventId,
+                session_id: data.sessionId
+              };
+              fetch('/api/pixel-event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(rawData)
+              });
+            });
         }
 
         // Pré-carregar imagens
