@@ -3,6 +3,28 @@
  * Facilita o disparo de eventos de conversão em diferentes pontos da aplicação
  */
 
+// Função utilitária para SHA256
+export async function sha256(text: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text.trim().toLowerCase());
+  const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// Função para buscar IPv6 público
+export async function getIPv6() {
+  try {
+    const res = await fetch('https://api64.ipify.org?format=json');
+    const data = await res.json();
+    if (data.ip && data.ip.includes(':')) return data.ip;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 declare global {
   interface Window {
     fbq: any;
@@ -15,14 +37,25 @@ let currentSessionId: string | null = null;
 // Função utilitária para buscar parâmetros comuns (IP, localização, etc.)
 export async function getCommonPixelParams() {
   try {
-    const info = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087').then(res => res.json());
+    // Tenta buscar IPv6 primeiro
+    let ipv6 = await getIPv6();
+    let info = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087').then(res => res.json());
+    let clientIp = ipv6 || info.ip; // Prioriza IPv6, senão usa o IP do ipinfo.io
+
+    // Hash dos campos sensíveis
+    const [cityHash, stateHash, countryHash, zipHash] = await Promise.all([
+      sha256(info.city || ''),    // ct = cidade
+      sha256(info.region || ''),  // st = estado
+      sha256(info.country || ''), // country = país
+      sha256(info.postal || '')   // zip = CEP
+    ]);
     return {
-      client_ip_address: info.ip,
+      client_ip_address: clientIp,
+      ct: cityHash,      // cidade (city)
+      st: stateHash,     // estado (state/region)
+      country: countryHash,
+      zip: zipHash,
       client_user_agent: navigator.userAgent,
-      country: info.country,
-      ct: info.region,
-      st: info.city,
-      zip: info.postal,
       currency: 'BRL',
       event_day: new Date().toLocaleString('en-US', { weekday: 'long' }),
       event_day_in_month: new Date().getDate(),
