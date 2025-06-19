@@ -5,7 +5,7 @@ import QuizStep from "@/components/quiz/QuizStep";
 import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
-import { FacebookPixel, getCommonPixelParams } from "@/lib/fbPixel";
+import { FacebookPixel, getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
 
 export default function QuizApp() {
   const { 
@@ -20,8 +20,9 @@ export default function QuizApp() {
 
   // Disparar PageView com parâmetros customizados ao carregar a página
   useEffect(() => {
+    const eventId = generateEventId();
     getCommonPixelParams().then(params => {
-      FacebookPixel.trackPageView(params);
+      FacebookPixel.trackPageView(params, eventId);
     });
   }, []);
 
@@ -47,13 +48,14 @@ export default function QuizApp() {
           // Inicializar o pixel com o ID da sessão
           FacebookPixel.initWithUserId(data.sessionId);
           // Buscar parâmetros comuns e disparar evento StartQuiz
+          const eventId = generateEventId();
           getCommonPixelParams().then(params => {
             const customParams = {
               ...params,
               session_id: data.sessionId
             };
             waitForFbq(() => {
-              FacebookPixel.trackQuizStart(customParams);
+              FacebookPixel.trackQuizStart(customParams, eventId);
             });
           });
         }
