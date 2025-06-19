@@ -5,7 +5,7 @@ import QuizStep from "@/components/quiz/QuizStep";
 import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
-import { FacebookPixel } from "@/lib/fbPixel";
+import { FacebookPixel, getCommonPixelParams } from "@/lib/fbPixel";
 
 export default function QuizApp() {
   const { 
@@ -17,6 +17,13 @@ export default function QuizApp() {
     showResult, 
     showSalesPage
   } = useQuiz(quizSteps.length);
+
+  // Disparar PageView com parâmetros customizados ao carregar a página
+  useEffect(() => {
+    getCommonPixelParams().then(params => {
+      FacebookPixel.trackPageView(params);
+    });
+  }, []);
 
   // Pré-carregar todas as imagens do quiz e inicializar o pixel
   useEffect(() => {
@@ -39,10 +46,14 @@ export default function QuizApp() {
         if (data.success && data.sessionId) {
           // Inicializar o pixel com o ID da sessão
           FacebookPixel.initWithUserId(data.sessionId);
-          // Rastrear início do quiz somente quando fbq estiver pronto
-          waitForFbq(() => {
-            FacebookPixel.trackQuizStart({
+          // Buscar parâmetros comuns e disparar evento StartQuiz
+          getCommonPixelParams().then(params => {
+            const customParams = {
+              ...params,
               session_id: data.sessionId
+            };
+            waitForFbq(() => {
+              FacebookPixel.trackQuizStart(customParams);
             });
           });
         }

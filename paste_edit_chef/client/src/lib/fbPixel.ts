@@ -12,6 +12,37 @@ declare global {
 // Variável para armazenar o ID da sessão
 let currentSessionId: string | null = null;
 
+// Função utilitária para buscar parâmetros comuns (IP, localização, etc.)
+export async function getCommonPixelParams() {
+  try {
+    const info = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087').then(res => res.json());
+    return {
+      client_ip_address: info.ip,
+      client_user_agent: navigator.userAgent,
+      country: info.country,
+      ct: info.region,
+      st: info.city,
+      zip: info.postal,
+      currency: 'BRL',
+      event_day: new Date().toLocaleString('en-US', { weekday: 'long' }),
+      event_day_in_month: new Date().getDate(),
+      event_month: new Date().toLocaleString('en-US', { month: 'long' }),
+      event_time: Date.now(),
+      page_title: document.title,
+    };
+  } catch {
+    return {
+      client_user_agent: navigator.userAgent,
+      currency: 'BRL',
+      event_day: new Date().toLocaleString('en-US', { weekday: 'long' }),
+      event_day_in_month: new Date().getDate(),
+      event_month: new Date().toLocaleString('en-US', { month: 'long' }),
+      event_time: Date.now(),
+      page_title: document.title,
+    };
+  }
+}
+
 export const FacebookPixel = {
   /**
    * Inicializa o pixel com o ID do usuário
@@ -22,6 +53,19 @@ export const FacebookPixel = {
       currentSessionId = userId;
       window.fbq('init', '644431871463181', {
         external_id: userId
+      });
+    }
+  },
+
+  /**
+   * Rastreia evento de visualização de página (PageView) com parâmetros customizados
+   * @param parameters Parâmetros adicionais para o evento (opcional)
+   */
+  trackPageView: (parameters?: any) => {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'PageView', {
+        ...parameters,
+        external_id: currentSessionId
       });
     }
   },
