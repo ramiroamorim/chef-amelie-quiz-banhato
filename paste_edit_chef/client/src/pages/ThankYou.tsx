@@ -1,8 +1,8 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui-essentials/card";
 import { Button } from "@/components/ui-essentials/button";
 import { ChefImages } from "@/assets/imageExports";
+import { getCommonPixelParams, generateEventId, FacebookPixel } from "@/lib/fbPixel";
 
 // Player de áudio definitivo que funciona
 const SimpleAudioPlayer = () => {
@@ -28,6 +28,39 @@ export default function ThankYou() {
   const [audioDuration, setAudioDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressTimerRef = useRef<number | null>(null);
+  
+  // Disparar evento de compra quando a página é carregada
+  useEffect(() => {
+    const eventId = generateEventId();
+    
+    // Disparar evento Purchase para o Pixel
+    getCommonPixelParams().then(params => {
+      FacebookPixel.trackThankYouPage(17.00, 'EUR', params, eventId);
+    });
+    
+    // Enviar dados para o backend
+    fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
+      .then(res => res.json())
+      .then(info => {
+        const rawData = {
+          ip: info.ip,
+          city: info.city,
+          region: info.region,
+          country: info.country,
+          postal: info.postal,
+          userAgent: navigator.userAgent,
+          eventName: 'Purchase',
+          eventID: eventId,
+          value: 17.00,
+          currency: 'EUR'
+        };
+        fetch('/api/pixel-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rawData)
+        });
+      });
+  }, []);
   
   // Timer para mostrar o botão após exatamente 2 minutos (120000ms)
   useEffect(() => {

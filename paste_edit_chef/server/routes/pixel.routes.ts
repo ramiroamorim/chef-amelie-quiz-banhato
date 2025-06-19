@@ -1,13 +1,37 @@
-import { Router } from 'express';
+import express from 'express';
 
-const router = Router();
+const router = express.Router();
 
-// Endpoint para receber eventos do Pixel do frontend
-router.post('/pixel-event', (req, res) => {
-  const eventData = req.body;
-  // Aqui você pode salvar no banco, enviar para outro serviço, etc.
-  console.log('Evento Pixel recebido do frontend:', eventData);
-  res.status(200).json({ success: true });
+// Rota para receber eventos do Pixel
+router.post('/pixel-event', async (req, res) => {
+  try {
+    const data = req.body;
+    console.log('Evento recebido:', data);
+    
+    // Aqui você pode salvar no banco de dados
+    // Por exemplo: await saveEventToDatabase(data);
+    
+    res.json({ success: true, message: 'Evento registrado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao processar evento:', error);
+    res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+  }
+});
+
+// Rota para receber dados de tracking da Hotmart
+router.post('/hotmart-tracking', async (req, res) => {
+  try {
+    const data = req.body;
+    console.log('Dados de tracking da Hotmart recebidos:', data);
+    
+    // Aqui você pode salvar no banco de dados
+    // Por exemplo: await saveHotmartTrackingToDatabase(data);
+    
+    res.json({ success: true, message: 'Dados de tracking registrados com sucesso' });
+  } catch (error) {
+    console.error('Erro ao processar dados de tracking da Hotmart:', error);
+    res.status(500).json({ success: false, message: 'Erro interno do servidor' });
+  }
 });
 
 export default router; 

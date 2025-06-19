@@ -20,8 +20,7 @@ function getUtmParams() {
     utm_campaign: (window as any).utm_params?.utm_campaign || '',
     utm_medium: (window as any).utm_params?.utm_medium || '',
     utm_content: (window as any).utm_params?.utm_content || '',
-    utm_term: (window as any).utm_params?.utm_term || '',
-    xcod: (window as any).utm_params?.xcod || 'organic'
+    utm_term: (window as any).utm_params?.utm_term || ''
   };
 }
 
@@ -32,21 +31,22 @@ function redirectToHotmartCheckout(params: any, eventId: string) {
   // Obter parâmetros UTM
   const utmParams = getUtmParams();
   
+  // Salvar dados sensíveis no localStorage (acessível via JavaScript na Hotmart)
+  localStorage.setItem('client_ip_address', params.client_ip_address || '');
+  localStorage.setItem('ct', params.ct || '');
+  localStorage.setItem('st', params.st || '');
+  localStorage.setItem('country', params.country || '');
+  localStorage.setItem('zip', params.zip || '');
+  localStorage.setItem('eventID', eventId);
+  localStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
+  
+  // Manter apenas os parâmetros UTM visíveis na URL
   const query = [
-    `client_ip_address=${encodeURIComponent(params.client_ip_address || '')}`,
-    `ct=${encodeURIComponent(params.ct || '')}`,
-    `st=${encodeURIComponent(params.st || '')}`,
-    `country=${encodeURIComponent(params.country || '')}`,
-    `zip=${encodeURIComponent(params.zip || '')}`,
-    `eventID=${encodeURIComponent(eventId)}`,
-    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`,
-    // Parâmetros UTM
     `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
     `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
     `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
     `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
-    `utm_term=${encodeURIComponent(utmParams.utm_term)}`,
-    `xcod=${encodeURIComponent(utmParams.xcod)}`
+    `utm_term=${encodeURIComponent(utmParams.utm_term)}`
   ].join('&');
   
   window.location.href = `${baseUrl}?${query}`;
@@ -84,7 +84,6 @@ export default function QuizApp() {
       setCookie('utm_medium', utmParams.utm_medium);
       setCookie('utm_content', utmParams.utm_content);
       setCookie('utm_term', utmParams.utm_term);
-      setCookie('xcod', utmParams.xcod);
       
       FacebookPixel.trackPageView(params, eventId);
     });
@@ -152,7 +151,6 @@ export default function QuizApp() {
             setCookie('utm_medium', utmParams.utm_medium);
             setCookie('utm_content', utmParams.utm_content);
             setCookie('utm_term', utmParams.utm_term);
-            setCookie('xcod', utmParams.xcod);
             
             const customParams = {
               ...params,

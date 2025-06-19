@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
-import { getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
+import { getCommonPixelParams, generateEventId, FacebookPixel } from "@/lib/fbPixel";
 // Importando as imagens diretamente para garantir que o Vite processe corretamente
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 import recipeBookNewImage from '@/assets/images/recipes/recipe-book-new.png'; // Imagem nova para a segunda ocorrência
@@ -20,6 +20,34 @@ const GreenPulseButton = ({ children }: { children: React.ReactNode }) => {
   const handleClick = async () => {
     const eventId = generateEventId();
     const params = await getCommonPixelParams();
+    
+    // Disparar evento de clique de compra para o Pixel
+    FacebookPixel.trackPurchaseClick(params, eventId);
+    
+    // Enviar dados para o backend
+    fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
+      .then(res => res.json())
+      .then(info => {
+        const rawData = {
+          ip: info.ip,
+          city: info.city,
+          region: info.region,
+          country: info.country,
+          postal: info.postal,
+          userAgent: navigator.userAgent,
+          eventName: 'PurchaseClick',
+          eventID: eventId,
+          // Parâmetros UTM
+          ...getUtmParams()
+        };
+        fetch('/api/pixel-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rawData)
+        });
+      });
+    
+    // Redirecionar para o checkout
     redirectToHotmartCheckout(params, eventId);
   };
 
@@ -74,8 +102,7 @@ function getUtmParams() {
     utm_campaign: (window as any).utm_params?.utm_campaign || '',
     utm_medium: (window as any).utm_params?.utm_medium || '',
     utm_content: (window as any).utm_params?.utm_content || '',
-    utm_term: (window as any).utm_params?.utm_term || '',
-    xcod: (window as any).utm_params?.xcod || 'organic'
+    utm_term: (window as any).utm_params?.utm_term || ''
   };
 }
 
@@ -86,27 +113,60 @@ function redirectToHotmartCheckout(params: any, eventId: string) {
   // Obter parâmetros UTM
   const utmParams = getUtmParams();
   
+  // Salvar dados sensíveis no localStorage (acessível via JavaScript na Hotmart)
+  localStorage.setItem('client_ip_address', params.client_ip_address || '');
+  localStorage.setItem('ct', params.ct || '');
+  localStorage.setItem('st', params.st || '');
+  localStorage.setItem('country', params.country || '');
+  localStorage.setItem('zip', params.zip || '');
+  localStorage.setItem('eventID', eventId);
+  localStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
+  
+  // Manter apenas os parâmetros UTM visíveis na URL
   const query = [
-    `client_ip_address=${encodeURIComponent(params.client_ip_address || '')}`,
-    `ct=${encodeURIComponent(params.ct || '')}`,
-    `st=${encodeURIComponent(params.st || '')}`,
-    `country=${encodeURIComponent(params.country || '')}`,
-    `zip=${encodeURIComponent(params.zip || '')}`,
-    `eventID=${encodeURIComponent(eventId)}`,
-    `userAgent=${encodeURIComponent(params.client_user_agent || navigator.userAgent || '')}`,
-    // Parâmetros UTM
     `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
     `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
     `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
     `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
-    `utm_term=${encodeURIComponent(utmParams.utm_term)}`,
-    `xcod=${encodeURIComponent(utmParams.xcod)}`
+    `utm_term=${encodeURIComponent(utmParams.utm_term)}`
   ].join('&');
   
   window.location.href = `${baseUrl}?${query}`;
 }
 
 export default function SalesPage() {
+  useEffect(() => {
+    const eventId = generateEventId();
+    
+    // Disparar evento ViewContent para o Pixel
+    getCommonPixelParams().then(params => {
+      FacebookPixel.trackViewContent(params, eventId);
+    });
+    
+    // Enviar dados para o backend
+    fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
+      .then(res => res.json())
+      .then(info => {
+        const rawData = {
+          ip: info.ip,
+          city: info.city,
+          region: info.region,
+          country: info.country,
+          postal: info.postal,
+          userAgent: navigator.userAgent,
+          eventName: 'ViewContent',
+          eventID: eventId,
+          // Parâmetros UTM
+          ...getUtmParams()
+        };
+        fetch('/api/pixel-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rawData)
+        });
+      });
+  }, []);
+
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-[500px] mx-auto px-3 sm:px-4 py-6 sm:py-8 text-[#333]">
