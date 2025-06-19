@@ -64,7 +64,7 @@ export async function getCommonPixelParams() {
       country: countryHash,
       zip: zipHash,
       client_user_agent: navigator.userAgent,
-      currency: 'BRL',
+      currency: 'EUR',
       event_day: new Date().toLocaleString('en-US', { weekday: 'long' }),
       event_day_in_month: new Date().getDate(),
       event_month: new Date().toLocaleString('en-US', { month: 'long' }),
@@ -74,7 +74,7 @@ export async function getCommonPixelParams() {
   } catch {
     return {
       client_user_agent: navigator.userAgent,
-      currency: 'BRL',
+      currency: 'EUR',
       event_day: new Date().toLocaleString('en-US', { weekday: 'long' }),
       event_day_in_month: new Date().getDate(),
       event_month: new Date().toLocaleString('en-US', { month: 'long' }),
@@ -195,7 +195,7 @@ export const FacebookPixel = {
           content_name: 'Pack de Receitas',
           content_category: 'Vendas',
           content_ids: ['pack-001'],
-          value: 49.90,
+          value: 17.00,
           currency: 'EUR'
         }, { eventID });
       } else {
@@ -205,7 +205,7 @@ export const FacebookPixel = {
           content_name: 'Pack de Receitas',
           content_category: 'Vendas',
           content_ids: ['pack-001'],
-          value: 49.90,
+          value: 17.00,
           currency: 'EUR'
         });
       }
@@ -254,14 +254,14 @@ export const FacebookPixel = {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
         window.fbq('track', 'Purchase', {
-          value: value || 49.90,
+          value: value || 17.00,
           currency,
           external_id: currentSessionId,
           ...parameters
         }, { eventID });
       } else {
         window.fbq('track', 'Purchase', {
-          value: value || 49.90,
+          value: value || 17.00,
           currency,
           external_id: currentSessionId,
           ...parameters
