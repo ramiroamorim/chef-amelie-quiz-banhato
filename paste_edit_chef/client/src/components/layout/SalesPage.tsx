@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
 import { getCommonPixelParams, generateEventId, FacebookPixel } from "@/lib/fbPixel";
+import { getUtmParams, buildHotmartUrl, getCookie, getClientIP } from '@/lib/utils';
 // Importando as imagens diretamente para garantir que o Vite processe corretamente
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 import recipeBookNewImage from '@/assets/images/recipes/recipe-book-new.png'; // Imagem nova para a segunda ocorrência
@@ -97,36 +98,23 @@ const PriceSection = () => (
   </div>
 );
 
-// Função utilitária para extrair parâmetros UTM
-function getUtmParams() {
-  return {
-    utm_source: (window as any).utm_params?.utm_source || 'organic',
-    utm_campaign: (window as any).utm_params?.utm_campaign || '',
-    utm_medium: (window as any).utm_params?.utm_medium || '',
-    utm_content: (window as any).utm_params?.utm_content || '',
-    utm_term: (window as any).utm_params?.utm_term || ''
-  };
-}
-
 // Função para montar a URL do checkout da Hotmart com integração server-to-server
 async function redirectToHotmartCheckout(params: any, eventId: string) {
   try {
-    // Obter IP do usuário
-    console.log('[DEBUG] Buscando IP do cliente...');
-    const ipResponse = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087');
-    const ipData = await ipResponse.json();
-    const clientIP = ipData.ip;
+    // Obter IP do usuário usando a nova função centralizada
+    console.log('[DEBUG] Buscando IP do cliente (prioridade IPv6)...');
+    const clientIP = await getClientIP();
     console.log('[DEBUG] IP do cliente obtido:', clientIP);
 
     if (!clientIP) {
-      console.error('[DEBUG] FALHA ao obter o IP do cliente. Usando fallback.');
+      console.error('[DEBUG] FALHA CRÍTICA ao obter o IP do cliente. Usando fallback de redirect.');
       redirectToHotmartCheckoutFallback(params, eventId);
       return;
     }
 
     // Obter dados do Facebook (se disponíveis)
-    const fbc = (window as any).fbq?.getParameter('fbclid') || '';
-    const fbp = (window as any).fbq?.getParameter('_fbp') || '';
+    const fbc = getCookie('_fbc');
+    const fbp = getCookie('_fbp');
 
     // PRIMEIRO: Capturar dados do cliente e gerar URL com query string
     console.log('[DEBUG] Enviando dados para /api/hotmart/capture-client-data');
@@ -170,11 +158,6 @@ async function redirectToHotmartCheckout(params: any, eventId: string) {
 
 // Função de fallback (método antigo)
 function redirectToHotmartCheckoutFallback(params: any, eventId: string) {
-  const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10'; // URL correta com parâmetros da oferta
-  
-  // Obter parâmetros UTM
-  const utmParams = getUtmParams();
-  
   // Salvar dados sensíveis no sessionStorage (mais seguro)
   sessionStorage.setItem('client_ip_address', params.client_ip_address || '');
   sessionStorage.setItem('ct', params.ct || '');
@@ -184,16 +167,11 @@ function redirectToHotmartCheckoutFallback(params: any, eventId: string) {
   sessionStorage.setItem('eventID', eventId);
   sessionStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
   
-  // Manter apenas os parâmetros UTM visíveis na URL
-  const query = [
-    `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
-    `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
-    `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
-    `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
-    `utm_term=${encodeURIComponent(utmParams.utm_term)}`
-  ].join('&');
+  // Usar função utilitária para construir URL completa
+  const finalUrl = buildHotmartUrl(params, eventId);
   
-  window.location.href = `${baseUrl}&${query}`;
+  console.log('🔄 [DEBUG] Usando fallback - URL gerada:', finalUrl);
+  window.location.href = finalUrl;
 }
 
 export default function SalesPage() {

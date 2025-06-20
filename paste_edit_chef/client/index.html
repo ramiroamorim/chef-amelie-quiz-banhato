@@ -27,6 +27,58 @@
     </script>
     <!-- End Facebook Pixel Code -->
     
+    <!-- UTM Parameters Capture Script -->
+    <script>
+      (function() {
+        // Função para capturar parâmetros UTM da URL
+        function captureUtmParams() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const utmParams = {
+            utm_source: urlParams.get('utm_source') || 'organic',
+            utm_campaign: urlParams.get('utm_campaign') || '',
+            utm_medium: urlParams.get('utm_medium') || '',
+            utm_content: urlParams.get('utm_content') || '',
+            utm_term: urlParams.get('utm_term') || ''
+          };
+          
+          // Definir no window.utm_params para compatibilidade com o código existente
+          window.utm_params = utmParams;
+          
+          // Também salvar no localStorage para persistência
+          localStorage.setItem('utm_params', JSON.stringify(utmParams));
+          
+          console.log('UTM Parameters captured:', utmParams);
+          return utmParams;
+        }
+        
+        // Capturar parâmetros UTM imediatamente
+        captureUtmParams();
+        
+        // Função para recuperar parâmetros UTM do localStorage se não estiverem na URL
+        function loadUtmParamsFromStorage() {
+          if (!window.utm_params || !window.utm_params.utm_source || window.utm_params.utm_source === 'organic') {
+            const storedParams = localStorage.getItem('utm_params');
+            if (storedParams) {
+              try {
+                window.utm_params = JSON.parse(storedParams);
+                console.log('UTM Parameters loaded from storage:', window.utm_params);
+              } catch (e) {
+                console.error('Error parsing stored UTM parameters:', e);
+              }
+            }
+          }
+        }
+        
+        // Carregar parâmetros do localStorage quando o DOM estiver pronto
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', loadUtmParamsFromStorage);
+        } else {
+          loadUtmParamsFromStorage();
+        }
+      })();
+    </script>
+    <!-- End UTM Parameters Capture Script -->
+    
     <!-- Utmify Script -->
     <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-subids async defer></script>
     <!-- End Utmify Script -->

@@ -3,34 +3,13 @@
  * Facilita o disparo de eventos de conversão em diferentes pontos da aplicação
  */
 
-// Função utilitária para SHA256
-export async function sha256(text: string) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text.trim().toLowerCase());
-  const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hashBuffer))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-// Função para buscar IPv6 público
-export async function getIPv6() {
-  try {
-    const res = await fetch('https://api64.ipify.org?format=json');
-    const data = await res.json();
-    if (data.ip && data.ip.includes(':')) return data.ip;
-    return null;
-  } catch {
-    return null;
-  }
-}
+import { getClientIP, sha256 } from './utils';
 
 // Função para gerar um event_id único (UUID v4-like)
 export function generateEventId() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
+  const timestamp = Date.now();
+  const randomString = Math.random().toString(36).substring(2, 15);
+  return `evt_${timestamp}_${randomString}`;
 }
 
 declare global {
@@ -45,10 +24,18 @@ let currentSessionId: string | null = null;
 // Função utilitária para buscar parâmetros comuns (IP, localização, etc.)
 export async function getCommonPixelParams() {
   try {
-    // Tenta buscar IPv6 primeiro
-    let ipv6 = await getIPv6();
-    let info = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087').then(res => res.json());
-    let clientIp = ipv6 || info.ip; // Prioriza IPv6, senão usa o IP do ipinfo.io
+    const clientIp = await getClientIP(); // Usar a função centralizada
+    let info: any = {};
+
+    // Se tivermos um IP, buscar informações de geolocalização
+    if (clientIp) {
+      try {
+        const infoResponse = await fetch(`https://ipinfo.io/${clientIp}/json?token=1ad4cf7c8cc087`);
+        info = await infoResponse.json();
+      } catch (e) {
+        console.warn('[DEBUG] Falha ao obter dados do ipinfo.io, alguns parâmetros podem estar ausentes.', e);
+      }
+    }
 
     // Hash dos campos sensíveis
     const [cityHash, stateHash, countryHash, zipHash] = await Promise.all([

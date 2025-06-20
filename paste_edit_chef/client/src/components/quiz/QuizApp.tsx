@@ -6,31 +6,10 @@ import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
 import { FacebookPixel, getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
-
-// Função utilitária para criar cookies
-function setCookie(name: string, value: string, days = 7) {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
-}
-
-// Função utilitária para extrair parâmetros UTM
-function getUtmParams() {
-  return {
-    utm_source: (window as any).utm_params?.utm_source || 'organic',
-    utm_campaign: (window as any).utm_params?.utm_campaign || '',
-    utm_medium: (window as any).utm_params?.utm_medium || '',
-    utm_content: (window as any).utm_params?.utm_content || '',
-    utm_term: (window as any).utm_params?.utm_term || ''
-  };
-}
+import { setCookie, getUtmParams, buildHotmartUrl } from '@/lib/utils';
 
 // Função para montar a URL do checkout da Hotmart com parâmetros customizados
 function redirectToHotmartCheckout(params: any, eventId: string) {
-  const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10'; // URL correta com parâmetros da oferta
-  
-  // Obter parâmetros UTM
-  const utmParams = getUtmParams();
-  
   // Salvar dados sensíveis no localStorage (acessível via JavaScript na Hotmart)
   localStorage.setItem('client_ip_address', params.client_ip_address || '');
   localStorage.setItem('ct', params.ct || '');
@@ -40,16 +19,11 @@ function redirectToHotmartCheckout(params: any, eventId: string) {
   localStorage.setItem('eventID', eventId);
   localStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
   
-  // Manter apenas os parâmetros UTM visíveis na URL
-  const query = [
-    `utm_source=${encodeURIComponent(utmParams.utm_source)}`,
-    `utm_campaign=${encodeURIComponent(utmParams.utm_campaign)}`,
-    `utm_medium=${encodeURIComponent(utmParams.utm_medium)}`,
-    `utm_content=${encodeURIComponent(utmParams.utm_content)}`,
-    `utm_term=${encodeURIComponent(utmParams.utm_term)}`
-  ].join('&');
+  // Usar função utilitária para construir URL completa
+  const finalUrl = buildHotmartUrl(params, eventId);
   
-  window.location.href = `${baseUrl}?${query}`;
+  console.log('🔄 [DEBUG] QuizApp - URL gerada:', finalUrl);
+  window.location.href = finalUrl;
 }
 
 export default function QuizApp() {
