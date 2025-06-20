@@ -28,8 +28,7 @@ Se você quiser configurar via `.env`, crie um arquivo `.env` na raiz do projeto
 
 ```bash
 # .env
-CORS_ORIGIN=https://tracking-api.hotmart.com/rest/track?hotid=eyJjaWQiOiIxNzQ3MTcyODI3OTY0NDA1ODA4MjEyODk5ODE1MzAiLCJiaWQiOiIxNzQ3MT
-cyODI3OTY0NDA1ODA4MjEyODk5ODE1MzAiLCJzaWQiOiI3YmFiY2UxNDkzNDE0MTljOGZhMjBmMTY5NTk4OTRhYSIsInBhZ2V2aWV3X2lkIjoiUFZqcmdoOGRpbG16YW1jMzMyYnZ5IiwidHJhY2VfaWQiOiJMVDkwaGJlYWFjdGI4bWMzMzJjbm8ifQ==&previous=http%3A%2F%2Flocalhost%3A3000%2F&cid=174717282796440580821289981530&bid=174717282796440580821289981530&sid=7babce149341419c8fa20f16959894aa&locationHref=https%3A%2F%2Fpay.hotmart.com%2FD98080625O%3Futm_source%3Dorganic%26utm_campaign%3D%26utm_medium%3D%26utm_content%3D%26utm_term%3D%26bid%3D1750319543781
+CORS_ORIGIN=https://tracking-api.hotmart.com
 ```
 
 ## 🧪 Testando o CORS
