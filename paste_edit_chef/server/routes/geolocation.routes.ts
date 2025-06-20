@@ -10,7 +10,7 @@ router.get('/test', (req, res) => {
         success: true,
         message: 'API de geolocalização está funcionando',
         config: {
-            hasIpapiKey: !!config.ipapiKey,
+            hasIpinfoToken: !!config.ipinfoToken,
             hasGoogleMapsKey: !!config.googleMapsKey,
             environment: config.nodeEnv,
             port: config.port
@@ -25,12 +25,12 @@ router.get('/location', async (req, res) => {
         const clientIP = req.ip || req.socket.remoteAddress;
         console.log('Obtendo localização para IP:', clientIP);
         
-        // Faz a requisição para o ip-api.com com a API key
-        const response = await axios.get(`http://ip-api.com/json/${clientIP}`, {
-            headers: {
-                'Authorization': `Token ${config.ipapiKey}`
-            }
-        });
+        // Faz a requisição para o ipinfo.io com o token
+        const url = config.ipinfoToken 
+            ? `https://ipinfo.io/${clientIP}/json?token=${config.ipinfoToken}`
+            : `https://ipinfo.io/${clientIP}/json`;
+            
+        const response = await axios.get(url);
         console.log('Resposta recebida:', response.data);
         
         res.json({
@@ -58,12 +58,12 @@ router.get('/location/:ip', async (req, res) => {
         const { ip } = req.params;
         console.log('Consultando localização para IP:', ip);
         
-        // Consulta o ip-api.com com a API key
-        const response = await axios.get(`http://ip-api.com/json/${ip}`, {
-            headers: {
-                'Authorization': `Token ${config.ipapiKey}`
-            }
-        });
+        // Consulta o ipinfo.io com o token
+        const url = config.ipinfoToken 
+            ? `https://ipinfo.io/${ip}/json?token=${config.ipinfoToken}`
+            : `https://ipinfo.io/${ip}/json`;
+            
+        const response = await axios.get(url);
         console.log('Resposta recebida:', response.data);
         
         res.json({

@@ -26,7 +26,7 @@ function getUtmParams() {
 
 // Função para montar a URL do checkout da Hotmart com parâmetros customizados
 function redirectToHotmartCheckout(params: any, eventId: string) {
-  const baseUrl = 'https://pay.hotmart.com/D98080625O'; // hotmart Checkout
+  const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10'; // URL correta com parâmetros da oferta
   
   // Obter parâmetros UTM
   const utmParams = getUtmParams();
@@ -87,28 +87,6 @@ export default function QuizApp() {
       
       FacebookPixel.trackPageView(params, eventId);
     });
-    // Enviar para o backend (dados originais)
-    fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
-      .then(res => res.json())
-      .then(info => {
-        const rawData = {
-          ip: info.ip,
-          city: info.city,
-          region: info.region,
-          country: info.country,
-          postal: info.postal,
-          userAgent: navigator.userAgent,
-          eventName: 'PageView',
-          eventID: eventId,
-          // Parâmetros UTM
-          ...getUtmParams()
-        };
-        fetch('/api/pixel-event', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(rawData)
-        });
-      });
   }, []);
 
   // Pré-carregar todas as imagens do quiz e inicializar o pixel
@@ -160,29 +138,6 @@ export default function QuizApp() {
               FacebookPixel.trackQuizStart(customParams, eventId);
             });
           });
-          // Enviar para o backend (dados originais)
-          fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087')
-            .then(res => res.json())
-            .then(info => {
-              const rawData = {
-                ip: info.ip,
-                city: info.city,
-                region: info.region,
-                country: info.country,
-                postal: info.postal,
-                userAgent: navigator.userAgent,
-                eventName: 'StartQuiz',
-                eventID: eventId,
-                session_id: data.sessionId,
-                // Parâmetros UTM
-                ...getUtmParams()
-              };
-              fetch('/api/pixel-event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(rawData)
-              });
-            });
         }
 
         // Pré-carregar imagens

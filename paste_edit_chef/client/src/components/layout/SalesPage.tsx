@@ -40,11 +40,13 @@ const GreenPulseButton = ({ children }: { children: React.ReactNode }) => {
           // Parâmetros UTM
           ...getUtmParams()
         };
+        /*
         fetch('/api/pixel-event', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(rawData)
         });
+        */
       });
     
     // Redirecionar para o checkout
@@ -106,21 +108,81 @@ function getUtmParams() {
   };
 }
 
-// Função para montar a URL do checkout da Hotmart com parâmetros customizados
-function redirectToHotmartCheckout(params: any, eventId: string) {
-  const baseUrl = 'https://pay.hotmart.com/D98080625O'; // hotmart Checkout
+// Função para montar a URL do checkout da Hotmart com integração server-to-server
+async function redirectToHotmartCheckout(params: any, eventId: string) {
+  try {
+    // Obter IP do usuário
+    console.log('[DEBUG] Buscando IP do cliente...');
+    const ipResponse = await fetch('https://ipinfo.io/json?token=1ad4cf7c8cc087');
+    const ipData = await ipResponse.json();
+    const clientIP = ipData.ip;
+    console.log('[DEBUG] IP do cliente obtido:', clientIP);
+
+    if (!clientIP) {
+      console.error('[DEBUG] FALHA ao obter o IP do cliente. Usando fallback.');
+      redirectToHotmartCheckoutFallback(params, eventId);
+      return;
+    }
+
+    // Obter dados do Facebook (se disponíveis)
+    const fbc = (window as any).fbq?.getParameter('fbclid') || '';
+    const fbp = (window as any).fbq?.getParameter('_fbp') || '';
+
+    // PRIMEIRO: Capturar dados do cliente e gerar URL com query string
+    console.log('[DEBUG] Enviando dados para /api/hotmart/capture-client-data');
+    const serverResponse = await fetch('/api/hotmart/capture-client-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        clientIP,
+        userAgent: navigator.userAgent,
+        utmSource: getUtmParams().utm_source,
+        utmCampaign: getUtmParams().utm_campaign,
+        utmMedium: getUtmParams().utm_medium,
+        utmContent: getUtmParams().utm_content,
+        utmTerm: getUtmParams().utm_term,
+        fbc,
+        fbp
+      })
+    });
+
+    const serverResult = await serverResponse.json();
+    
+    if (serverResult.success) {
+      console.log('✅ [DEBUG] Dados capturados e URL gerada:', serverResult);
+      console.log('✅ [DEBUG] Redirecionando para:', serverResult.hotmartUrl);
+
+      // Redirecionar para a Hotmart com TODOS os dados via query string
+      window.location.href = serverResult.hotmartUrl;
+    } else {
+      console.error('❌ [DEBUG] Erro ao capturar dados do servidor. Usando fallback.', serverResult.error);
+      // Fallback para o método antigo
+      redirectToHotmartCheckoutFallback(params, eventId);
+    }
+  } catch (error) {
+    console.error('❌ [DEBUG] Erro CRÍTICO na integração. Usando fallback.', error);
+    // Fallback para o método antigo
+    redirectToHotmartCheckoutFallback(params, eventId);
+  }
+}
+
+// Função de fallback (método antigo)
+function redirectToHotmartCheckoutFallback(params: any, eventId: string) {
+  const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10'; // URL correta com parâmetros da oferta
   
   // Obter parâmetros UTM
   const utmParams = getUtmParams();
   
-  // Salvar dados sensíveis no localStorage (acessível via JavaScript na Hotmart)
-  localStorage.setItem('client_ip_address', params.client_ip_address || '');
-  localStorage.setItem('ct', params.ct || '');
-  localStorage.setItem('st', params.st || '');
-  localStorage.setItem('country', params.country || '');
-  localStorage.setItem('zip', params.zip || '');
-  localStorage.setItem('eventID', eventId);
-  localStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
+  // Salvar dados sensíveis no sessionStorage (mais seguro)
+  sessionStorage.setItem('client_ip_address', params.client_ip_address || '');
+  sessionStorage.setItem('ct', params.ct || '');
+  sessionStorage.setItem('st', params.st || '');
+  sessionStorage.setItem('country', params.country || '');
+  sessionStorage.setItem('zip', params.zip || '');
+  sessionStorage.setItem('eventID', eventId);
+  sessionStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
   
   // Manter apenas os parâmetros UTM visíveis na URL
   const query = [
@@ -131,7 +193,7 @@ function redirectToHotmartCheckout(params: any, eventId: string) {
     `utm_term=${encodeURIComponent(utmParams.utm_term)}`
   ].join('&');
   
-  window.location.href = `${baseUrl}?${query}`;
+  window.location.href = `${baseUrl}&${query}`;
 }
 
 export default function SalesPage() {
@@ -159,11 +221,13 @@ export default function SalesPage() {
           // Parâmetros UTM
           ...getUtmParams()
         };
+        /*
         fetch('/api/pixel-event', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(rawData)
         });
+        */
       });
   }, []);
 

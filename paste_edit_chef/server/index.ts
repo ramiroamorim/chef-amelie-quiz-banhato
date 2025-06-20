@@ -2,9 +2,15 @@ import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
 import quizRoutes from "./routes/quiz.routes";
 import geolocationRoutes from "./routes/geolocation.routes";
+import pixelRoutes from "./routes/pixel.routes";
+import hotmartRoutes from "./routes/hotmart-server-integration";
 import { Server } from "http";
 
 const app = express();
+
+// Configurar trust proxy para capturar IP real do cliente
+// Isso é necessário quando o servidor está atrás de um proxy/CDN
+app.set('trust proxy', true);
 
 // Configuração de CORS para permitir requisições de outros IPs
 app.use((req, res, next) => {
@@ -14,6 +20,7 @@ app.use((req, res, next) => {
     'https://www.hotmart.com',
     'https://hotmart.com',
     'https://tracking-api.hotmart.com',
+    'https://api.hotmart.com',
     'http://localhost:3000',
     'http://localhost:5173',
     'http://127.0.0.1:3000',
@@ -43,9 +50,16 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Rota de teste simples
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API funcionando!', timestamp: new Date().toISOString() });
+});
+
 // Registrar todas as rotas da API ANTES de qualquer outra coisa
 app.use('/api/quiz', quizRoutes);
 app.use('/api/geolocation', geolocationRoutes);
+app.use('/api/pixel', pixelRoutes);
+app.use('/api/hotmart', hotmartRoutes);
 
 // Configurar servir arquivos de mídia com tipos MIME corretos
 app.use('/audio', express.static('public/audio', {

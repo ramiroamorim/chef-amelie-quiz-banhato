@@ -15,7 +15,7 @@ export const config = {
     nodeEnv: process.env.NODE_ENV || 'development',
     
     // API Keys
-    ipapiKey: process.env.IPAPI_KEY,
+    ipinfoToken: process.env.IPINFO_TOKEN,
     googleMapsKey: process.env.GOOGLE_MAPS_API_KEY,
     
     // Configurações de segurança
