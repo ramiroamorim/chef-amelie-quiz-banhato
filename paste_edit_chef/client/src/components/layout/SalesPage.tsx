@@ -98,49 +98,41 @@ const PriceSection = () => (
   </div>
 );
 
-// Função para montar a URL do checkout da Hotmart APENAS com UTM da Utmify
+// Função para montar a URL do checkout da Hotmart com parâmetros da URL atual
 async function redirectToHotmartCheckout(params: any, eventId: string) {
   try {
-    console.log('🔍 [UTMIFY ONLY] Iniciando checkout APENAS com UTM da Utmify');
+    console.log('🔍 [EDGAR ROCHA] Iniciando checkout com parâmetros da URL atual');
     
-    // Obter parâmetros UTM da Utmify
-    const utmParams = getUtmParams();
-    console.log('[UTMIFY ONLY] Parâmetros UTM obtidos da Utmify:', utmParams);
+    // URL base da Hotmart
+    const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10';
     
-    // Verificar se os parâmetros UTM da Utmify são válidos
-    if (!utmParams.utm_source || utmParams.utm_source === 'organic') {
-      console.log('[UTMIFY ONLY] Parâmetros UTM da Utmify são organic ou vazios:', utmParams);
-    }
-
-    // Construir URL APENAS com UTM da Utmify
-    const finalUrl = buildHotmartUrl(params, eventId);
+    // Adicionar todos os parâmetros da URL atual (sugestão do Edgar Rocha)
+    const finalUrl = baseUrl + window.location.search;
     
-    console.log('✅ [UTMIFY ONLY] URL gerada APENAS com UTM da Utmify:', finalUrl);
+    console.log('✅ [EDGAR ROCHA] URL gerada com parâmetros da URL atual:', finalUrl);
+    console.log('🔍 [EDGAR ROCHA] Parâmetros da URL atual (window.location.search):', window.location.search);
     
-    // Verificar se a URL contém os parâmetros UTM da Utmify
+    // Verificar se a URL contém parâmetros
     const urlObj = new URL(finalUrl);
-    const utmSource = urlObj.searchParams.get('utm_source');
-    const utmCampaign = urlObj.searchParams.get('utm_campaign');
-    const utmMedium = urlObj.searchParams.get('utm_medium');
+    const hasParams = urlObj.searchParams.toString() !== '';
     
-    console.log('[UTMIFY ONLY] Verificação final UTM da Utmify na URL:', {
-      utm_source: utmSource,
-      utm_campaign: utmCampaign,
-      utm_medium: utmMedium,
-      urlContainsUtm: utmSource !== null || utmCampaign !== null || utmMedium !== null
+    console.log('[EDGAR ROCHA] Verificação final da URL:', {
+      urlFinal: finalUrl,
+      temParametros: hasParams,
+      parametros: urlObj.searchParams.toString()
     });
 
-    if (utmSource && utmSource !== 'organic') {
-      console.log('✅ [UTMIFY ONLY] Parâmetros UTM da Utmify confirmados na URL!');
+    if (hasParams) {
+      console.log('✅ [EDGAR ROCHA] Parâmetros confirmados na URL!');
     } else {
-      console.log('⚠️ [UTMIFY ONLY] Parâmetros UTM da Utmify não encontrados na URL');
+      console.log('⚠️ [EDGAR ROCHA] Nenhum parâmetro encontrado na URL');
     }
 
     // Redirecionar para a Hotmart
     window.location.href = finalUrl;
     
   } catch (error) {
-    console.error('❌ [UTMIFY ONLY] Erro ao gerar URL com UTM da Utmify:', error);
+    console.error('❌ [EDGAR ROCHA] Erro ao gerar URL:', error);
     // Fallback para URL básica
     window.location.href = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10';
   }
