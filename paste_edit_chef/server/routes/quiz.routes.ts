@@ -190,6 +190,17 @@ router.post('/event', async (req, res) => {
       user_agent
     } = req.body;
 
+    // LOGS DETALHADOS PARA MONITORAMENTO DO EXTERNAL ID
+    console.log('🔍 [EXTERNAL ID DEBUG] ==========================================');
+    console.log('🔍 [EXTERNAL ID DEBUG] Headers da requisição:', req.headers);
+    console.log('🔍 [EXTERNAL ID DEBUG] Body completo da requisição:', req.body);
+    console.log('🔍 [EXTERNAL ID DEBUG] External ID recebido (raw):', external_id);
+    console.log('🔍 [EXTERNAL ID DEBUG] Tipo do external_id:', typeof external_id);
+    console.log('🔍 [EXTERNAL ID DEBUG] External ID é string?', typeof external_id === 'string');
+    console.log('🔍 [EXTERNAL ID DEBUG] External ID tem valor?', !!external_id);
+    console.log('🔍 [EXTERNAL ID DEBUG] External ID length:', external_id ? external_id.length : 'N/A');
+    console.log('🔍 [EXTERNAL ID DEBUG] ==========================================');
+
     console.log('[CAPI] Evento recebido:', { event, external_id, fbp, fbc, user_agent });
 
     // Pega IP do usuário usando a função melhorada
@@ -201,6 +212,11 @@ router.post('/event', async (req, res) => {
     const location = await geolocationService.getLocationFromIP(ip);
     console.log('[CAPI] Localização obtida:', location);
 
+    // LOG DO PROCESSAMENTO DO EXTERNAL ID
+    const externalIdHash = external_id ? sha256(external_id) : undefined;
+    console.log('🔍 [EXTERNAL ID DEBUG] External ID após hash SHA256:', externalIdHash);
+    console.log('🔍 [EXTERNAL ID DEBUG] Hash length:', externalIdHash ? externalIdHash.length : 'N/A');
+
     // Monta o payload para o Facebook CAPI
     const payload = {
       event_name: event,
@@ -210,7 +226,7 @@ router.post('/event', async (req, res) => {
         client_user_agent: user_agent,
         fbp: fbp || undefined,
         fbc: fbc || undefined,
-        external_id: external_id ? sha256(external_id) : undefined,
+        external_id: externalIdHash,
         ct: sha256(location.city),
         st: sha256(location.state),
         zp: sha256(location.zipCode), // Corrigido: zipCode em vez de zip
@@ -244,6 +260,14 @@ router.post('/event', async (req, res) => {
         data: [payload]
       });
       console.log('[CAPI] ✅ Resposta do Facebook:', fbResponse.data);
+      
+      // LOG FINAL DO EXTERNAL ID
+      console.log('🔍 [EXTERNAL ID DEBUG] ==========================================');
+      console.log('🔍 [EXTERNAL ID DEBUG] ✅ Evento enviado com sucesso para o Facebook');
+      console.log('🔍 [EXTERNAL ID DEBUG] External ID original:', external_id);
+      console.log('🔍 [EXTERNAL ID DEBUG] External ID hash enviado:', externalIdHash);
+      console.log('🔍 [EXTERNAL ID DEBUG] ==========================================');
+      
       res.json({ success: true, payload, fbResponse: fbResponse.data });
     } catch (fbError: any) {
       console.error('[CAPI] ❌ Erro ao enviar para o Facebook:', fbError.response?.data || fbError.message);
@@ -270,6 +294,16 @@ router.post('/user-data/:sessionId', async (req, res) => {
       event = 'Purchase' 
     } = req.body;
 
+    // LOGS DETALHADOS PARA MONITORAMENTO DO EXTERNAL ID (EMAIL)
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] ==========================================');
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Session ID:', sessionId);
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email recebido (raw):', email);
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Tipo do email:', typeof email);
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email é string?', typeof email === 'string');
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email tem valor?', !!email);
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email length:', email ? email.length : 'N/A');
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] ==========================================');
+
     console.log('[User Data] Dados recebidos:', { sessionId, email, name, phone, event });
 
     if (!sessionId) {
@@ -288,6 +322,11 @@ router.post('/user-data/:sessionId', async (req, res) => {
     const location = await geolocationService.getLocationFromIP(ip);
     console.log('[User Data] Localização obtida:', location);
 
+    // LOG DO PROCESSAMENTO DO EXTERNAL ID (EMAIL)
+    const emailHash = email ? sha256(email) : undefined;
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email após hash SHA256:', emailHash);
+    console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Hash length:', emailHash ? emailHash.length : 'N/A');
+
     // Monta o payload completo para o Facebook CAPI (evento de compra)
     const payload = {
       event_name: event,
@@ -297,8 +336,8 @@ router.post('/user-data/:sessionId', async (req, res) => {
         client_user_agent: req.headers['user-agent'] || '',
         fbp: req.body.fbp || undefined,
         fbc: req.body.fbc || undefined,
-        external_id: email ? sha256(email) : undefined,
-        em: email ? sha256(email) : undefined, // Email hash
+        external_id: emailHash,
+        em: emailHash, // Email hash
         ph: phone ? sha256(phone) : undefined, // Phone hash
         fn: name ? sha256(name.split(' ')[0]) : undefined, // First name hash
         ln: name ? sha256(name.split(' ').slice(1).join(' ')) : undefined, // Last name hash
@@ -336,6 +375,13 @@ router.post('/user-data/:sessionId', async (req, res) => {
         data: [payload]
       });
       console.log('[User Data] ✅ Evento de compra enviado para o Facebook:', fbResponse.data);
+      
+      // LOG FINAL DO EXTERNAL ID (EMAIL)
+      console.log('🔍 [USER DATA EXTERNAL ID DEBUG] ==========================================');
+      console.log('🔍 [USER DATA EXTERNAL ID DEBUG] ✅ Evento de compra enviado com sucesso para o Facebook');
+      console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email original:', email);
+      console.log('🔍 [USER DATA EXTERNAL ID DEBUG] External ID hash enviado:', emailHash);
+      console.log('🔍 [USER DATA EXTERNAL ID DEBUG] ==========================================');
       
       // Retorna dados completos para o n8n
       res.json({ 
@@ -386,10 +432,68 @@ router.get('/test-geolocation', async (req, res) => {
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('[Test] Erro no teste de geolocalização:', error);
+    console.error('[Test] Erro ao testar geolocalização:', error);
     res.status(500).json({
       success: false,
-      error: 'Erro no teste de geolocalização',
+      error: 'Erro ao testar geolocalização',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Endpoint de teste para verificar processamento do external ID
+router.post('/test-external-id', async (req, res) => {
+  try {
+    const { external_id, email } = req.body;
+    
+    console.log('🧪 [TEST EXTERNAL ID] ==========================================');
+    console.log('🧪 [TEST EXTERNAL ID] Testando processamento do external ID');
+    console.log('🧪 [TEST EXTERNAL ID] External ID recebido:', external_id);
+    console.log('🧪 [TEST EXTERNAL ID] Email recebido:', email);
+    console.log('🧪 [TEST EXTERNAL ID] Tipo external_id:', typeof external_id);
+    console.log('🧪 [TEST EXTERNAL ID] Tipo email:', typeof email);
+    
+    // Testar hash do external_id
+    const externalIdHash = external_id ? sha256(external_id) : undefined;
+    console.log('🧪 [TEST EXTERNAL ID] External ID hash:', externalIdHash);
+    
+    // Testar hash do email
+    const emailHash = email ? sha256(email) : undefined;
+    console.log('🧪 [TEST EXTERNAL ID] Email hash:', emailHash);
+    
+    // Simular payload do Facebook CAPI
+    const testPayload = {
+      event_name: 'TestEvent',
+      event_time: Math.floor(Date.now() / 1000),
+      user_data: {
+        external_id: externalIdHash,
+        em: emailHash,
+        client_ip_address: getClientIP(req),
+        client_user_agent: req.headers['user-agent'] || ''
+      }
+    };
+    
+    console.log('🧪 [TEST EXTERNAL ID] Payload de teste:', JSON.stringify(testPayload, null, 2));
+    console.log('🧪 [TEST EXTERNAL ID] ==========================================');
+    
+    res.json({
+      success: true,
+      original: {
+        external_id,
+        email
+      },
+      hashed: {
+        external_id: externalIdHash,
+        email: emailHash
+      },
+      payload: testPayload,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('[Test] Erro ao testar external ID:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro ao testar external ID',
       timestamp: new Date().toISOString()
     });
   }
