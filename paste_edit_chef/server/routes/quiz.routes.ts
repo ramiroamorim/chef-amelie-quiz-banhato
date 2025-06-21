@@ -81,66 +81,69 @@ const logRequest = (req: express.Request, res: express.Response, next: express.N
 router.use(logRequest);
 
 /**
- * Normaliza e gera um hash SHA256 para um valor, seguindo as regras do Facebook.
- * @param value O valor a ser processado.
- * @param type O tipo de dado, para aplicar a normalização correta.
+ * Normaliza um valor de acordo com as regras do Facebook antes do hashing.
+ * @param value O valor a ser normalizado.
+ * @param type O tipo de dado (ex: 'ct', 'st', 'em').
+ * @returns O valor normalizado.
  */
-function sha256(value: string | undefined, type: 'email' | 'text' | 'zip' | 'state' | 'country' | 'phone' | 'uuid'): string | undefined {
-  if (!value) return undefined;
-
-  let normalized = value.trim();
-
-  // Mapeamento de estados brasileiros para suas siglas
-  const stateMap: { [key: string]: string } = {
-    'acre': 'ac', 'alagoas': 'al', 'amapa': 'ap', 'amazonas': 'am', 'bahia': 'ba',
-    'ceara': 'ce', 'distrito federal': 'df', 'espirito santo': 'es', 'goias': 'go',
-    'maranhao': 'ma', 'mato grosso': 'mt', 'mato grosso do sul': 'ms', 'minas gerais': 'mg',
-    'para': 'pa', 'paraiba': 'pb', 'parana': 'pr', 'pernambuco': 'pe', 'piaui': 'pi',
-    'rio de janeiro': 'rj', 'rio grande do norte': 'rn', 'rio grande do sul': 'rs',
-    'rondonia': 'ro', 'roraima': 'rr', 'santa catarina': 'sc', 'sao paulo': 'sp',
-    'sergipe': 'se', 'tocantins': 'to'
-  };
-
-  switch(type) {
-    case 'email':
-      normalized = normalized.toLowerCase();
-      break;
-    case 'uuid':
-      normalized = normalized.toLowerCase();
-      break;
-    case 'country':
-      // Converte para o código ISO 3166-1 alpha-2 minúsculo
-      normalized = normalized.toLowerCase();
-      break;
-    case 'state':
-      // Converte nome do estado para sigla de 2 letras
-      const cleanState = normalized.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      normalized = stateMap[cleanState] || '';
-      break;
-    case 'zip':
-      // Remove caracteres não alfanuméricos e mantém os 5 primeiros dígitos
-      normalized = normalized.replace(/[^a-z0-9]/gi, '').toLowerCase().substring(0, 5);
-      break;
-    case 'phone':
-      // Remove tudo que não for número
-      normalized = normalized.replace(/[^0-9]/g, '');
-      break;
-    case 'text': // Para cidade, nomes
-    default:
-      // Remove acentos, espaços, e tudo que não for letra
-      normalized = normalized
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/[^a-z]/g, '');
-      break;
+function normalize(value: string | undefined, type: string): string {
+  if (typeof value !== 'string' || !value) {
+    return '';
   }
 
-  if (normalized === '') return undefined;
+  const normalized = value.trim().toLowerCase();
 
-  const hash = crypto.createHash('sha256').update(normalized).digest('hex');
-  console.log(`[SHA256-${type.toUpperCase()}] Original: "${value}" -> Normalized: "${normalized}" -> Hash: ${hash}`);
-  return hash;
+  switch (type) {
+    case 'em': // Email
+      return normalized;
+    case 'ph': // Telefone
+      return normalized.replace(/[^0-9]/g, '');
+    case 'ct': // Cidade
+      return normalized.replace(/[^a-z]/g, '');
+    case 'st': // Estado
+      const stateMapping: { [key: string]: string } = {
+        'acre': 'ac', 'alagoas': 'al', 'amapá': 'ap', 'amazonas': 'am',
+        'bahia': 'ba', 'ceará': 'ce', 'distrito federal': 'df', 'espírito santo': 'es',
+        'goiás': 'go', 'maranhão': 'ma', 'mato grosso': 'mt', 'mato grosso do sul': 'ms',
+        'minas gerais': 'mg', 'pará': 'pa', 'paraíba': 'pb', 'paraná': 'pr',
+        'pernambuco': 'pe', 'piauí': 'pi', 'rio de janeiro': 'rj', 'rio grande do norte': 'rn',
+        'rio grande do sul': 'rs', 'rondônia': 'ro', 'roraima': 'rr', 'santa catarina': 'sc',
+        'são paulo': 'sp', 'sergipe': 'se', 'tocantins': 'to'
+        // Adicionar outros mapeamentos se necessário
+      };
+      return stateMapping[normalized] || normalized;
+    case 'zp': // CEP
+      return normalized.replace(/[^0-9]/g, '').slice(0, 5);
+    case 'country': // País
+      return normalized === 'brasil' ? 'br' : normalized;
+    default:
+      return normalized;
+  }
+}
+
+
+/**
+ * Gera um hash SHA256 para um valor, aplicando a normalização específica do Facebook.
+ * @param value O valor a ser hasheado.
+ * @param type O tipo de dado, para aplicar a normalização correta.
+ */
+function sha256(value: string | undefined, type: string): string | undefined {
+  if (!value) return undefined;
+
+  // 1. Normalização baseada no tipo de dado, feita pela função normalize
+  const normalizedValue = normalize(value, type);
+  
+  if (normalizedValue === '') return undefined;
+
+  // 2. Geração do Hash
+  try {
+    const hash = crypto.createHash('sha256').update(normalizedValue).digest('hex');
+    console.log(`[SHA256-${type.toUpperCase()}] Original: "${value}" -> Normalized: "${normalizedValue}" -> Hash: ${hash}`);
+    return hash;
+  } catch (error) {
+    console.error(`[SHA256-ERROR] Falha ao gerar hash para o valor "${value}" (normalizado: "${normalizedValue}")`, error);
+    return undefined;
+  }
 }
 
 
@@ -232,7 +235,7 @@ router.post('/complete/:sessionId', (req, res) => {
   });
 });
 
-// Receber evento do frontend para enviar ao Facebook CAPI
+// Rota para receber eventos de pixel do frontend (ex: início do quiz)
 router.post('/event', async (req, res) => {
   try {
     const {
@@ -240,7 +243,8 @@ router.post('/event', async (req, res) => {
       external_id,
       fbp,
       fbc,
-      user_agent
+      user_agent,
+      test_event_code // Adicionado para testes
     } = req.body;
 
     // LOGS DETALHADOS PARA MONITORAMENTO DO EXTERNAL ID
@@ -274,16 +278,24 @@ router.post('/event', async (req, res) => {
     const payload = {
       event_name: event,
       event_time: Math.floor(Date.now() / 1000),
+      action_source: 'website',
+      event_source_url: req.headers.origin, // Adiciona a URL de origem
       user_data: {
-        client_ip_address: ip,
+        client_ip_address: req.ip,
         client_user_agent: user_agent,
         fbp: fbp || undefined,
         fbc: fbc || undefined,
-        external_id: externalIdHash,
-        ct: sha256(location.city, 'text'),
-        st: sha256(location.state, 'state'),
-        zp: sha256(location.zipCode, 'zip'), // Corrigido: zipCode em vez de zip
-        country: sha256(location.country, 'country')
+        external_id: await sha256(external_id, 'external_id'),
+        
+        // ATENÇÃO: Campos de geolocalização enviados sem hash a pedido do usuário.
+        // Isso vai contra a documentação da API de Conversões e pode prejudicar a correspondência.
+        ct: normalize(location.city, 'ct'),
+        st: normalize(location.state, 'st'),
+        zp: normalize(location.zipCode, 'zp'),
+        country: normalize(location.country, 'country'),
+      },
+      custom_data: {
+        source: 'server',
       }
     };
 
@@ -310,7 +322,8 @@ router.post('/event', async (req, res) => {
 
     try {
       const fbResponse = await axios.post(fbUrl, {
-        data: [payload]
+        data: [payload],
+        test_event_code: test_event_code || undefined // Envia o código de teste
       });
       console.log('[CAPI] ✅ Resposta do Facebook:', fbResponse.data);
       
@@ -344,7 +357,8 @@ router.post('/user-data/:sessionId', async (req, res) => {
       email, 
       name, 
       phone, 
-      event = 'Purchase' 
+      event = 'Purchase',
+      test_event_code // Adicionado para testes
     } = req.body;
 
     // LOGS DETALHADOS PARA MONITORAMENTO DO EXTERNAL ID (EMAIL)
@@ -380,34 +394,28 @@ router.post('/user-data/:sessionId', async (req, res) => {
     console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email após hash SHA256:', emailHash);
     console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Hash length:', emailHash ? emailHash.length : 'N/A');
 
-    // Monta o payload completo para o Facebook CAPI (evento de compra)
+    // PREPARAÇÃO DO PAYLOAD PARA O FACEBOOK
     const payload = {
       event_name: event,
       event_time: Math.floor(Date.now() / 1000),
+      action_source: 'website',
+      event_source_url: req.headers.origin, // Adiciona a URL de origem
       user_data: {
-        client_ip_address: ip,
-        client_user_agent: req.headers['user-agent'] || '',
-        fbp: req.body.fbp || undefined,
-        fbc: req.body.fbc || undefined,
-        external_id: email ? sha256(email, 'email') : undefined,
-        em: email ? sha256(email, 'email') : undefined, // Email hash
-        ph: phone ? sha256(phone, 'phone') : undefined, // Phone hash
-        fn: name ? sha256(name.split(' ')[0], 'text') : undefined, // First name hash
-        ln: name ? sha256(name.split(' ').slice(1).join(' '), 'text') : undefined, // Last name hash
-        ct: sha256(location.city, 'text'),
-        st: sha256(location.state, 'state'),
-        zp: sha256(location.zipCode, 'zip'),
-        country: sha256(location.country, 'country')
+        client_ip_address: req.ip,
+        client_user_agent: req.headers['user-agent'],
+        external_id: await sha256(sessionId, 'external_id'), // Usa o sessionId como external_id
+        em: await sha256(email, 'em'),
+        ph: await sha256(phone, 'ph'),
+        // fn: await sha256(name, 'fn'), // Hashing de nome não é comum, mas possível
       },
       custom_data: {
-        content_name: 'Quiz Chef Amelie',
-        content_category: 'Culinária',
-        value: 17.00, // Valor do produto em euros
-        currency: 'EUR'
+        value: 19.90, // Exemplo de valor da compra
+        currency: 'BRL',
+        source: 'server-user-data',
       }
     };
 
-    console.log('[User Data] Payload completo para Facebook CAPI:', JSON.stringify(payload, null, 2));
+    console.log('[User Data] 📊 Payload para o Facebook:', JSON.stringify(payload, null, 2));
 
     // Verificar se as variáveis de ambiente estão configuradas
     const accessToken = process.env.FB_CAPI_TOKEN;
@@ -425,7 +433,8 @@ router.post('/user-data/:sessionId', async (req, res) => {
 
     try {
       const fbResponse = await axios.post(fbUrl, {
-        data: [payload]
+        data: [payload],
+        test_event_code: test_event_code || undefined // Envia o código de teste
       });
       console.log('[User Data] ✅ Evento de compra enviado para o Facebook:', fbResponse.data);
       
