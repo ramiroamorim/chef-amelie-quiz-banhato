@@ -1,7 +1,7 @@
 import express from 'express';
 import axios from 'axios';
 import crypto from 'crypto';
-import { GeolocationService } from '../services/geolocation.service';
+import { GeolocationService, getGeolocation } from '../services/geolocation.service';
 
 const router = express.Router();
 
@@ -34,8 +34,7 @@ router.post('/capture-client-data', async (req, res) => {
     const externalId = `ext_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // Obter dados de geolocalização (prioridade IPv6)
-    const geolocationService = new GeolocationService();
-    const geoData = await geolocationService.getLocationFromIP(clientIP);
+    const geoData = await getGeolocation(clientIP);
 
     // Preparar dados do cliente
     const clientData = {
@@ -325,8 +324,7 @@ router.post('/send-to-hotmart-server', async (req, res) => {
     } = req.body;
 
     // Obter dados de geolocalização
-    const geolocationService = new GeolocationService();
-    const geoData = await geolocationService.getLocationFromIP(clientIP);
+    const geoData = await getGeolocation(clientIP);
 
     // Gerar hashes dos dados
     const hashedData = {
