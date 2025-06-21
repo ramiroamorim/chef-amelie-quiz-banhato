@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste UTM Simples</title>
+</head>
+<body>
+    <h1>Teste UTM Simples</h1>
+    
+    <div id="results"></div>
+    
+    <h2>Links de teste:</h2>
+    <p><a href="?utm_source=facebook&utm_campaign=teste&utm_medium=cpc">Teste com UTM</a></p>
+    <p><a href="?utm_source=google&utm_campaign=ads">Teste com Google UTM</a></p>
+    
+    <button onclick="checkCookies()">Verificar Cookies</button>
+    
+    <script>
+        function log(message) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            results.appendChild(div);
+            console.log(message);
+        }
+        
+        function checkCookies() {
+            log('🔍 Verificando cookies...');
+            
+            // Verificar URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlUtm = {
+                utm_source: urlParams.get('utm_source'),
+                utm_campaign: urlParams.get('utm_campaign'),
+                utm_medium: urlParams.get('utm_medium')
+            };
+            log(`URL UTM: ${JSON.stringify(urlUtm)}`);
+            
+            // Verificar cookies
+            const allCookies = document.cookie.split(';').reduce((acc, cookie) => {
+                const [key, value] = cookie.trim().split('=');
+                acc[key] = decodeURIComponent(value || '');
+                return acc;
+            }, {});
+            
+            log(`Total de cookies: ${Object.keys(allCookies).length}`);
+            Object.entries(allCookies).forEach(([key, value]) => {
+                log(`🍪 ${key}: ${value}`);
+            });
+            
+            // Verificar cookies UTM específicos
+            const utmCookies = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term'];
+            utmCookies.forEach(cookieName => {
+                const value = allCookies[cookieName];
+                if (value) {
+                    log(`✅ ${cookieName}: ${value}`);
+                } else {
+                    log(`❌ ${cookieName}: não encontrado`);
+                }
+            });
+        }
+        
+        // Verificação automática
+        setTimeout(() => {
+            log('🔄 Verificação automática...');
+            checkCookies();
+        }, 1000);
+    </script>
+    
+    <!-- Utmify Script -->
+    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-subids async defer></script>
+</body>
+</html> 

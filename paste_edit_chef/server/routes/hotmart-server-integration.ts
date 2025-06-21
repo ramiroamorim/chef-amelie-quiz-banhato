@@ -30,6 +30,29 @@ router.post('/capture-client-data', async (req, res) => {
       fbp  // Facebook Browser ID
     } = req.body;
 
+    console.log('🔍 [UTMIFY ONLY] Servidor - Dados recebidos do cliente:', {
+      clientIP,
+      userAgent: userAgent ? 'presente' : 'ausente',
+      utmSource,
+      utmCampaign,
+      utmMedium,
+      utmContent,
+      utmTerm,
+      fbc: fbc ? 'presente' : 'ausente',
+      fbp: fbp ? 'presente' : 'ausente'
+    });
+
+    // Verificar se os parâmetros UTM da Utmify são válidos
+    if (!utmSource || utmSource === 'organic') {
+      console.log('🔍 [UTMIFY ONLY] Servidor - Parâmetros UTM da Utmify são organic ou vazios:', {
+        utmSource,
+        utmCampaign,
+        utmMedium,
+        utmContent,
+        utmTerm
+      });
+    }
+
     // Gerar external_id único (será usado pela Hotmart)
     const externalId = `ext_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -70,12 +93,33 @@ router.post('/capture-client-data', async (req, res) => {
     // Construir URL com TODOS os dados via query string
     const urlParams = new URLSearchParams();
     
-    // Parâmetros UTM
-    if (utmSource) urlParams.append('utm_source', utmSource);
-    if (utmCampaign) urlParams.append('utm_campaign', utmCampaign);
-    if (utmMedium) urlParams.append('utm_medium', utmMedium);
-    if (utmContent) urlParams.append('utm_content', utmContent);
-    if (utmTerm) urlParams.append('utm_term', utmTerm);
+    // Parâmetros UTM - APENAS da Utmify
+    if (utmSource && utmSource !== 'organic') {
+      urlParams.append('utm_source', utmSource);
+      console.log('✅ [UTMIFY ONLY] Servidor - Adicionado utm_source da Utmify:', utmSource);
+    } else {
+      console.log('🔍 [UTMIFY ONLY] Servidor - utm_source da Utmify é organic ou vazio');
+    }
+    
+    if (utmCampaign && utmCampaign.trim() !== '') {
+      urlParams.append('utm_campaign', utmCampaign);
+      console.log('✅ [UTMIFY ONLY] Servidor - Adicionado utm_campaign da Utmify:', utmCampaign);
+    }
+    
+    if (utmMedium && utmMedium.trim() !== '') {
+      urlParams.append('utm_medium', utmMedium);
+      console.log('✅ [UTMIFY ONLY] Servidor - Adicionado utm_medium da Utmify:', utmMedium);
+    }
+    
+    if (utmContent && utmContent.trim() !== '') {
+      urlParams.append('utm_content', utmContent);
+      console.log('✅ [UTMIFY ONLY] Servidor - Adicionado utm_content da Utmify:', utmContent);
+    }
+    
+    if (utmTerm && utmTerm.trim() !== '') {
+      urlParams.append('utm_term', utmTerm);
+      console.log('✅ [UTMIFY ONLY] Servidor - Adicionado utm_term da Utmify:', utmTerm);
+    }
     
     // Dados do cliente via query string
     urlParams.append('external_id', externalId);
@@ -93,9 +137,34 @@ router.post('/capture-client-data', async (req, res) => {
     if (fbp) urlParams.append('fbp', fbp);
     
     // Timestamp
-    urlParams.append('timestamp', new Date().toISOString());
+    const timestamp = new Date().toISOString();
+    urlParams.append('timestamp', timestamp);
 
     const hotmartUrl = `https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10&${urlParams.toString()}`;
+
+    // Verificação final se os parâmetros UTM da Utmify estão na URL final
+    const finalUrlObj = new URL(hotmartUrl);
+    const finalUtmSource = finalUrlObj.searchParams.get('utm_source');
+    const finalUtmCampaign = finalUrlObj.searchParams.get('utm_campaign');
+    const finalUtmMedium = finalUrlObj.searchParams.get('utm_medium');
+    
+    console.log('🔍 [UTMIFY ONLY] Servidor - Verificação final UTM da Utmify na URL:', {
+      utm_source: finalUtmSource,
+      utm_campaign: finalUtmCampaign,
+      utm_medium: finalUtmMedium,
+      urlContainsUtm: finalUtmSource !== null || finalUtmCampaign !== null || finalUtmMedium !== null,
+      queryString: urlParams.toString(),
+      originalUtmParams: { utmSource, utmCampaign, utmMedium, utmContent, utmTerm }
+    });
+
+    // Log se os parâmetros UTM da Utmify não estão na URL final
+    if (!finalUtmSource || finalUtmSource === 'organic') {
+      console.log('🔍 [UTMIFY ONLY] Servidor - Parâmetros UTM da Utmify não estão na URL final');
+      console.log('🔍 [UTMIFY ONLY] Servidor - Parâmetros originais da Utmify:', { utmSource, utmCampaign, utmMedium, utmContent, utmTerm });
+      console.log('🔍 [UTMIFY ONLY] Servidor - URL final:', hotmartUrl);
+    } else {
+      console.log('✅ [UTMIFY ONLY] Servidor - Parâmetros UTM da Utmify confirmados na URL final!');
+    }
 
     res.json({
       success: true,
@@ -105,7 +174,7 @@ router.post('/capture-client-data', async (req, res) => {
       message: 'Dados do cliente capturados e URL gerada com query string'
     });
   } catch (error) {
-    console.error('Erro ao capturar dados do cliente:', error);
+    console.error('❌ [UTMIFY COMPATIBLE] Servidor - Erro ao capturar dados do cliente:', error);
     res.status(500).json({
       success: false,
       error: 'Erro interno do servidor'

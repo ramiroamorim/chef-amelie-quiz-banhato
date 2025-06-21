@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Simples Utmify</title>
+</head>
+<body>
+    <h1>Teste Simples - Utmify</h1>
+    
+    <div id="results"></div>
+    
+    <button onclick="testUtmCapture()">Testar Captura UTM</button>
+    <button onclick="testCheckoutUrl()">Testar URL Checkout</button>
+    
+    <script>
+        function log(message) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            results.appendChild(div);
+            console.log(message);
+        }
+        
+        // Função similar à getUtmParams do projeto
+        function getUtmParams() {
+            log('🔍 getUtmParams - Iniciando leitura dos cookies');
+            
+            const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+                const [key, value] = cookie.trim().split('=');
+                acc[key] = decodeURIComponent(value || '');
+                return acc;
+            }, {});
+            
+            log('🔍 getUtmParams - Todos os cookies:', cookies);
+            
+            const utmParams = {
+                utm_source: cookies.utm_source || cookies.utmify_source || 'organic',
+                utm_campaign: cookies.utm_campaign || cookies.utmify_campaign || '',
+                utm_medium: cookies.utm_medium || cookies.utmify_medium || '',
+                utm_content: cookies.utm_content || cookies.utmify_content || '',
+                utm_term: cookies.utm_term || cookies.utmify_term || ''
+            };
+            
+            log('🔍 getUtmParams - Parâmetros UTM extraídos:', utmParams);
+            return utmParams;
+        }
+        
+        // Função similar à buildHotmartUrl do projeto
+        function buildHotmartUrl(utmParams) {
+            const baseUrl = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10';
+            const urlParams = new URLSearchParams();
+            
+            log('🔍 buildHotmartUrl - Iniciando construção da URL');
+            log('🔍 buildHotmartUrl - Parâmetros UTM recebidos:', utmParams);
+            
+            // Parâmetros UTM
+            if (utmParams.utm_source && utmParams.utm_source !== 'organic') {
+                urlParams.append('utm_source', utmParams.utm_source);
+                log('✅ buildHotmartUrl - Adicionado utm_source:', utmParams.utm_source);
+            }
+            
+            if (utmParams.utm_campaign && utmParams.utm_campaign.trim() !== '') {
+                urlParams.append('utm_campaign', utmParams.utm_campaign);
+                log('✅ buildHotmartUrl - Adicionado utm_campaign:', utmParams.utm_campaign);
+            }
+            
+            if (utmParams.utm_medium && utmParams.utm_medium.trim() !== '') {
+                urlParams.append('utm_medium', utmParams.utm_medium);
+                log('✅ buildHotmartUrl - Adicionado utm_medium:', utmParams.utm_medium);
+            }
+            
+            if (utmParams.utm_content && utmParams.utm_content.trim() !== '') {
+                urlParams.append('utm_content', utmParams.utm_content);
+                log('✅ buildHotmartUrl - Adicionado utm_content:', utmParams.utm_content);
+            }
+            
+            if (utmParams.utm_term && utmParams.utm_term.trim() !== '') {
+                urlParams.append('utm_term', utmParams.utm_term);
+                log('✅ buildHotmartUrl - Adicionado utm_term:', utmParams.utm_term);
+            }
+            
+            const queryString = urlParams.toString();
+            const finalUrl = queryString ? `${baseUrl}&${queryString}` : baseUrl;
+            
+            log('🔍 buildHotmartUrl - Query string gerada:', queryString);
+            log('🔍 buildHotmartUrl - URL final:', finalUrl);
+            
+            return finalUrl;
+        }
+        
+        function testUtmCapture() {
+            log('🧪 TESTE: Captura de parâmetros UTM');
+            const utmParams = getUtmParams();
+            
+            const hasValidParams = utmParams.utm_source !== 'organic' || 
+                                 utmParams.utm_campaign !== '' || 
+                                 utmParams.utm_medium !== '' || 
+                                 utmParams.utm_content !== '' || 
+                                 utmParams.utm_term !== '';
+            
+            if (hasValidParams) {
+                log('✅ TESTE: Parâmetros UTM válidos encontrados!');
+            } else {
+                log('❌ TESTE: Nenhum parâmetro UTM válido encontrado');
+            }
+        }
+        
+        function testCheckoutUrl() {
+            log('🧪 TESTE: Construção da URL de checkout');
+            const utmParams = getUtmParams();
+            const checkoutUrl = buildHotmartUrl(utmParams);
+            
+            // Verificar se os parâmetros UTM estão na URL final
+            const urlObj = new URL(checkoutUrl);
+            const utmSource = urlObj.searchParams.get('utm_source');
+            const utmCampaign = urlObj.searchParams.get('utm_campaign');
+            const utmMedium = urlObj.searchParams.get('utm_medium');
+            
+            log('🔍 TESTE: Verificação final na URL:');
+            log(`  - utm_source: ${utmSource}`);
+            log(`  - utm_campaign: ${utmCampaign}`);
+            log(`  - utm_medium: ${utmMedium}`);
+            
+            if (utmSource && utmSource !== 'organic') {
+                log('✅ TESTE: Parâmetros UTM estão na URL de checkout!');
+            } else {
+                log('❌ TESTE: Parâmetros UTM NÃO estão na URL de checkout');
+            }
+        }
+        
+        // Verificação automática após carregamento
+        setTimeout(() => {
+            log('🔄 Verificação automática após carregamento...');
+            testUtmCapture();
+            testCheckoutUrl();
+        }, 3000);
+    </script>
+    
+    <!-- Utmify Script -->
+    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-subids async defer></script>
+</body>
+</html> 

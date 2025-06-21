@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste UTM Parameters</title>
+</head>
+<body>
+    <h1>Teste de Parâmetros UTM</h1>
+    
+    <div id="results">
+        <h2>Resultados:</h2>
+        <div id="url-params"></div>
+        <div id="window-params"></div>
+        <div id="storage-params"></div>
+    </div>
+
+    <script>
+        // Função para capturar parâmetros UTM da URL
+        function captureUtmParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const utmParams = {
+                utm_source: urlParams.get('utm_source') || 'organic',
+                utm_campaign: urlParams.get('utm_campaign') || '',
+                utm_medium: urlParams.get('utm_medium') || '',
+                utm_content: urlParams.get('utm_content') || '',
+                utm_term: urlParams.get('utm_term') || ''
+            };
+            
+            console.log('UTM Parameters captured:', utmParams);
+            return utmParams;
+        }
+        
+        // Função para recuperar parâmetros UTM do localStorage
+        function loadUtmParamsFromStorage() {
+            const storedParams = localStorage.getItem('utm_params');
+            if (storedParams) {
+                try {
+                    return JSON.parse(storedParams);
+                } catch (e) {
+                    console.error('Error parsing stored UTM parameters:', e);
+                }
+            }
+            return null;
+        }
+        
+        // Capturar parâmetros UTM imediatamente
+        const capturedParams = captureUtmParams();
+        
+        // Definir no window.utm_params para compatibilidade
+        window.utm_params = capturedParams;
+        
+        // Salvar no localStorage
+        localStorage.setItem('utm_params', JSON.stringify(capturedParams));
+        
+        // Exibir resultados
+        document.getElementById('url-params').innerHTML = `
+            <h3>Parâmetros da URL:</h3>
+            <pre>${JSON.stringify(capturedParams, null, 2)}</pre>
+        `;
+        
+        document.getElementById('window-params').innerHTML = `
+            <h3>Parâmetros no window.utm_params:</h3>
+            <pre>${JSON.stringify(window.utm_params, null, 2)}</pre>
+        `;
+        
+        const storedParams = loadUtmParamsFromStorage();
+        document.getElementById('storage-params').innerHTML = `
+            <h3>Parâmetros no localStorage:</h3>
+            <pre>${JSON.stringify(storedParams, null, 2)}</pre>
+        `;
+        
+        // Testar com URL de exemplo
+        console.log('Para testar, acesse esta página com parâmetros UTM:');
+        console.log('http://localhost:3000/test-utm-params.html?utm_source=facebook&utm_campaign=teste&utm_medium=cpc');
+    </script>
+</body>
+</html> 

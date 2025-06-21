@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Utmify Cookies</title>
+</head>
+<body>
+    <h1>Teste de Cookies da Utmify</h1>
+    
+    <div id="results"></div>
+    
+    <script>
+        function log(message) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            results.appendChild(div);
+            console.log(message);
+        }
+        
+        function getAllCookies() {
+            return document.cookie.split(';').reduce((acc, cookie) => {
+                const [key, value] = cookie.trim().split('=');
+                acc[key] = decodeURIComponent(value || '');
+                return acc;
+            }, {});
+        }
+        
+        function checkUtmifyCookies() {
+            log('🔍 Verificando cookies da Utmify...');
+            
+            const allCookies = getAllCookies();
+            log(`📊 Total de cookies encontrados: ${Object.keys(allCookies).length}`);
+            
+            // Listar todos os cookies
+            Object.entries(allCookies).forEach(([key, value]) => {
+                log(`🍪 Cookie: ${key} = ${value}`);
+            });
+            
+            // Verificar cookies específicos da Utmify
+            const utmifyCookies = [
+                'utm_source',
+                'utm_campaign', 
+                'utm_medium',
+                'utm_content',
+                'utm_term',
+                'utmify_source',
+                'utmify_campaign',
+                'utmify_medium',
+                'utmify_content',
+                'utmify_term'
+            ];
+            
+            log('🔍 Verificando cookies UTM específicos:');
+            utmifyCookies.forEach(cookieName => {
+                const value = allCookies[cookieName];
+                if (value) {
+                    log(`✅ ${cookieName}: ${value}`);
+                } else {
+                    log(`❌ ${cookieName}: não encontrado`);
+                }
+            });
+            
+            // Verificar se há cookies com padrão utmify_
+            const utmifyPatternCookies = Object.keys(allCookies).filter(key => 
+                key.startsWith('utmify_') || key.startsWith('utm_')
+            );
+            
+            log(`🔍 Cookies com padrão UTM encontrados: ${utmifyPatternCookies.length}`);
+            utmifyPatternCookies.forEach(cookieName => {
+                log(`🍪 ${cookieName}: ${allCookies[cookieName]}`);
+            });
+        }
+        
+        // Verificar cookies imediatamente
+        checkUtmifyCookies();
+        
+        // Verificar novamente após 3 segundos (tempo para Utmify carregar)
+        setTimeout(() => {
+            log('🔄 Verificação após 3 segundos...');
+            checkUtmifyCookies();
+        }, 3000);
+        
+        // Verificar a cada 5 segundos
+        setInterval(() => {
+            log('🔄 Verificação periódica...');
+            checkUtmifyCookies();
+        }, 5000);
+    </script>
+    
+    <!-- Utmify Script -->
+    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-subids async defer></script>
+</body>
+</html> 

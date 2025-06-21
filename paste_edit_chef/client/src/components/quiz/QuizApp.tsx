@@ -6,25 +6,6 @@ import ProfileResult from "@/components/quiz/ProfileResult";
 import SalesPage from "@/components/layout/SalesPage";
 import { quizSteps } from "@/data";
 import { FacebookPixel, getCommonPixelParams, generateEventId } from "@/lib/fbPixel";
-import { setCookie, getUtmParams, buildHotmartUrl } from '@/lib/utils';
-
-// Função para montar a URL do checkout da Hotmart com parâmetros customizados
-function redirectToHotmartCheckout(params: any, eventId: string) {
-  // Salvar dados sensíveis no localStorage (acessível via JavaScript na Hotmart)
-  localStorage.setItem('client_ip_address', params.client_ip_address || '');
-  localStorage.setItem('ct', params.ct || '');
-  localStorage.setItem('st', params.st || '');
-  localStorage.setItem('country', params.country || '');
-  localStorage.setItem('zip', params.zip || '');
-  localStorage.setItem('eventID', eventId);
-  localStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
-  
-  // Usar função utilitária para construir URL completa
-  const finalUrl = buildHotmartUrl(params, eventId);
-  
-  console.log('🔄 [DEBUG] QuizApp - URL gerada:', finalUrl);
-  window.location.href = finalUrl;
-}
 
 export default function QuizApp() {
   const { 
@@ -42,22 +23,8 @@ export default function QuizApp() {
     const eventId = generateEventId();
     // Enviar para o Pixel (com hash)
     getCommonPixelParams().then(params => {
-      // Criar cookies padronizados
-      setCookie('client_ip_address', params.client_ip_address || '');
-      setCookie('ct', params.ct || '');
-      setCookie('st', params.st || '');
-      setCookie('country', params.country || '');
-      setCookie('zip', params.zip || '');
-      setCookie('eventID', eventId);
-      
-      // Criar cookies para parâmetros UTM
-      const utmParams = getUtmParams();
-      
-      setCookie('utm_source', utmParams.utm_source);
-      setCookie('utm_campaign', utmParams.utm_campaign);
-      setCookie('utm_medium', utmParams.utm_medium);
-      setCookie('utm_content', utmParams.utm_content);
-      setCookie('utm_term', utmParams.utm_term);
+      // NÃO criar cookies - usar apenas Utmify
+      console.log('✅ [UTMIFY ONLY] QuizApp - Nenhum cookie criado, usando apenas Utmify');
       
       FacebookPixel.trackPageView(params, eventId);
     });
@@ -87,22 +54,8 @@ export default function QuizApp() {
           // Buscar parâmetros comuns e disparar evento StartQuiz
           const eventId = generateEventId();
           getCommonPixelParams().then(params => {
-            // Criar cookies padronizados
-            setCookie('client_ip_address', params.client_ip_address || '');
-            setCookie('ct', params.ct || '');
-            setCookie('st', params.st || '');
-            setCookie('country', params.country || '');
-            setCookie('zip', params.zip || '');
-            setCookie('eventID', eventId);
-            
-            // Criar cookies para parâmetros UTM
-            const utmParams = getUtmParams();
-            
-            setCookie('utm_source', utmParams.utm_source);
-            setCookie('utm_campaign', utmParams.utm_campaign);
-            setCookie('utm_medium', utmParams.utm_medium);
-            setCookie('utm_content', utmParams.utm_content);
-            setCookie('utm_term', utmParams.utm_term);
+            // NÃO criar cookies - usar apenas Utmify
+            console.log('✅ [UTMIFY ONLY] QuizApp - Nenhum cookie criado na inicialização, usando apenas Utmify');
             
             const customParams = {
               ...params,

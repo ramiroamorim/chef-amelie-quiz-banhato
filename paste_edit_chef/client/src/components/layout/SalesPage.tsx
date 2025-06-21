@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { LINKS, COLORS, TEXTS } from "@/config";
 import { ChefImages, TestimonialImages } from '@/assets/imageExports';
 import { getCommonPixelParams, generateEventId, FacebookPixel } from "@/lib/fbPixel";
-import { getUtmParams, buildHotmartUrl, getCookie, getClientIP } from '@/lib/utils';
+import { getUtmParams, buildHotmartUrl } from '@/lib/utils';
 // Importando as imagens diretamente para garantir que o Vite processe corretamente
 import recipeBookImage from '@/assets/images/recipes/recipe-book.png';
 import recipeBookNewImage from '@/assets/images/recipes/recipe-book-new.png'; // Imagem nova para a segunda ocorrência
@@ -98,80 +98,52 @@ const PriceSection = () => (
   </div>
 );
 
-// Função para montar a URL do checkout da Hotmart com integração server-to-server
+// Função para montar a URL do checkout da Hotmart APENAS com UTM da Utmify
 async function redirectToHotmartCheckout(params: any, eventId: string) {
   try {
-    // Obter IP do usuário usando a nova função centralizada
-    console.log('[DEBUG] Buscando IP do cliente (prioridade IPv6)...');
-    const clientIP = await getClientIP();
-    console.log('[DEBUG] IP do cliente obtido:', clientIP);
-
-    if (!clientIP) {
-      console.error('[DEBUG] FALHA CRÍTICA ao obter o IP do cliente. Usando fallback de redirect.');
-      redirectToHotmartCheckoutFallback(params, eventId);
-      return;
+    console.log('🔍 [UTMIFY ONLY] Iniciando checkout APENAS com UTM da Utmify');
+    
+    // Obter parâmetros UTM da Utmify
+    const utmParams = getUtmParams();
+    console.log('[UTMIFY ONLY] Parâmetros UTM obtidos da Utmify:', utmParams);
+    
+    // Verificar se os parâmetros UTM da Utmify são válidos
+    if (!utmParams.utm_source || utmParams.utm_source === 'organic') {
+      console.log('[UTMIFY ONLY] Parâmetros UTM da Utmify são organic ou vazios:', utmParams);
     }
 
-    // Obter dados do Facebook (se disponíveis)
-    const fbc = getCookie('_fbc');
-    const fbp = getCookie('_fbp');
-
-    // PRIMEIRO: Capturar dados do cliente e gerar URL com query string
-    console.log('[DEBUG] Enviando dados para /api/hotmart/capture-client-data');
-    const serverResponse = await fetch('/api/hotmart/capture-client-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        clientIP,
-        userAgent: navigator.userAgent,
-        utmSource: getUtmParams().utm_source,
-        utmCampaign: getUtmParams().utm_campaign,
-        utmMedium: getUtmParams().utm_medium,
-        utmContent: getUtmParams().utm_content,
-        utmTerm: getUtmParams().utm_term,
-        fbc,
-        fbp
-      })
+    // Construir URL APENAS com UTM da Utmify
+    const finalUrl = buildHotmartUrl(params, eventId);
+    
+    console.log('✅ [UTMIFY ONLY] URL gerada APENAS com UTM da Utmify:', finalUrl);
+    
+    // Verificar se a URL contém os parâmetros UTM da Utmify
+    const urlObj = new URL(finalUrl);
+    const utmSource = urlObj.searchParams.get('utm_source');
+    const utmCampaign = urlObj.searchParams.get('utm_campaign');
+    const utmMedium = urlObj.searchParams.get('utm_medium');
+    
+    console.log('[UTMIFY ONLY] Verificação final UTM da Utmify na URL:', {
+      utm_source: utmSource,
+      utm_campaign: utmCampaign,
+      utm_medium: utmMedium,
+      urlContainsUtm: utmSource !== null || utmCampaign !== null || utmMedium !== null
     });
 
-    const serverResult = await serverResponse.json();
-    
-    if (serverResult.success) {
-      console.log('✅ [DEBUG] Dados capturados e URL gerada:', serverResult);
-      console.log('✅ [DEBUG] Redirecionando para:', serverResult.hotmartUrl);
-
-      // Redirecionar para a Hotmart com TODOS os dados via query string
-      window.location.href = serverResult.hotmartUrl;
+    if (utmSource && utmSource !== 'organic') {
+      console.log('✅ [UTMIFY ONLY] Parâmetros UTM da Utmify confirmados na URL!');
     } else {
-      console.error('❌ [DEBUG] Erro ao capturar dados do servidor. Usando fallback.', serverResult.error);
-      // Fallback para o método antigo
-      redirectToHotmartCheckoutFallback(params, eventId);
+      console.log('⚠️ [UTMIFY ONLY] Parâmetros UTM da Utmify não encontrados na URL');
     }
-  } catch (error) {
-    console.error('❌ [DEBUG] Erro CRÍTICO na integração. Usando fallback.', error);
-    // Fallback para o método antigo
-    redirectToHotmartCheckoutFallback(params, eventId);
-  }
-}
 
-// Função de fallback (método antigo)
-function redirectToHotmartCheckoutFallback(params: any, eventId: string) {
-  // Salvar dados sensíveis no sessionStorage (mais seguro)
-  sessionStorage.setItem('client_ip_address', params.client_ip_address || '');
-  sessionStorage.setItem('ct', params.ct || '');
-  sessionStorage.setItem('st', params.st || '');
-  sessionStorage.setItem('country', params.country || '');
-  sessionStorage.setItem('zip', params.zip || '');
-  sessionStorage.setItem('eventID', eventId);
-  sessionStorage.setItem('userAgent', params.client_user_agent || navigator.userAgent || '');
-  
-  // Usar função utilitária para construir URL completa
-  const finalUrl = buildHotmartUrl(params, eventId);
-  
-  console.log('🔄 [DEBUG] Usando fallback - URL gerada:', finalUrl);
-  window.location.href = finalUrl;
+    // Redirecionar para a Hotmart
+    window.location.href = finalUrl;
+    
+  } catch (error) {
+    console.error('❌ [UTMIFY ONLY] Erro ao gerar URL com UTM da Utmify:', error);
+    // Fallback para URL básica
+    window.location.href = 'https://pay.hotmart.com/D98080625O?off=1n1vmmyz&checkoutMode=10';
+  }
 }
 
 export default function SalesPage() {
