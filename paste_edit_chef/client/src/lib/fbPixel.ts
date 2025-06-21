@@ -4,12 +4,11 @@
  */
 
 import { getClientIP, sha256 } from './utils';
+import { v4 as uuidv4 } from 'uuid';
 
 // Função para gerar um event_id único (UUID v4-like)
 export function generateEventId() {
-  const timestamp = Date.now();
-  const randomString = Math.random().toString(36).substring(2, 15);
-  return `evt_${timestamp}_${randomString}`;
+  return uuidv4();
 }
 
 declare global {
@@ -98,15 +97,9 @@ export const FacebookPixel = {
   trackPageView: (parameters?: any, eventID?: string) => {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
-        window.fbq('track', 'PageView', {
-          ...parameters,
-          external_id: currentSessionId
-        }, { eventID });
+        window.fbq('track', 'PageView', parameters, { eventID });
       } else {
-        window.fbq('track', 'PageView', {
-          ...parameters,
-          external_id: currentSessionId
-        });
+        window.fbq('track', 'PageView', parameters);
       }
     }
   },
@@ -124,15 +117,9 @@ export const FacebookPixel = {
   trackQuizStart: (parameters?: any, eventID?: string) => {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
-        window.fbq('track', 'StartQuiz', {
-          ...parameters,
-          external_id: currentSessionId
-        }, { eventID });
+        window.fbq('track', 'StartQuiz', parameters, { eventID });
       } else {
-        window.fbq('track', 'StartQuiz', {
-          ...parameters,
-          external_id: currentSessionId
-        });
+        window.fbq('track', 'StartQuiz', parameters);
       }
     }
   },
@@ -150,15 +137,9 @@ export const FacebookPixel = {
   trackQuizComplete: (parameters?: any, eventID?: string) => {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
-        window.fbq('track', 'CompleteRegistration', {
-          ...parameters,
-          external_id: currentSessionId
-        }, { eventID });
+        window.fbq('track', 'CompleteRegistration', parameters, { eventID });
       } else {
-        window.fbq('track', 'CompleteRegistration', {
-          ...parameters,
-          external_id: currentSessionId
-        });
+        window.fbq('track', 'CompleteRegistration', parameters);
       }
     }
   },
@@ -178,7 +159,6 @@ export const FacebookPixel = {
       if (eventID) {
         window.fbq('track', 'ViewContent', {
           ...parameters,
-          external_id: currentSessionId,
           content_name: 'Pack de Receitas',
           content_category: 'Vendas',
           content_ids: ['pack-001'],
@@ -188,7 +168,6 @@ export const FacebookPixel = {
       } else {
         window.fbq('track', 'ViewContent', {
           ...parameters,
-          external_id: currentSessionId,
           content_name: 'Pack de Receitas',
           content_category: 'Vendas',
           content_ids: ['pack-001'],
@@ -212,15 +191,9 @@ export const FacebookPixel = {
   trackPurchaseClick: (parameters?: any, eventID?: string) => {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
-        window.fbq('track', 'InitiateCheckout', {
-          ...parameters,
-          external_id: currentSessionId
-        }, { eventID });
+        window.fbq('track', 'InitiateCheckout', parameters, { eventID });
       } else {
-        window.fbq('track', 'InitiateCheckout', {
-          ...parameters,
-          external_id: currentSessionId
-        });
+        window.fbq('track', 'InitiateCheckout', parameters);
       }
     }
   },
@@ -243,14 +216,12 @@ export const FacebookPixel = {
         window.fbq('track', 'Purchase', {
           value: value || 17.00,
           currency,
-          external_id: currentSessionId,
           ...parameters
         }, { eventID });
       } else {
         window.fbq('track', 'Purchase', {
           value: value || 17.00,
           currency,
-          external_id: currentSessionId,
           ...parameters
         });
       }
@@ -271,15 +242,9 @@ export const FacebookPixel = {
   trackCustomEvent: (eventName: string, parameters?: any, eventID?: string) => {
     if (typeof window !== 'undefined' && window.fbq) {
       if (eventID) {
-        window.fbq('trackCustom', eventName, {
-          ...parameters,
-          external_id: currentSessionId
-        }, { eventID });
+        window.fbq('trackCustom', eventName, parameters, { eventID });
       } else {
-        window.fbq('trackCustom', eventName, {
-          ...parameters,
-          external_id: currentSessionId
-        });
+        window.fbq('trackCustom', eventName, parameters);
       }
     }
   }

@@ -80,6 +80,70 @@ const logRequest = (req: express.Request, res: express.Response, next: express.N
 
 router.use(logRequest);
 
+/**
+ * Normaliza e gera um hash SHA256 para um valor, seguindo as regras do Facebook.
+ * @param value O valor a ser processado.
+ * @param type O tipo de dado, para aplicar a normalização correta.
+ */
+function sha256(value: string | undefined, type: 'email' | 'text' | 'zip' | 'state' | 'country' | 'phone' | 'uuid'): string | undefined {
+  if (!value) return undefined;
+
+  let normalized = value.trim();
+
+  // Mapeamento de estados brasileiros para suas siglas
+  const stateMap: { [key: string]: string } = {
+    'acre': 'ac', 'alagoas': 'al', 'amapa': 'ap', 'amazonas': 'am', 'bahia': 'ba',
+    'ceara': 'ce', 'distrito federal': 'df', 'espirito santo': 'es', 'goias': 'go',
+    'maranhao': 'ma', 'mato grosso': 'mt', 'mato grosso do sul': 'ms', 'minas gerais': 'mg',
+    'para': 'pa', 'paraiba': 'pb', 'parana': 'pr', 'pernambuco': 'pe', 'piaui': 'pi',
+    'rio de janeiro': 'rj', 'rio grande do norte': 'rn', 'rio grande do sul': 'rs',
+    'rondonia': 'ro', 'roraima': 'rr', 'santa catarina': 'sc', 'sao paulo': 'sp',
+    'sergipe': 'se', 'tocantins': 'to'
+  };
+
+  switch(type) {
+    case 'email':
+      normalized = normalized.toLowerCase();
+      break;
+    case 'uuid':
+      normalized = normalized.toLowerCase();
+      break;
+    case 'country':
+      // Converte para o código ISO 3166-1 alpha-2 minúsculo
+      normalized = normalized.toLowerCase();
+      break;
+    case 'state':
+      // Converte nome do estado para sigla de 2 letras
+      const cleanState = normalized.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      normalized = stateMap[cleanState] || '';
+      break;
+    case 'zip':
+      // Remove caracteres não alfanuméricos e mantém os 5 primeiros dígitos
+      normalized = normalized.replace(/[^a-z0-9]/gi, '').toLowerCase().substring(0, 5);
+      break;
+    case 'phone':
+      // Remove tudo que não for número
+      normalized = normalized.replace(/[^0-9]/g, '');
+      break;
+    case 'text': // Para cidade, nomes
+    default:
+      // Remove acentos, espaços, e tudo que não for letra
+      normalized = normalized
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z]/g, '');
+      break;
+  }
+
+  if (normalized === '') return undefined;
+
+  const hash = crypto.createHash('sha256').update(normalized).digest('hex');
+  console.log(`[SHA256-${type.toUpperCase()}] Original: "${value}" -> Normalized: "${normalized}" -> Hash: ${hash}`);
+  return hash;
+}
+
+
 // Iniciar quiz - captura IP e gera UUID
 router.post('/start', async (req, res) => {
   try {
@@ -168,17 +232,6 @@ router.post('/complete/:sessionId', (req, res) => {
   });
 });
 
-function sha256(value: string | undefined): string | undefined {
-  if (!value) return undefined;
-  // Normalizar: trim, lowercase e remover espaços extras
-  const normalized = value.trim().toLowerCase().replace(/\s+/g, ' ');
-  if (normalized === '') return undefined;
-  
-  const hash = crypto.createHash('sha256').update(normalized).digest('hex');
-  console.log(`[SHA256] Original: "${value}" -> Normalized: "${normalized}" -> Hash: ${hash}`);
-  return hash;
-}
-
 // Receber evento do frontend para enviar ao Facebook CAPI
 router.post('/event', async (req, res) => {
   try {
@@ -213,7 +266,7 @@ router.post('/event', async (req, res) => {
     console.log('[CAPI] Localização obtida:', location);
 
     // LOG DO PROCESSAMENTO DO EXTERNAL ID
-    const externalIdHash = external_id ? sha256(external_id) : undefined;
+    const externalIdHash = external_id ? sha256(external_id, 'uuid') : undefined;
     console.log('🔍 [EXTERNAL ID DEBUG] External ID após hash SHA256:', externalIdHash);
     console.log('🔍 [EXTERNAL ID DEBUG] Hash length:', externalIdHash ? externalIdHash.length : 'N/A');
 
@@ -227,10 +280,10 @@ router.post('/event', async (req, res) => {
         fbp: fbp || undefined,
         fbc: fbc || undefined,
         external_id: externalIdHash,
-        ct: sha256(location.city),
-        st: sha256(location.state),
-        zp: sha256(location.zipCode), // Corrigido: zipCode em vez de zip
-        country: sha256(location.country)
+        ct: sha256(location.city, 'text'),
+        st: sha256(location.state, 'state'),
+        zp: sha256(location.zipCode, 'zip'), // Corrigido: zipCode em vez de zip
+        country: sha256(location.country, 'country')
       }
     };
 
@@ -323,7 +376,7 @@ router.post('/user-data/:sessionId', async (req, res) => {
     console.log('[User Data] Localização obtida:', location);
 
     // LOG DO PROCESSAMENTO DO EXTERNAL ID (EMAIL)
-    const emailHash = email ? sha256(email) : undefined;
+    const emailHash = email ? sha256(email, 'email') : undefined;
     console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Email após hash SHA256:', emailHash);
     console.log('🔍 [USER DATA EXTERNAL ID DEBUG] Hash length:', emailHash ? emailHash.length : 'N/A');
 
@@ -336,15 +389,15 @@ router.post('/user-data/:sessionId', async (req, res) => {
         client_user_agent: req.headers['user-agent'] || '',
         fbp: req.body.fbp || undefined,
         fbc: req.body.fbc || undefined,
-        external_id: emailHash,
-        em: emailHash, // Email hash
-        ph: phone ? sha256(phone) : undefined, // Phone hash
-        fn: name ? sha256(name.split(' ')[0]) : undefined, // First name hash
-        ln: name ? sha256(name.split(' ').slice(1).join(' ')) : undefined, // Last name hash
-        ct: sha256(location.city),
-        st: sha256(location.state),
-        zp: sha256(location.zipCode),
-        country: sha256(location.country)
+        external_id: email ? sha256(email, 'email') : undefined,
+        em: email ? sha256(email, 'email') : undefined, // Email hash
+        ph: phone ? sha256(phone, 'phone') : undefined, // Phone hash
+        fn: name ? sha256(name.split(' ')[0], 'text') : undefined, // First name hash
+        ln: name ? sha256(name.split(' ').slice(1).join(' '), 'text') : undefined, // Last name hash
+        ct: sha256(location.city, 'text'),
+        st: sha256(location.state, 'state'),
+        zp: sha256(location.zipCode, 'zip'),
+        country: sha256(location.country, 'country')
       },
       custom_data: {
         content_name: 'Quiz Chef Amelie',
@@ -454,11 +507,11 @@ router.post('/test-external-id', async (req, res) => {
     console.log('🧪 [TEST EXTERNAL ID] Tipo email:', typeof email);
     
     // Testar hash do external_id
-    const externalIdHash = external_id ? sha256(external_id) : undefined;
+    const externalIdHash = external_id ? sha256(external_id, 'uuid') : undefined;
     console.log('🧪 [TEST EXTERNAL ID] External ID hash:', externalIdHash);
     
     // Testar hash do email
-    const emailHash = email ? sha256(email) : undefined;
+    const emailHash = email ? sha256(email, 'email') : undefined;
     console.log('🧪 [TEST EXTERNAL ID] Email hash:', emailHash);
     
     // Simular payload do Facebook CAPI
